@@ -1,11 +1,11 @@
 import Header from './components/Header';
-import Todo from './components/Todo';
+import TodoList from './components/TodoList';
 
 function App() {
   return (
     <div>
       <Header />
-      <Todo />
+      <TodoList />
     </div>
   );
 }
