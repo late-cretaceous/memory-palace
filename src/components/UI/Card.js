@@ -1,7 +1,7 @@
 import styles from './Card.module.css';
 
 const Card = (props) => {
-    let cardStyles = props.className ? styles[props.className] : styles.default;
+    let cardStyles = props.className ? props.className : '';
 
     cardStyles += ` ${styles.card}`;
 
