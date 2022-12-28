@@ -3,10 +3,13 @@ import Todo from "./Todo";
 
 const TodoList = () => {
   return (
-    <div className={styles.todolist}>
-      <Todo />
-      <Todo />
+    <div className={styles.flexcol}>
+      <ul className={`${styles.flexcol} ${styles.list}`}>
+        <Todo />
+        <Todo />
+      </ul>
     </div>
+
   );
 };
 
