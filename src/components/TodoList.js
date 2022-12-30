@@ -1,62 +1,66 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo";
 import { useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
-  const [todoInTransit, setTodoInTransit] = useState(false);
+  let recentMouseDown = false;
 
-  const dragStartHandler = (e) => {
-    e.dataTransfer.setData("text/plain", e.target.id);
-    e.dataTransfer.effectAllowed = "move";
-
-    const todoIndex = todos.findIndex((todo) => todo.id === +e.target.id);
-
-    todos[todoIndex].inTransit = true;
-    setTodoInTransit(true);
-  };
-
-  const todoComponentList = todos.map((todo) => (
-    <Todo
-      id={todo.id}
-      key={todo.id}
-      onGrab={dragStartHandler}
-      inTransit={todo.inTransit}
-    />
+  const todoComponentList = todos.map((todo, index) => (
+    <Draggable key={todo.id} draggableId={todo.id} index={index}>
+      {(provided) => (
+        <Todo
+          number={todo.id}
+          content={todo.content}
+          ref={provided.innerRef}
+          provided={provided}
+        />
+      )}
+    </Draggable>
   ));
 
+  console.log(todos);
+
   const addTodoHandler = (e) => {
+    if (!recentMouseDown) {
+      return
+    }
     setTodos((previous) => {
       return previous.concat([
-        { id: previous.length + 1, index: previous.length, inTransit: false },
+        {
+          content: (previous.length + 1).toString(),
+          id: Math.random().toString(),
+          index: previous.length,
+        },
       ]);
     });
   };
 
-  console.log(todos);
+  const allowAddHandler = e => {
+    recentMouseDown = true;
 
-  const dragOverHandler = (e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-  };
-
-  const dropHandler = (e) => {
-    e.preventDefault();
-    const data = e.dataTransfer.getData("text/plain");
-
-    setTodoInTransit(false);
-    console.log(data);
-  };
+    setTimeout(() => {
+      recentMouseDown = false;
+    }, 250);
+  }
 
   return (
-    <div className={styles.flexcol} onClick={addTodoHandler}>
-      <ul
-        className={`${styles.flexcol} ${styles.list}`}
-        onDragOver={dragOverHandler}
-        onDrop={dropHandler}
-      >
-        {todoComponentList}
-      </ul>
+    <div className={styles.flexcol} onClick={addTodoHandler} onMouseDown={allowAddHandler}>
+      <DragDropContext>
+        <Droppable droppableId="todoDropArea">
+          {(provided) => (
+            <ul
+              className={`${styles.flexcol} ${styles.list}`}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {todoComponentList}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };

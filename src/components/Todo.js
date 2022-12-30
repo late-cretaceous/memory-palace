@@ -1,17 +1,19 @@
+import React from "react";
 import styles from "./Todo.module.css";
 import Card from "./UI/Card";
 
-const Todo = (props) => {
+const Todo = React.forwardRef((props, ref) => {
   return (
-    <Card
+    <div
+      ref={ref} 
       className={styles.todo}
-      draggable="true"
       id={props.id}
-      onDragStart={props.onGrab}
+      {...props.provided.draggableProps}
+      {...props.provided.dragHandleProps}
     >
-      <h3>{props.id}</h3>
-    </Card>
+      <h3>{props.content}</h3>
+    </div>
   );
-};
+});
 
 export default Todo;
