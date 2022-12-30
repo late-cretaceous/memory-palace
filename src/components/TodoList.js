@@ -4,19 +4,32 @@ import { useState } from "react";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const [todoInTransit, setTodoInTransit] = useState(false);
 
   const dragStartHandler = (e) => {
     e.dataTransfer.setData("text/plain", e.target.id);
     e.dataTransfer.effectAllowed = "move";
+
+    const todoIndex = todos.findIndex((todo) => todo.id === +e.target.id);
+
+    todos[todoIndex].inTransit = true;
+    setTodoInTransit(true);
   };
 
   const todoComponentList = todos.map((todo) => (
-    <Todo id={todo.id} key={todo.id} onGrab={dragStartHandler} />
+    <Todo
+      id={todo.id}
+      key={todo.id}
+      onGrab={dragStartHandler}
+      inTransit={todo.inTransit}
+    />
   ));
 
   const addTodoHandler = (e) => {
     setTodos((previous) => {
-      return previous.concat([{ id: previous.length + 1 }]);
+      return previous.concat([
+        { id: previous.length + 1, index: previous.length, inTransit: false },
+      ]);
     });
   };
 
@@ -30,6 +43,8 @@ const TodoList = () => {
   const dropHandler = (e) => {
     e.preventDefault();
     const data = e.dataTransfer.getData("text/plain");
+
+    setTodoInTransit(false);
     console.log(data);
   };
 
