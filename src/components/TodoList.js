@@ -7,11 +7,26 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
   let recentMouseDown = false;
 
+  const removeTodoHandler = (e) => {
+    const index = todos.findIndex(
+      (todo) => todo.id === e.target.id
+    );
+    
+    const removee = todos[index];
+
+    setTodos(todos.filter(todo => todo.id !== removee.id));
+  };
+
   const todoComponentList = todos.map((todo, index) => {
     return (
       <Draggable key={todo.id} draggableId={todo.id} index={index}>
         {(provided) => (
-          <Todo id={todo.id} ref={provided.innerRef} provided={provided} />
+          <Todo
+            id={todo.id}
+            ref={provided.innerRef}
+            provided={provided}
+            onClose={removeTodoHandler}
+          />
         )}
       </Draggable>
     );
@@ -21,7 +36,7 @@ const TodoList = () => {
 
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
-    
+
     setTodos((previous) => {
       return previous.concat([
         {
