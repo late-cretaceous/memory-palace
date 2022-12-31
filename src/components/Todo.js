@@ -11,7 +11,7 @@ const Todo = React.forwardRef((props, ref) => {
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}
     >
-      <h3>{props.content}</h3>
+      <h3>{props.id}</h3>
     </div>
   );
 });

@@ -7,47 +7,58 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
   let recentMouseDown = false;
 
-  const todoComponentList = todos.map((todo, index) => (
-    <Draggable key={todo.id} draggableId={todo.id} index={index}>
-      {(provided) => (
-        <Todo
-          number={todo.id}
-          content={todo.content}
-          ref={provided.innerRef}
-          provided={provided}
-        />
-      )}
-    </Draggable>
-  ));
+  const todoComponentList = todos.map((todo, index) => {
+    return (
+      <Draggable key={todo.id} draggableId={todo.id} index={index}>
+        {(provided) => (
+          <Todo id={todo.id} ref={provided.innerRef} provided={provided} />
+        )}
+      </Draggable>
+    );
+  });
 
   console.log(todos);
 
   const addTodoHandler = (e) => {
-    if (!recentMouseDown) {
-      return
-    }
+    if (!recentMouseDown) return;
+    
     setTodos((previous) => {
       return previous.concat([
         {
-          content: (previous.length + 1).toString(),
-          id: Math.random().toString(),
+          id: (previous.length + 1).toString(),
           index: previous.length,
         },
       ]);
     });
   };
 
-  const allowAddHandler = e => {
+  const allowAddHandler = (e) => {
     recentMouseDown = true;
 
     setTimeout(() => {
       recentMouseDown = false;
     }, 250);
-  }
+  };
+
+  const dragEndHandler = (e) => {
+    if (!e.destination) return;
+
+    setTodos((previous) => {
+      const newTodos = Array.from(previous);
+      const [draggedTodo] = newTodos.splice(e.source.index, 1);
+      newTodos.splice(e.destination.index, 0, draggedTodo);
+
+      return newTodos;
+    });
+  };
 
   return (
-    <div className={styles.flexcol} onClick={addTodoHandler} onMouseDown={allowAddHandler}>
-      <DragDropContext>
+    <div
+      className={styles.flexcol}
+      onClick={addTodoHandler}
+      onMouseDown={allowAddHandler}
+    >
+      <DragDropContext onDragEnd={dragEndHandler}>
         <Droppable droppableId="todoDropArea">
           {(provided) => (
             <ul
