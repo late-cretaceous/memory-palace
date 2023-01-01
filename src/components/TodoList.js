@@ -8,13 +8,11 @@ const TodoList = () => {
   let recentMouseDown = false;
 
   const removeTodoHandler = (e) => {
-    const index = todos.findIndex(
-      (todo) => todo.id === e.target.id
-    );
-    
+    const index = todos.findIndex((todo) => todo.id === e.target.id);
+
     const removee = todos[index];
 
-    setTodos(todos.filter(todo => todo.id !== removee.id));
+    setTodos(todos.filter((todo) => todo.id !== removee.id));
   };
 
   const todoComponentList = todos.map((todo, index) => {
@@ -37,10 +35,20 @@ const TodoList = () => {
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
 
+    let scaffoldCount = 0;
+
+    if (todos.length) {
+      todos.forEach((todo) => {
+        if (+todo.id >= scaffoldCount) {
+          scaffoldCount = +todo.id + 1;
+        }
+      });
+    }
+
     setTodos((previous) => {
       return previous.concat([
         {
-          id: (previous.length + 1).toString(),
+          id: scaffoldCount.toString(),
           index: previous.length,
         },
       ]);
