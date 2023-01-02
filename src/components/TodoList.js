@@ -1,17 +1,11 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo/Todo";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
   let recentMouseDown = false;
-
-  const typeNoteHandler = (e)=> {
-    setTimeout(() => {
-      console.dir(e.target.parentElement.id);
-    }, 1000);
-  }
 
   const removeTodoHandler = (e) => {
     const index = todos.findIndex((todo) => todo.id === e.target.id);
@@ -29,9 +23,7 @@ const TodoList = () => {
             id={todo.id}
             ref={provided.innerRef}
             provided={provided}
-            onType={typeNoteHandler}
             onClose={removeTodoHandler}
-            note={todo.note}
           />
         )}
       </Draggable>
@@ -69,7 +61,6 @@ const TodoList = () => {
         {
           id: scaffoldCount.toString(),
           index: previous.length,
-          note: ''
         },
       ]);
     });
