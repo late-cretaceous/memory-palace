@@ -32,14 +32,11 @@ const TodoList = () => {
 
   console.log(todos);
 
-  const addTodoHandler = (e) => {
-    if (!recentMouseDown) return;
-
-    //id right now uses a scaffold to set a number (the lowest one that is missing)
+  //id right now uses a scaffold to set a number (the lowest one that is missing)
+  const scaffoldId = () => {
     let scaffoldCount = 0;
     if (todos.length) {
       let sortedTodoIds = Array.from(todos, (todo) => todo.id).sort();
-      console.log(sortedTodoIds);
 
       for (let i = 0; i < sortedTodoIds.length; i++) {
         if (!sortedTodoIds[i + 1]) {
@@ -51,6 +48,13 @@ const TodoList = () => {
         }
       }
     }
+    return scaffoldCount;
+  }
+
+  const addTodoHandler = (e) => {
+    if (!recentMouseDown) return;
+
+    let scaffoldCount = scaffoldId();
 
     setTodos((previous) => {
       return previous.concat([
