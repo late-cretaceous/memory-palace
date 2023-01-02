@@ -1,11 +1,17 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo/Todo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
   let recentMouseDown = false;
+
+  const typeNoteHandler = (e)=> {
+    setTimeout(() => {
+      console.dir(e.target.parentElement.id);
+    }, 1000);
+  }
 
   const removeTodoHandler = (e) => {
     const index = todos.findIndex((todo) => todo.id === e.target.id);
@@ -23,7 +29,9 @@ const TodoList = () => {
             id={todo.id}
             ref={provided.innerRef}
             provided={provided}
+            onType={typeNoteHandler}
             onClose={removeTodoHandler}
+            note={todo.note}
           />
         )}
       </Draggable>
@@ -33,7 +41,7 @@ const TodoList = () => {
   console.log(todos);
 
   //id right now uses a scaffold to set a number (the lowest one that is missing)
-  const scaffoldId = () => {
+  const generateScaffoldId = () => {
     let scaffoldCount = 0;
     if (todos.length) {
       let sortedTodoIds = Array.from(todos, (todo) => todo.id).sort();
@@ -54,13 +62,14 @@ const TodoList = () => {
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
 
-    let scaffoldCount = scaffoldId();
+    let scaffoldCount = generateScaffoldId();
 
     setTodos((previous) => {
       return previous.concat([
         {
           id: scaffoldCount.toString(),
           index: previous.length,
+          note: ''
         },
       ]);
     });

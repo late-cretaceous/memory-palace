@@ -27,8 +27,7 @@ const Todo = React.forwardRef((props, ref) => {
           X
         </button>
       </div>
-
-      <textarea placeholder="Note name"></textarea>
+      <textarea placeholder="Name" onChange={props.onType} value={props.note}></textarea>
     </div>
   );
 });
