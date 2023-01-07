@@ -12,6 +12,8 @@ const TodoList = () => {
 
     const removee = todos[index];
 
+    localStorage.removeItem(index);
+
     setTodos(todos.filter((todo) => todo.id !== removee.id));
   };
 
@@ -49,20 +51,20 @@ const TodoList = () => {
       }
     }
     return scaffoldCount;
-  }
+  };
 
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
 
-    let scaffoldCount = generateScaffoldId();
+    const todo = {
+      id: generateScaffoldId().toString(),
+      index: todos.length,
+    };
+
+    localStorage.setItem(todo.id, JSON.stringify(todo));
 
     setTodos((previous) => {
-      return previous.concat([
-        {
-          id: scaffoldCount.toString(),
-          index: previous.length,
-        },
-      ]);
+      return previous.concat([todo]);
     });
   };
 
