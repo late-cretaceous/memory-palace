@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Todo.module.css";
-import Card from "../UI/Card";
 
 const Todo = React.forwardRef((props, ref) => {
+  const [content, setContent] = useState("");
+
   const stopBubbleHandler = (e) => {
     e.stopPropagation();
   };
+
+  const editContentHandler = (e) => {
+    setContent(e.target.value);
+  };
+
+  useEffect(() => {
+    console.log("todo effect");
+  }, [content]);
 
   return (
     <div
@@ -27,7 +36,11 @@ const Todo = React.forwardRef((props, ref) => {
           X
         </button>
       </div>
-      <textarea placeholder="Name" onChange={props.onType} value={props.note}></textarea>
+      <textarea
+        placeholder="Name"
+        onChange={editContentHandler}
+        value={content}
+      ></textarea>
     </div>
   );
 });
