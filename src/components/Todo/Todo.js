@@ -13,7 +13,13 @@ const Todo = React.forwardRef((props, ref) => {
   };
 
   useEffect(() => {
-    console.log("todo effect");
+    const typingContent = setTimeout(() => {
+      console.log('Content typed')
+    }, 2000);
+    
+    return () => {
+      clearTimeout(typingContent);
+    }
   }, [content]);
 
   return (
@@ -37,7 +43,7 @@ const Todo = React.forwardRef((props, ref) => {
         </button>
       </div>
       <textarea
-        placeholder="Name"
+        placeholder="Type a to-do"
         onChange={editContentHandler}
         value={content}
       ></textarea>
