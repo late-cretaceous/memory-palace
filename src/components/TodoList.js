@@ -1,31 +1,19 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo/Todo";
+import storage from '../utilities/storage';
 import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-const retrieveLocalStorageObjects = () => {
-  const todoList = Object.values({ ...localStorage }).map((todo) =>
-    JSON.parse(todo)
-  );
 
-  return todoList.sort((a, b) => a.index - b.index);
-};
-
-const addTodoToLocalStorage = (todo) => {
-  localStorage.setItem(todo.id, JSON.stringify(todo));
-};
-
-const updateAllLocalStorage = (todos) => {
-  localStorage.clear();
-  todos.forEach((todo) => addTodoToLocalStorage(todo));
-};
 
 const reIndexTodos = (todos) => {
   todos.forEach((todo, index) => (todo.index = index));
 };
 
+console.log(storage);
+
 const TodoList = () => {
-  const [todos, setTodos] = useState(retrieveLocalStorageObjects());
+  const [todos, setTodos] = useState(storage.getAll());
   let recentMouseDown = false;
 
   const removeTodoHandler = (e) => {
@@ -81,8 +69,8 @@ const TodoList = () => {
       id: generateScaffoldId().toString(),
       index: todos.length,
     };
-
-    addTodoToLocalStorage(todo);
+  
+    storage.set(todo);
 
     setTodos((previous) => {
       return previous.concat([todo]);
@@ -107,7 +95,7 @@ const TodoList = () => {
       newTodos.splice(draggedTodo.index, 0, draggedTodo);
 
       reIndexTodos(newTodos);
-      updateAllLocalStorage(newTodos);
+      storage.updateAll(newTodos);
 
       return newTodos;
     });
