@@ -3,8 +3,12 @@ import Todo from "./Todo/Todo";
 import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
+const localStorageObjects = Object.values({ ...localStorage }).map((todo) =>
+  JSON.parse(todo)
+);
+
 const TodoList = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(localStorageObjects);
   let recentMouseDown = false;
 
   const removeTodoHandler = (e) => {

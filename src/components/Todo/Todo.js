@@ -4,12 +4,12 @@ import styles from "./Todo.module.css";
 const Todo = React.forwardRef((props, ref) => {
   const [content, setContent] = useState("");
 
-  const stopBubbleHandler = (e) => {
-    e.stopPropagation();
+  const typeContentHandler = (e) => {
+    setContent(e.target.value);
   };
 
-  const editContentHandler = (e) => {
-    setContent(e.target.value);
+  const stopBubbleHandler = (e) => {
+    e.stopPropagation();
   };
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const Todo = React.forwardRef((props, ref) => {
       </div>
       <textarea
         placeholder="Type a to-do"
-        onChange={editContentHandler}
+        onChange={typeContentHandler}
         value={content}
       ></textarea>
     </div>
