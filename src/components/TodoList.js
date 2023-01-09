@@ -4,8 +4,6 @@ import storage from '../utilities/storage';
 import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-
-
 const reIndexTodos = (todos) => {
   todos.forEach((todo, index) => (todo.index = index));
 };
@@ -13,7 +11,7 @@ const reIndexTodos = (todos) => {
 console.log(storage);
 
 const TodoList = () => {
-  const [todos, setTodos] = useState(storage.getAll());
+  const [todos, setTodos] = useState(storage.retrieveAll());
   let recentMouseDown = false;
 
   const removeTodoHandler = (e) => {
@@ -95,7 +93,7 @@ const TodoList = () => {
       newTodos.splice(draggedTodo.index, 0, draggedTodo);
 
       reIndexTodos(newTodos);
-      storage.updateAll(newTodos);
+      storage.updateOrder(newTodos);
 
       return newTodos;
     });

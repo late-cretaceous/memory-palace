@@ -1,5 +1,5 @@
 const storage = {
-  getAll: () => {
+  retrieveAll: () => {
     const todoList = Object.values({ ...localStorage }).map((todo) =>
       JSON.parse(todo)
     );
@@ -11,9 +11,14 @@ const storage = {
     localStorage.setItem(todo.id, JSON.stringify(todo));
   },
 
-  updateAll: (todos) => {
-    localStorage.clear();
-    todos.forEach((todo) => storage.set(todo));
+  updateOrder: (newTodos) => {
+    const todos = storage.retrieveAll();
+    
+    todos.forEach((todo) => {
+        const newTodoIndex = newTodos.findIndex((newTodo) => todo.id === newTodo.id);
+        todo.index = newTodos[newTodoIndex].index;
+        storage.set(todo);
+    });
   },
 };
 
