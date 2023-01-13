@@ -3,25 +3,26 @@ import Todo from "./Todo/Todo";
 import storage from '../utilities/storage';
 import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Todos } from '../utilities/storage';
 
 const reIndexTodos = (todos) => {
   todos.forEach((todo, index) => (todo.index = index));
 };
 
-console.log(storage);
+const todoInstance = new Todos();
 
 const TodoList = () => {
   const [todos, setTodos] = useState(storage.retrieveAll());
   let recentMouseDown = false;
 
+  todoInstance.list = todos;
+
   const removeTodoHandler = (e) => {
-    const index = todos.findIndex((todo) => todo.id === e.target.id);
+    todoInstance.remove(e.target.id);
 
-    const removee = todos[index];
+    localStorage.removeItem(e.target.id);
 
-    localStorage.removeItem(index);
-
-    setTodos(todos.filter((todo) => todo.id !== removee.id));
+    setTodos(todoInstance.list);
   };
 
   const todoComponentList = todos.map((todo, index) => {
