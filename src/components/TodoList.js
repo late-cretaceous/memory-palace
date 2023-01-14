@@ -2,20 +2,20 @@ import styles from "./TodoList.module.css";
 import Todo from "./Todo/Todo";
 import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Todos } from '../utilities/storage';
+import Todos from '../utilities/storage';
 
-const todoInstance = new Todos();
+const todoKit = new Todos();
 
 const TodoList = () => {
-  const [todos, setTodos] = useState(todoInstance.list);
+  const [todos, setTodos] = useState(todoKit.list);
   let recentMouseDown = false;
 
   const removeTodoHandler = (e) => {
-    todoInstance.remove(e.target.id);
+    todoKit.remove(e.target.id);
 
     localStorage.removeItem(e.target.id);
 
-    setTodos(todoInstance.list);
+    setTodos(todoKit.list);
   };
 
   const todoComponentList = todos.map((todo, index) => {
@@ -36,10 +36,10 @@ const TodoList = () => {
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
 
-    const todo = todoInstance.add();
-    todoInstance.store(todo);
+    const todo = todoKit.add();
+    todoKit.store(todo);
 
-    setTodos(todoInstance.list);
+    setTodos(todoKit.list);
   };
 
   const allowAddHandler = (e) => {
@@ -53,10 +53,10 @@ const TodoList = () => {
   const dragEndHandler = (e) => {
     if (!e.destination) return;
 
-    todoInstance.move(e.source.index, e.destination.index);
-    todoInstance.reorderStorage();
+    todoKit.move(e.source.index, e.destination.index);
+    todoKit.reorderStorage();
 
-    setTodos(Array.from(todoInstance.list));
+    setTodos(Array.from(todoKit.list));
   };
 
   return (
