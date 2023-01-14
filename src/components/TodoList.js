@@ -40,8 +40,6 @@ const TodoList = () => {
     );
   });
 
-  console.log(todos);
-
   //id right now uses a scaffold to set a number (the lowest one that is missing)
   const generateScaffoldId = () => {
     let scaffoldCount = 0;
@@ -87,17 +85,10 @@ const TodoList = () => {
   const dragEndHandler = (e) => {
     if (!e.destination) return;
 
-    setTodos((previous) => {
-      const newTodos = Array.from(previous);
-      const [draggedTodo] = newTodos.splice(e.source.index, 1);
-      draggedTodo.index = e.destination.index;
-      newTodos.splice(draggedTodo.index, 0, draggedTodo);
+    todoInstance.move(e.source.index, e.destination.index);
+    storage.updateOrder(todoInstance.list);
 
-      reIndexTodos(newTodos);
-      storage.updateOrder(newTodos);
-
-      return newTodos;
-    });
+    setTodos(Array.from(todoInstance.list));
   };
 
   return (
