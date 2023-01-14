@@ -46,7 +46,7 @@ export const Todos = class {
   }
 
   reorderStorage() {
-    const retrieved = storage.retrieveAll();
+    const retrieved = this.retrieveAll();
 
     retrieved.forEach((todo) => {
       const newTodoIndex = this.list.findIndex(
@@ -76,30 +76,76 @@ export const Todos = class {
   };
 };
 
-const storage = {
-  retrieveAll: () => {
+export const TodoListFuncs = class {
+  retrieveAll() {
     const todoList = Object.values({ ...localStorage }).map((todo) =>
       JSON.parse(todo)
     );
 
     return todoList.sort((a, b) => a.index - b.index);
-  },
+  }
 
-  set: (todo) => {
+  add() {
+    const todo = {
+      id: this.newNumber().toString(),
+      index: this.list.length,
+    };
+
+    this.list = this.list.concat([todo]);
+
+    return todo;
+  }
+
+  move(fromIndex, toIndex) {
+    const [draggedTodo] = this.list.splice(fromIndex, 1);
+    draggedTodo.index = toIndex;
+    this.list.splice(toIndex, 0, draggedTodo);
+    this.reIndex();
+  }
+
+  reIndex() {
+    this.list.forEach((todo, index) => (todo.index = index));
+  }
+
+  store(todo) {
     localStorage.setItem(todo.id, JSON.stringify(todo));
-  },
+  }
 
-  updateOrder: (newTodos) => {
-    const todos = storage.retrieveAll();
+  remove(id) {
+    const index = this.list.findIndex((todo) => todo.id === id);
 
-    todos.forEach((todo) => {
-      const newTodoIndex = newTodos.findIndex(
+    const removee = this.list[index];
+
+    this.list = this.list.filter((todo) => todo.id !== removee.id);
+  }
+
+  reorderStorage() {
+    const retrieved = this.retrieveAll();
+
+    retrieved.forEach((todo) => {
+      const newTodoIndex = this.list.findIndex(
         (newTodo) => todo.id === newTodo.id
       );
-      todo.index = newTodos[newTodoIndex].index;
-      storage.set(todo);
+      todo.index = this.list[newTodoIndex].index;
+      this.store(todo);
     });
-  },
-};
+  }
 
-export default storage;
+  newNumber() {
+    let scaffoldCount = 0;
+    if (this.list.length) {
+      let sortedTodoIds = Array.from(this.list, (todo) => todo.id).sort();
+
+      for (let i = 0; i < sortedTodoIds.length; i++) {
+        if (!sortedTodoIds[i + 1]) {
+          scaffoldCount = i + 1;
+          break;
+        } else if (sortedTodoIds[i] < sortedTodoIds[i + 1] - 1) {
+          scaffoldCount = i + 1;
+          break;
+        }
+      }
+    }
+    return scaffoldCount;
+  };
+};

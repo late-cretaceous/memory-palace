@@ -1,6 +1,5 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo/Todo";
-import storage from '../utilities/storage';
 import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Todos } from '../utilities/storage';
@@ -8,10 +7,8 @@ import { Todos } from '../utilities/storage';
 const todoInstance = new Todos();
 
 const TodoList = () => {
-  const [todos, setTodos] = useState(storage.retrieveAll());
+  const [todos, setTodos] = useState(todoInstance.list);
   let recentMouseDown = false;
-
-  todoInstance.list = todos;
 
   const removeTodoHandler = (e) => {
     todoInstance.remove(e.target.id);
@@ -36,12 +33,11 @@ const TodoList = () => {
     );
   });
 
-
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
 
     const todo = todoInstance.add();
-    storage.set(todo);
+    todoInstance.store(todo);
 
     setTodos(todoInstance.list);
   };
@@ -58,7 +54,7 @@ const TodoList = () => {
     if (!e.destination) return;
 
     todoInstance.move(e.source.index, e.destination.index);
-    storage.updateOrder(todoInstance.list);
+    todoInstance.reorderStorage();
 
     setTodos(Array.from(todoInstance.list));
   };
