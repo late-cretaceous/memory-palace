@@ -16,6 +16,7 @@ const TodoList = () => {
   let recentMouseDown = false;
 
   todoInstance.list = todos;
+  console.log('rerendered');
 
   const removeTodoHandler = (e) => {
     todoInstance.remove(e.target.id);
@@ -62,16 +63,16 @@ const TodoList = () => {
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
 
+    console.log('clicked');
     const todo = {
       id: generateScaffoldId().toString(),
       index: todos.length,
     };
   
+    todoInstance.add(todo);
     storage.set(todo);
 
-    setTodos((previous) => {
-      return previous.concat([todo]);
-    });
+    setTodos(todoInstance.list);
   };
 
   const allowAddHandler = (e) => {

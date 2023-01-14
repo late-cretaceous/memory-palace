@@ -11,6 +11,10 @@ export const Todos = class {
     return todoList.sort((a, b) => a.index - b.index);
   }
 
+  add(todo) {
+    this.list = this.list.concat([todo]);
+  }
+
   move(fromIndex, toIndex) {
     const [draggedTodo] = this.list.splice(fromIndex, 1);
     draggedTodo.index = toIndex;
