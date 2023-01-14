@@ -5,10 +5,6 @@ import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Todos } from '../utilities/storage';
 
-const reIndexTodos = (todos) => {
-  todos.forEach((todo, index) => (todo.index = index));
-};
-
 const todoInstance = new Todos();
 
 const TodoList = () => {
@@ -16,7 +12,6 @@ const TodoList = () => {
   let recentMouseDown = false;
 
   todoInstance.list = todos;
-  console.log('rerendered');
 
   const removeTodoHandler = (e) => {
     todoInstance.remove(e.target.id);
@@ -41,35 +36,11 @@ const TodoList = () => {
     );
   });
 
-  //id right now uses a scaffold to set a number (the lowest one that is missing)
-  const generateScaffoldId = () => {
-    let scaffoldCount = 0;
-    if (todos.length) {
-      let sortedTodoIds = Array.from(todos, (todo) => todo.id).sort();
-
-      for (let i = 0; i < sortedTodoIds.length; i++) {
-        if (!sortedTodoIds[i + 1]) {
-          scaffoldCount = i + 1;
-          break;
-        } else if (sortedTodoIds[i] < sortedTodoIds[i + 1] - 1) {
-          scaffoldCount = i + 1;
-          break;
-        }
-      }
-    }
-    return scaffoldCount;
-  };
 
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
 
-    console.log('clicked');
-    const todo = {
-      id: generateScaffoldId().toString(),
-      index: todos.length,
-    };
-  
-    todoInstance.add(todo);
+    const todo = todoInstance.add();
     storage.set(todo);
 
     setTodos(todoInstance.list);
