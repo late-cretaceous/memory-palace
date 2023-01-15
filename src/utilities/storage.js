@@ -1,6 +1,12 @@
-const Todos = class {
-  constructor() {
-    this.list = this.retrieveAll();
+const TodoKit = class {
+  constructor(parent) {
+    const id = !parent ? -1 : this.newNumber(parent).toString();
+
+    this.id = id;
+    this.index = !parent ? null : parent.list.length;
+    this.message = '';
+    this.list = !parent ? this.retrieveAll() : [{parent: id, id: null}];
+    this.parent = !parent ? null : parent.id;
   }
 
   retrieveAll() {
@@ -12,14 +18,7 @@ const Todos = class {
   }
 
   add(parent) {
-    const id = this.newNumber().toString()
-    const todo = {
-      parent: parent ? parent : null,
-      id: id,
-      index: this.list.length,
-      message: '',
-      list: [{parent: id, id: null}]
-    };
+    const todo = new TodoKit(parent);
 
     this.list = this.list.concat([todo]);
 
@@ -61,10 +60,10 @@ const Todos = class {
     });
   }
 
-  newNumber() {
+  newNumber(parent) {
     let scaffoldCount = 0;
-    if (this.list.length) {
-      let sortedTodoIds = Array.from(this.list, (todo) => todo.id).sort();
+    if (parent.list.length) {
+      let sortedTodoIds = Array.from(parent.list, (todo) => todo.id).sort();
 
       for (let i = 0; i < sortedTodoIds.length; i++) {
         if (!sortedTodoIds[i + 1]) {
@@ -80,4 +79,4 @@ const Todos = class {
   };
 };
 
-export default Todos;
+export default TodoKit;
