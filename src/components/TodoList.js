@@ -37,7 +37,6 @@ const TodoList = (props) => {
 
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
-    console.log(todoKit.id);
 
     const todo = todoKit.add(todoKit);
     todoKit.store(todo);
