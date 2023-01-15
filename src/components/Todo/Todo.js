@@ -48,6 +48,7 @@ const Todo = React.forwardRef((props, ref) => {
         placeholder="Type a to-do"
         onChange={typeContentHandler}
         value={content}
+        autoFocus
       ></textarea>
     </div>
   );
