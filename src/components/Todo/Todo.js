@@ -50,6 +50,9 @@ const Todo = React.forwardRef((props, ref) => {
         value={content}
         autoFocus
       ></textarea>
+      <div className={styles['todo-row']}>
+        <button></button>
+      </div>
     </div>
   );
 });

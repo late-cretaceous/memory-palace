@@ -1,12 +1,12 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo/Todo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Todos from '../utilities/storage';
 
 const todoKit = new Todos();
 
-const TodoList = () => {
+const TodoList = (props) => {
   const [todos, setTodos] = useState(todoKit.list);
   let recentMouseDown = false;
 
@@ -37,7 +37,7 @@ const TodoList = () => {
   const addTodoHandler = (e) => {
     if (!recentMouseDown) return;
 
-    const todo = todoKit.add();
+    const todo = todoKit.add(props.parent);
     todoKit.store(todo);
 
     setTodos(todoKit.list);

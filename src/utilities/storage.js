@@ -11,10 +11,14 @@ const Todos = class {
     return todoList.sort((a, b) => a.index - b.index);
   }
 
-  add() {
+  add(parent) {
+    const id = this.newNumber().toString()
     const todo = {
-      id: this.newNumber().toString(),
+      parent: parent ? parent : null,
+      id: id,
       index: this.list.length,
+      message: '',
+      list: [{parent: id, id: null}]
     };
 
     this.list = this.list.concat([todo]);
