@@ -1,6 +1,6 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo/Todo";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import TodoKit from '../utilities/storage';
 
