@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(props.message);
 
   const typeContentHandler = (e) => {
     setContent(e.target.value);
@@ -14,7 +14,9 @@ const Todo = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     const typingContent = setTimeout(() => {
-      console.log('Content typed')
+      const todo = JSON.parse(localStorage.getItem(props.id));
+      todo.message = content;
+      localStorage.setItem(props.id, JSON.stringify(todo));
     }, 2000);
     
     return () => {

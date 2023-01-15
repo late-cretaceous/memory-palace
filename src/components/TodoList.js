@@ -24,6 +24,7 @@ const TodoList = () => {
         {(provided) => (
           <Todo
             id={todo.id}
+            message={todo.message}
             ref={provided.innerRef}
             provided={provided}
             onClose={removeTodoHandler}
