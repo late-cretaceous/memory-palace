@@ -3,6 +3,8 @@ import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
   const [content, setContent] = useState(props.message);
+  const [listOpen, setListOpen] = useState(false);
+  console.log("listOpen: " + listOpen);
 
   const typeContentHandler = (e) => {
     setContent(e.target.value);
@@ -12,16 +14,20 @@ const Todo = React.forwardRef((props, ref) => {
     e.stopPropagation();
   };
 
+  const toggleListOpenHandler = () => {
+    setListOpen(!listOpen);
+  };
+
   useEffect(() => {
     const typingContent = setTimeout(() => {
       const todo = JSON.parse(localStorage.getItem(props.id));
       todo.message = content;
       localStorage.setItem(props.id, JSON.stringify(todo));
     }, 2000);
-    
+
     return () => {
       clearTimeout(typingContent);
-    }
+    };
   }, [content]);
 
   return (
@@ -50,8 +56,8 @@ const Todo = React.forwardRef((props, ref) => {
         value={content}
         autoFocus
       ></textarea>
-      <div className={styles['todo-row']}>
-        <button></button>
+      <div className={styles["todo-row"]}>
+        <button onClick={toggleListOpenHandler}></button>
       </div>
     </div>
   );
