@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import TodoKit from "../../utilities/storage";
 import TodoHead from "./TodoHead";
 import TodoList from "../newTodoList";
+import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(new TodoKit(props.todo));
@@ -17,8 +18,9 @@ const Todo = React.forwardRef((props, ref) => {
   }, []);
 
   const todoAddHandler = () => {
+    console.log(todo);
     const newTodo = todo.add({
-      id: todo.newNumber(),
+      id: todo.newNumber(todo),
       index: todo.list.length,
       parent: todo,
       message: "",
@@ -64,7 +66,8 @@ const Todo = React.forwardRef((props, ref) => {
   ) : null;
 
   return (
-    <div {...dragRequiredProps}>
+    <div className={styles.flexcol}
+    {...dragRequiredProps}>
       {todoHead}
       <TodoList
         todos={todo.list}

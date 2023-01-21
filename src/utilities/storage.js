@@ -15,10 +15,10 @@ const TodoKit = class {
     this.list = todoList.sort((a, b) => a.index - b.index);
   }
 
-  add(parent) {
-    const todo = new TodoKit(parent);
+  add(todo) {
+    const newTodo = new TodoKit(todo);
 
-    this.list = this.list.concat([todo]);
+    this.list = this.list.concat([newTodo]);
 
     return todo;
   }
@@ -58,10 +58,10 @@ const TodoKit = class {
     });
   }
 
-  newNumber() {
+  newNumber(parent) {
     let scaffoldCount = 0;
-    if (this.parent) {
-      let sortedTodoIds = Array.from(this.parent.list, (todo) => todo.id).sort();
+    if (parent.list.length) {
+      let sortedTodoIds = Array.from(parent.list, (todo) => todo.id).sort();
 
       for (let i = 0; i < sortedTodoIds.length; i++) {
         if (!sortedTodoIds[i + 1]) {
