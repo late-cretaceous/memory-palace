@@ -4,43 +4,47 @@ import TodoHead from "./TodoHead";
 import TodoList from "../newTodoList";
 
 const Todo = React.forwardRef((props, ref) => {
-  const todoKit = new TodoKit(props.todo);
-  console.log("Big todo: " + props.bigTodo);
-  console.log('TodoKit: ');
-  console.log(todoKit);
-  const [todos, setTodos] = useState(todoKit.list);
-  console.log(todos);
+  const [todo, setTodos] = useState(new TodoKit(props.todo));
 
   useEffect(() => {
     if (props.bigTodo) {
+      const newTodo = new TodoKit(props.todo);
+      newTodo.retrieveAll();
       console.log("retrieve all");
-      todoKit.retrieveAll();
-      setTodos(todoKit.list);
+      
+      setTodos(newTodo);
     }
   }, []);
 
   const todoAddHandler = () => {
-    const todo = todoKit.add(todoKit);
-    todoKit.store(todo);
+    const newTodo = todo.add({
+      id: todo.newNumber(),
+      index: todo.list.length,
+      parent: todo,
+      message: "",
+      list: [],
+    });
 
-    setTodos(todoKit.list);
+    todo.store(newTodo);
+
+    setTodos(new TodoKit(todo));
   };
 
   const todoRemoveHandler = (e) => {
-    todoKit.remove(e.target.id);
+    todo.remove(e.target.id);
 
     localStorage.removeItem(e.target.id);
 
-    setTodos(todoKit.list);
+    setTodos(new TodoKit(todo));
   };
 
   const todoMoveHandler = (e) => {
     if (!e.destination) return;
 
-    todoKit.move(e.source.index, e.destination.index);
-    todoKit.reorderStorage();
+    todo.move(e.source.index, e.destination.index);
+    todo.reorderStorage();
 
-    setTodos(Array.from(todoKit.list));
+    setTodos(new TodoKit(todo));
   };
 
   const dragRequiredProps = props.provided
@@ -51,15 +55,19 @@ const Todo = React.forwardRef((props, ref) => {
       }
     : {};
 
-  const todoHead = props.id ? (
-    <TodoHead message={props.todo.message} id={props.todo.id} onClose={props.onClose} />
+  const todoHead = props.todo.id ? (
+    <TodoHead
+      message={props.todo.message}
+      id={props.todo.id}
+      onClose={props.onClose}
+    />
   ) : null;
 
   return (
     <div {...dragRequiredProps}>
       {todoHead}
       <TodoList
-        todos={todos}
+        todos={todo.list}
         onAdd={todoAddHandler}
         onMove={todoMoveHandler}
         onRemove={todoRemoveHandler}

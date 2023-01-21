@@ -13,8 +13,7 @@ const TodoList = (props) => {
       <Draggable key={todo.id} draggableId={todo.id} index={index}>
         {(provided) => (
           <Todo
-            id={todo.id}
-            message={todo.message}
+            todo={todo}
             ref={provided.innerRef}
             provided={provided}
             onClose={props.onRemove}

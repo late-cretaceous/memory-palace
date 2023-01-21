@@ -1,12 +1,10 @@
 const TodoKit = class {
-  constructor(parent) {
-    const id = !parent ? -1 : this.newNumber(parent).toString();
-
-    this.id = id;
-    this.index = !parent ? null : parent.list.length;
-    this.message = '';
+  constructor(todo) {
+    this.id = todo.id;
+    this.index = todo.index;
+    this.message = todo.message;
     this.list = [];
-    this.parent = !parent ? null : parent.id;
+    this.parent = todo.parent;
   }
 
   retrieveAll() {
@@ -60,10 +58,10 @@ const TodoKit = class {
     });
   }
 
-  newNumber(parent) {
+  newNumber() {
     let scaffoldCount = 0;
-    if (parent.list.length) {
-      let sortedTodoIds = Array.from(parent.list, (todo) => todo.id).sort();
+    if (this.parent) {
+      let sortedTodoIds = Array.from(this.parent.list, (todo) => todo.id).sort();
 
       for (let i = 0; i < sortedTodoIds.length; i++) {
         if (!sortedTodoIds[i + 1]) {
