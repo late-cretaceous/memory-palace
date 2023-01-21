@@ -1,0 +1,6 @@
+.flexcol {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+  }
+  
