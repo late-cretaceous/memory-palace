@@ -5,7 +5,7 @@ const TodoKit = class {
     this.id = id;
     this.index = !parent ? null : parent.list.length;
     this.message = '';
-    this.list = !parent ? this.retrieveAll() : [{parent: id, id: null}];
+    this.list = [];
     this.parent = !parent ? null : parent.id;
   }
 
@@ -14,7 +14,7 @@ const TodoKit = class {
       JSON.parse(todo)
     );
 
-    return todoList.sort((a, b) => a.index - b.index);
+    this.list = todoList.sort((a, b) => a.index - b.index);
   }
 
   add(parent) {

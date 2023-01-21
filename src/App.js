@@ -1,11 +1,11 @@
 import Header from './components/Header';
-import TodoList from './components/TodoList';
+import Todo from './components/Todo/newTodo';
 
 function App() {
   return (
     <>
       <Header />
-      <TodoList />
+      <Todo bigTodo />
     </>
   );
 }
