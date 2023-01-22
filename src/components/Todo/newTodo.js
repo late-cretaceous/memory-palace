@@ -6,6 +6,7 @@ import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(new TodoKit(props.todo));
+  console.log(todo);
 
   useEffect(() => {
     if (props.bigTodo) {
@@ -18,14 +19,15 @@ const Todo = React.forwardRef((props, ref) => {
   }, []);
 
   const todoAddHandler = () => {
-    console.log(todo);
     const newTodo = todo.add({
-      id: todo.newNumber(todo),
+      id: todo.newNumber(todo).toString(),
       index: todo.list.length,
-      parent: todo,
+      parent: todo.id,
       message: "",
       list: [],
     });
+
+    console.log(newTodo);
 
     todo.store(newTodo);
 
@@ -70,6 +72,7 @@ const Todo = React.forwardRef((props, ref) => {
     {...dragRequiredProps}>
       {todoHead}
       <TodoList
+        parent={todo}
         todos={todo.list}
         onAdd={todoAddHandler}
         onMove={todoMoveHandler}

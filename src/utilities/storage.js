@@ -3,8 +3,8 @@ const TodoKit = class {
     this.id = todo.id;
     this.index = todo.index;
     this.message = todo.message;
-    this.list = [];
     this.parent = todo.parent;
+    this.list = [];
   }
 
   retrieveAll() {

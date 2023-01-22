@@ -3,6 +3,9 @@ import Todo from "./Todo/newTodo";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const TodoList = (props) => {
+  //early base case here is scaffold prior to collapsable lists to prevent empty space
+  if (!props.todos.length && props.parent.id) return;
+
   let recentMouseDown = false;
 
   const todoComponentList = props.todos.map((todo, index) => {
