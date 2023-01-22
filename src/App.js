@@ -7,7 +7,7 @@ function App() {
       <Header />
       <Todo
         bigTodo
-        todo={{ id: null, index: null, parent: null, message: "", list: [] }}
+        todo={{ id: -1, index: null, parent: null, message: "", list: [] }}
       />
     </>
   );

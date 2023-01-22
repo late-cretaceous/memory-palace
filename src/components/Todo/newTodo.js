@@ -13,7 +13,7 @@ const Todo = React.forwardRef((props, ref) => {
       const newTodo = new TodoKit(props.todo);
       newTodo.retrieveAll();
       console.log("retrieve all");
-      
+
       setTodos(newTodo);
     }
   }, []);
@@ -59,20 +59,19 @@ const Todo = React.forwardRef((props, ref) => {
       }
     : {};
 
-  const todoHead = props.todo.id ? (
+  const todoHead = todo.parent ? (
     <TodoHead
       message={props.todo.message}
       id={props.todo.id}
       onClose={props.onClose}
     />
   ) : null;
-
+  
   return (
-    <div className={styles.flexcol}
-    {...dragRequiredProps}>
+    //Below conditional is temporary pending collapsable lists
+    <div className={todo.parent ? "" : styles.flexcol} {...dragRequiredProps}>
       {todoHead}
       <TodoList
-        parent={todo}
         todos={todo.list}
         onAdd={todoAddHandler}
         onMove={todoMoveHandler}
