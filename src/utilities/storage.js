@@ -1,10 +1,10 @@
 const TodoKit = class {
   constructor(todo) {
-    this.id = todo.id;
+    this.id = todo.id.toString();
     this.index = todo.index;
     this.message = todo.message;
     this.parent = todo.parent;
-    this.list = [];
+    this.list = todo.list;
   }
 
   retrieveAll() {
@@ -16,11 +16,14 @@ const TodoKit = class {
   }
 
   add(todo) {
+    console.log(todo);
     const newTodo = new TodoKit(todo);
+    
+    console.log(this.list);
 
     this.list = this.list.concat([newTodo]);
 
-    return todo;
+     console.log(this.list);
   }
 
   move(fromIndex, toIndex) {

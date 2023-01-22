@@ -6,7 +6,6 @@ import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(new TodoKit(props.todo));
-  console.log(todo);
 
   useEffect(() => {
     if (props.bigTodo) {
@@ -19,7 +18,9 @@ const Todo = React.forwardRef((props, ref) => {
   }, []);
 
   const todoAddHandler = () => {
-    const newTodo = todo.add({
+    const newTodo = new TodoKit(todo);
+
+    newTodo.add({
       id: todo.newNumber(todo).toString(),
       index: todo.list.length,
       parent: todo.id,
@@ -27,11 +28,9 @@ const Todo = React.forwardRef((props, ref) => {
       list: [],
     });
 
-    console.log(newTodo);
-
     todo.store(newTodo);
 
-    setTodos(new TodoKit(todo));
+    setTodos(newTodo);
   };
 
   const todoRemoveHandler = (e) => {
@@ -66,7 +65,7 @@ const Todo = React.forwardRef((props, ref) => {
       onClose={props.onClose}
     />
   ) : null;
-  
+
   return (
     //Below conditional is temporary pending collapsable lists
     <div className={todo.parent ? "" : styles.flexcol} {...dragRequiredProps}>
