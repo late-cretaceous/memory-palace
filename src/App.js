@@ -7,7 +7,14 @@ function App() {
       <Header />
       <Todo
         bigTodo
-        todo={{ id:'bigTodo', index: null, parent: null, message: "", list: [] }}
+        todo={{
+          level: 0,
+          id: "bigTodo",
+          index: null,
+          parent: null,
+          message: "",
+          list: [],
+        }}
       />
     </>
   );

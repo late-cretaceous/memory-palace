@@ -1,5 +1,6 @@
 const TodoKit = class {
   constructor(todo) {
+    this.level = todo.level;
     this.id = todo.id.toString();
     this.index = todo.index;
     this.message = todo.message;
@@ -8,22 +9,17 @@ const TodoKit = class {
   }
 
   retrieveAll() {
-    const todoList = Object.values({ ...localStorage }).map((todo) =>
-      JSON.parse(todo)
-    );
+    if (!localStorage.length) return;
+
+    const todoList = JSON.parse(localStorage.getItem("bigTodo")).list;
 
     this.list = todoList.sort((a, b) => a.index - b.index);
   }
 
   add(todo) {
-    console.log(todo);
     const newTodo = new TodoKit(todo);
-    
-    console.log(this.list);
 
     this.list = this.list.concat([newTodo]);
-
-     console.log(this.list);
   }
 
   move(fromIndex, toIndex) {
@@ -77,7 +73,7 @@ const TodoKit = class {
       }
     }
     return scaffoldCount;
-  };
+  }
 };
 
 export default TodoKit;

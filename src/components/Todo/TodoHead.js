@@ -17,19 +17,6 @@ const TodoHead = (props) => {
     setListOpen(!listOpen);
   };
 
-  useEffect(() => {
-    const typingContent = setTimeout(() => {
-      const todo = JSON.parse(localStorage.getItem(props.id));
-      console.log(todo);
-      todo.message = content;
-      localStorage.setItem(props.id, JSON.stringify(todo));
-    }, 2000);
-
-    return () => {
-      clearTimeout(typingContent);
-    };
-  }, [content]);
-
   return (
     <div
       className={styles.todo}

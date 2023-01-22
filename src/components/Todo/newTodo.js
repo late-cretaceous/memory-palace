@@ -21,6 +21,7 @@ const Todo = React.forwardRef((props, ref) => {
     const newTodo = new TodoKit(todo);
 
     newTodo.add({
+      level: todo.level + 1,
       id: todo.newNumber(todo).toString(),
       index: todo.list.length,
       parent: todo.id,
