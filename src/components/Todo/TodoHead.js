@@ -24,7 +24,7 @@ const TodoHead = (props) => {
       onClick={stopBubbleHandler}
     >
       <div className={`${styles["todo-row"]} ${styles["todo-row__cancel"]}`}>
-        <h4>{props.id}</h4>
+        <h4>{props.label}</h4>
         <button
           type="button"
           className="close-button"
