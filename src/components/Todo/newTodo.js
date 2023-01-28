@@ -36,11 +36,13 @@ const Todo = React.forwardRef((props, ref) => {
   };
 
   const todoRemoveHandler = (e) => {
-    todo.remove(e.target.id);
+    const todoCopy = new TodoKit(todo);
 
-    localStorage.removeItem(e.target.id);
+    todoCopy.remove(e.target.id);
 
-    setTodos(new TodoKit(todo));
+    todo.store(todoCopy);
+
+    setTodos(todoCopy);
   };
 
   const todoMoveHandler = (e) => {
