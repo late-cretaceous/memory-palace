@@ -32,6 +32,8 @@ const Todo = React.forwardRef((props, ref) => {
     thisTodo.add(childTodo);
 
     todo.store(thisTodo);
+    //newblock
+    todo.store(childTodo);
 
     setTodos(thisTodo);
   };
@@ -42,6 +44,8 @@ const Todo = React.forwardRef((props, ref) => {
     todoCopy.remove(e.target.id);
 
     todo.store(todoCopy);
+    //newblock
+    localStorage.removeItem(e.target.id);
 
     setTodos(todoCopy);
   };
