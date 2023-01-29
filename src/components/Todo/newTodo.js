@@ -21,6 +21,7 @@ const Todo = React.forwardRef((props, ref) => {
     const newTodo = new TodoKit(todo);
 
     newTodo.add({
+      id: Date.now().toString(),
       label: todo.newNumber(todo).toString(),
       index: todo.list.length,
       parent: todo.id,

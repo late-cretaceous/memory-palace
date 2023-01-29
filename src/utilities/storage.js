@@ -1,6 +1,6 @@
 const TodoKit = class {
   constructor(todo) {
-    this.id = todo.id ? todo.id : Date.now().toString();
+    this.id = todo.id;
     this.label = todo.label;
     this.index = todo.index;
     this.message = todo.message;
