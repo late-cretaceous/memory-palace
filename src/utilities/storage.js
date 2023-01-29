@@ -22,6 +22,10 @@ const TodoKit = class {
     this.list.push(newTodo);
   }
 
+  retrieve(id) {
+    this.add(JSON.parse(localStorage.getItem(id)));
+  }
+
   move(fromIndex, toIndex) {
     const [draggedTodo] = this.list.splice(fromIndex, 1);
     draggedTodo.index = toIndex;
