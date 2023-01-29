@@ -19,7 +19,7 @@ const TodoKit = class {
   add(todo) {
     const newTodo = new TodoKit(todo);
 
-    this.list = this.list.concat([newTodo]);
+    this.list.push(newTodo);
   }
 
   move(fromIndex, toIndex) {
