@@ -18,20 +18,22 @@ const Todo = React.forwardRef((props, ref) => {
   }, []);
 
   const todoAddHandler = () => {
-    const newTodo = new TodoKit(todo);
+    const thisTodo = new TodoKit(todo);
 
-    newTodo.add({
+    const childTodo = {
       id: Date.now().toString(),
       label: todo.newNumber(todo).toString(),
       index: todo.list.length,
       parent: todo.id,
       message: "",
       list: [],
-    });
+    };
 
-    todo.store(newTodo);
+    thisTodo.add(childTodo);
 
-    setTodos(newTodo);
+    todo.store(thisTodo);
+
+    setTodos(thisTodo);
   };
 
   const todoRemoveHandler = (e) => {
