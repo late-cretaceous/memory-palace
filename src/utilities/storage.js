@@ -37,15 +37,6 @@ const TodoKit = class {
     localStorage.setItem(todo.id, JSON.stringify(todo));
   }
 
-  async storeFirebase(todo) {
-    const response = await fetch(
-      "https://neato-note-default-rtdb.firebaseio.com/todos.json",
-      { method: "POST", body: JSON.stringify(todo) }
-    );
-
-    console.log(response);
-  }
-
   remove(id) {
     const index = this.list.findIndex((todo) => todo.id === id);
 

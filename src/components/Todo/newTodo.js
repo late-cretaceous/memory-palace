@@ -30,7 +30,6 @@ const Todo = React.forwardRef((props, ref) => {
     });
 
     todo.store(newTodo);
-    todo.storeFirebase(newTodo);
 
     setTodos(newTodo);
   };
