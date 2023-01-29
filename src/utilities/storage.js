@@ -1,3 +1,5 @@
+import Todo from "../components/Todo/newTodo";
+
 const TodoKit = class {
   constructor(todo) {
     this.id = todo.id;
@@ -38,7 +40,22 @@ const TodoKit = class {
   }
 
   store(todo) {
-    localStorage.setItem(todo.id, JSON.stringify(todo));
+    //scaffold conditional
+    if (todo.id === "bigTodo") {
+      localStorage.setItem(todo.id, JSON.stringify(todo));
+    }
+
+    const todoFlat = new TodoKit({
+      ...todo,
+      list: Array.from(todo.list, (item) => item.id),
+    });
+
+    //scaffold conditional
+    if (todoFlat.id === 'bigTodo') {
+      todoFlat.id = 'bigTodoFlat';
+    }
+
+    localStorage.setItem(todoFlat.id, JSON.stringify(todoFlat));    
   }
 
   remove(id) {
@@ -64,7 +81,10 @@ const TodoKit = class {
   newNumber(parent) {
     let scaffoldCount = 0;
     if (parent.list.length) {
-      let sortedTodoLabels = Array.from(parent.list, (todo) => todo.label).sort();
+      let sortedTodoLabels = Array.from(
+        parent.list,
+        (todo) => todo.label
+      ).sort();
 
       for (let i = 0; i < sortedTodoLabels.length; i++) {
         if (!sortedTodoLabels[i + 1]) {
