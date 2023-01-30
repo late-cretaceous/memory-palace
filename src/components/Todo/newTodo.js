@@ -10,6 +10,7 @@ const Todo = React.forwardRef((props, ref) => {
   useEffect(() => {
     if (props.bigTodo) {
       const newTodo = new TodoKit(props.todo);
+
       newTodo.retrieveAll();
       console.log("retrieve all");
 
@@ -34,6 +35,11 @@ const Todo = React.forwardRef((props, ref) => {
     todo.store(thisTodo);
     //newblock
     todo.store(childTodo);
+
+    //parallel flat pull
+    const flatTodo = new TodoKit(todo.pull("bigTodoFlat"));
+    flatTodo.pullDescendents();
+    console.log(flatTodo);
 
     setTodos(thisTodo);
   };

@@ -1,5 +1,3 @@
-import Todo from "../components/Todo/newTodo";
-
 const TodoKit = class {
   constructor(todo) {
     this.id = todo.id;
@@ -24,8 +22,23 @@ const TodoKit = class {
     this.list.push(newTodo);
   }
 
-  retrieve(id) {
-    this.add(JSON.parse(localStorage.getItem(id)));
+  pull(id) {
+    return JSON.parse(localStorage.getItem(id));
+  }
+
+  pullDescendents() {
+    if (!this.list.length) return
+    
+    const ids = [...this.list];
+    console.log(`Ids: ${ids}`);
+    
+    this.list = [];
+
+    for (const id of ids) {
+      const newTodo = new TodoKit(this.pull(id));
+      newTodo.pullDescendents();
+      this.list.push(newTodo);
+    }
   }
 
   move(fromIndex, toIndex) {
