@@ -10,6 +10,7 @@ function App() {
         todo={{
           level: 0,
           id: "bigTodo",
+          label: null,
           index: null,
           parent: null,
           message: "",
