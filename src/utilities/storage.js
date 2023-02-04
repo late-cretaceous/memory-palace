@@ -30,7 +30,6 @@ const TodoKit = class {
     if (!this.list.length) return
     
     const ids = [...this.list];
-    console.log(`Ids: ${ids}`);
     
     this.list = [];
 
@@ -53,20 +52,10 @@ const TodoKit = class {
   }
 
   store(todo) {
-    //scaffold conditional
-    if (todo.id === "bigTodo") {
-      localStorage.setItem(todo.id, JSON.stringify(todo));
-    }
-
     const todoFlat = new TodoKit({
       ...todo,
       list: Array.from(todo.list, (item) => item.id),
     });
-
-    //scaffold conditional
-    if (todoFlat.id === 'bigTodo') {
-      todoFlat.id = 'bigTodoFlat';
-    }
 
     localStorage.setItem(todoFlat.id, JSON.stringify(todoFlat));    
   }
