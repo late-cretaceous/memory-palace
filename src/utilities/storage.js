@@ -17,10 +17,10 @@ const TodoKit = class {
   }
 
   pullDescendents() {
-    if (!this.list.length) return
-    
+    if (!this.list.length) return;
+
     const ids = [...this.list];
-    
+
     this.list = [];
 
     for (const id of ids) {
@@ -48,7 +48,7 @@ const TodoKit = class {
       list: Array.from(this.list, (item) => item.id),
     });
 
-    localStorage.setItem(todoFlat.id, JSON.stringify(todoFlat));    
+    localStorage.setItem(todoFlat.id, JSON.stringify(todoFlat));
   }
 
   remove(id) {
@@ -60,25 +60,19 @@ const TodoKit = class {
   }
 
   reorderStorage() {
-    this.list.forEach(todo => todo.store());
+    this.list.forEach((todo) => todo.store());
   }
 
   newNumber() {
-    if (this.list.length) {
-      let sortedTodoLabels = Array.from(
-        this.list,
-        (todo) => todo.label
-      ).sort();
+    let sortedLabels = Array.from(this.list, (todo) => todo.label).sort();
 
-      for (let i = 0; i < sortedTodoLabels.length; i++) {
-        if (!sortedTodoLabels[i + 1]) {
-          return sortedTodoLabels[i] + 1;
-        } else if (sortedTodoLabels[i] < sortedTodoLabels[i + 1] - 1) {
-          return i + 1;
-        }
+    for (let i = 0; i < sortedLabels.length; i++) {
+      if (sortedLabels[i] !== i) {
+        return i;
+      } else if (!sortedLabels[i + 1]) {
+        return sortedLabels[i] + 1;
       }
     }
-    return 0;
   }
 };
 
