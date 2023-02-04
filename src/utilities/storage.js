@@ -8,14 +8,6 @@ const TodoKit = class {
     this.list = todo.list;
   }
 
-  retrieveAll() {
-    if (!localStorage.length) return;
-
-    const todoList = JSON.parse(localStorage.getItem("bigTodo")).list;
-
-    this.list = todoList.sort((a, b) => a.index - b.index);
-  }
-
   add(todo) {
     this.list.push(todo);
   }
@@ -36,11 +28,12 @@ const TodoKit = class {
       newTodo.pullDescendents();
       this.list.push(newTodo);
     }
+
+    this.list.sort((a, b) => a.index - b.index);
   }
 
   move(fromIndex, toIndex) {
     const [draggedTodo] = this.list.splice(fromIndex, 1);
-    draggedTodo.index = toIndex;
     this.list.splice(toIndex, 0, draggedTodo);
     this.reIndex();
   }
@@ -67,15 +60,7 @@ const TodoKit = class {
   }
 
   reorderStorage() {
-    const retrieved = this.retrieveAll();
-
-    retrieved.forEach((todo) => {
-      const newTodoIndex = this.list.findIndex(
-        (newTodo) => todo.id === newTodo.id
-      );
-      todo.index = this.list[newTodoIndex].index;
-      this.store(todo);
-    });
+    this.list.forEach(todo => todo.store());
   }
 
   newNumber() {
