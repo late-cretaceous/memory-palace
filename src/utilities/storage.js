@@ -49,7 +49,7 @@ const TodoKit = class {
     this.list.forEach((todo, index) => (todo.index = index));
   }
 
-  store(todo) {
+  store() {
     const todoFlat = new TodoKit({
       ...this,
       list: Array.from(this.list, (item) => item.id),
