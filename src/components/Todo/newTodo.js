@@ -9,14 +9,14 @@ const Todo = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     if (props.bigTodo) {
-      if (!localStorage.getItem('bigTodo')) {
-        todo.store(todo);
-        return
+      if (!localStorage.getItem("bigTodo")) {
+        todo.store();
+        return;
       }
-      
+
       const newTodo = new TodoKit(todo.pull("bigTodo"));
       newTodo.pullDescendents();
-      
+
       setTodos(newTodo);
     }
   }, []);
@@ -24,20 +24,19 @@ const Todo = React.forwardRef((props, ref) => {
   const todoAddHandler = () => {
     const thisTodo = new TodoKit(todo);
 
-    const childTodo = {
+    const childTodo = new TodoKit({
       id: Date.now().toString(),
       label: todo.newNumber(),
       index: todo.list.length,
       parent: todo.id,
       message: "",
       list: [],
-    };
+    });
 
     thisTodo.add(childTodo);
 
-    todo.store(thisTodo);
-    todo.store(childTodo);
-
+    thisTodo.store();
+    childTodo.store();
 
     setTodos(thisTodo);
   };
@@ -47,9 +46,8 @@ const Todo = React.forwardRef((props, ref) => {
 
     todoCopy.remove(e.target.id);
 
-    todoCopy.store(todoCopy);
+    todoCopy.store();
     localStorage.removeItem(e.target.id);
-    
 
     setTodos(todoCopy);
   };

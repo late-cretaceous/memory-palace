@@ -17,9 +17,7 @@ const TodoKit = class {
   }
 
   add(todo) {
-    const newTodo = new TodoKit(todo);
-
-    this.list.push(newTodo);
+    this.list.push(todo);
   }
 
   pull(id) {
@@ -53,8 +51,8 @@ const TodoKit = class {
 
   store(todo) {
     const todoFlat = new TodoKit({
-      ...todo,
-      list: Array.from(todo.list, (item) => item.id),
+      ...this,
+      list: Array.from(this.list, (item) => item.id),
     });
 
     localStorage.setItem(todoFlat.id, JSON.stringify(todoFlat));    
