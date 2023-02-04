@@ -1,0 +1,9 @@
+.list {
+    padding: 0px;
+}
+
+.flexcol {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+}
