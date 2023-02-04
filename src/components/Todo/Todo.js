@@ -1,64 +1,93 @@
 import React, { useState, useEffect } from "react";
+import TodoKit from "../../utilities/storage";
+import TodoHead from "./TodoHead";
+import TodoList from "./TodoList";
 import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
-  const [content, setContent] = useState(props.message);
-  const [listOpen, setListOpen] = useState(false);
-  console.log("listOpen: " + listOpen);
-
-  const typeContentHandler = (e) => {
-    setContent(e.target.value);
-  };
-
-  const stopBubbleHandler = (e) => {
-    e.stopPropagation();
-  };
-
-  const toggleListOpenHandler = () => {
-    setListOpen(!listOpen);
-  };
+  const [todo, setTodos] = useState(new TodoKit(props.todo));
 
   useEffect(() => {
-    const typingContent = setTimeout(() => {
-      const todo = JSON.parse(localStorage.getItem(props.id));
-      todo.message = content;
-      localStorage.setItem(props.id, JSON.stringify(todo));
-    }, 2000);
+    if (props.bigTodo) {
+      if (!localStorage.getItem("bigTodo")) {
+        todo.store();
+        return;
+      }
 
-    return () => {
-      clearTimeout(typingContent);
-    };
-  }, [content]);
+      const newTodo = new TodoKit(todo.pull("bigTodo"));
+      newTodo.pullDescendents();
+
+      setTodos(newTodo);
+    }
+  }, []);
+
+  const todoAddHandler = () => {
+    const thisTodo = new TodoKit(todo);
+
+    const childTodo = new TodoKit({
+      id: Date.now().toString(),
+      label: todo.newNumber(),
+      index: todo.list.length,
+      parent: todo.id,
+      message: "",
+      list: [],
+    });
+
+    thisTodo.add(childTodo);
+
+    thisTodo.store();
+    childTodo.store();
+
+    setTodos(thisTodo);
+  };
+
+  const todoRemoveHandler = (e) => {
+    const todoCopy = new TodoKit(todo);
+
+    todoCopy.remove(e.target.id);
+
+    todoCopy.store();
+    localStorage.removeItem(e.target.id);
+
+    setTodos(todoCopy);
+  };
+
+  const todoMoveHandler = (e) => {
+    if (!e.destination) return;
+
+    todo.move(e.source.index, e.destination.index);
+    todo.reorderStorage();
+
+    setTodos(new TodoKit(todo));
+  };
+
+  const dragRequiredProps = props.provided
+    ? {
+        ref,
+        ...props.provided.draggableProps,
+        ...props.provided.dragHandleProps,
+      }
+    : {};
+
+  const todoHead = todo.parent ? (
+    <TodoHead
+      message={props.todo.message}
+      id={props.todo.id}
+      label={props.todo.label}
+      onClose={props.onClose}
+    />
+  ) : null;
 
   return (
-    <div
-      ref={ref}
-      className={styles.todo}
-      id={props.id}
-      onClick={stopBubbleHandler}
-      {...props.provided.draggableProps}
-      {...props.provided.dragHandleProps}
-    >
-      <div className={`${styles["todo-row"]} ${styles["todo-row__cancel"]}`}>
-        <h4>{props.id}</h4>
-        <button
-          type="button"
-          className="close-button"
-          onClick={props.onClose}
-          id={props.id}
-        >
-          X
-        </button>
-      </div>
-      <textarea
-        placeholder="Type a to-do"
-        onChange={typeContentHandler}
-        value={content}
-        autoFocus
-      ></textarea>
-      <div className={styles["todo-row"]}>
-        <button onClick={toggleListOpenHandler}></button>
-      </div>
+    //Below conditional is temporary pending collapsable lists
+    <div className={todo.parent ? "" : styles.flexcol} {...dragRequiredProps}>
+      {todoHead}
+      <TodoList
+        todos={todo.list}
+        onAdd={todoAddHandler}
+        onMove={todoMoveHandler}
+        onRemove={todoRemoveHandler}
+      />
     </div>
   );
 });

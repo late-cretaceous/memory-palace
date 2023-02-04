@@ -1,5 +1,5 @@
 import Header from "./components/Header";
-import Todo from "./components/Todo/newTodo";
+import Todo from "./components/Todo/Todo";
 
 function App() {
   return (
