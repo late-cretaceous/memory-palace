@@ -1,3 +1,7 @@
+.todo {
+  margin: 0.5rem;
+}
+
 .flexcol {
     display: flex;
     flex-direction: column;

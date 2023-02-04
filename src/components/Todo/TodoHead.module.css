@@ -1,21 +1,20 @@
-.todo {
+.todohead {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: thistle;
-  margin: 0.5rem;
   padding: 0.5rem;
 }
 
-.todo-row {
+.todohead-row {
   display: flex;
 }
 
-.todo-row__cancel {
+.todohead-row__cancel {
   justify-content: space-between;
 }
 
-.todo button {
+.todohead button {
   font-weight: bold;
   cursor: pointer;
   background-color: transparent;
@@ -25,15 +24,15 @@
   user-select: none;
 }
 
-.todo button:hover {
+.todohead button:hover {
   opacity: 50%;
 }
 
-.todo h4 {
+.todohead h4 {
   margin: 0 0 0.25rem 0;
 }
 
-.todo textarea {
+.todohead textarea {
   background-color:transparent;
   border: none;
   resize: none;

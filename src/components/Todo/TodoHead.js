@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./TodoHead.module.css";
 
 const TodoHead = (props) => {
@@ -19,11 +19,11 @@ const TodoHead = (props) => {
 
   return (
     <div
-      className={styles.todo}
+      className={styles.todohead}
       id={props.id}
       onClick={stopBubbleHandler}
     >
-      <div className={`${styles["todo-row"]} ${styles["todo-row__cancel"]}`}>
+      <div className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}>
         <h4>{props.label}</h4>
         <button
           type="button"
@@ -40,7 +40,7 @@ const TodoHead = (props) => {
         value={content}
         autoFocus
       ></textarea>
-      <div className={styles["todo-row"]}>
+      <div className={styles["todohead-row"]}>
         <button onClick={toggleListOpenHandler}></button>
       </div>
     </div>

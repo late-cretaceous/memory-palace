@@ -61,7 +61,7 @@ const Todo = React.forwardRef((props, ref) => {
     setTodos(new TodoKit(todo));
   };
 
-  const dragRequiredProps = props.provided
+  const requiredDragProps = props.provided
     ? {
         ref,
         ...props.provided.draggableProps,
@@ -78,9 +78,12 @@ const Todo = React.forwardRef((props, ref) => {
     />
   ) : null;
 
+  //Below conditional is temporary pending collapsable lists
+  const todoStyles = todo.parent ? styles.todo : `${styles.todo} + ${styles.flexcol}`
+
   return (
-    //Below conditional is temporary pending collapsable lists
-    <div className={todo.parent ? "" : styles.flexcol} {...dragRequiredProps}>
+    
+    <div className={todoStyles} {...requiredDragProps}>
       {todoHead}
       <TodoList
         todos={todo.list}
