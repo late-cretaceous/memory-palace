@@ -64,7 +64,8 @@ const TodoKit = class {
   }
 
   newNumber() {
-    let sortedLabels = Array.from(this.list, (todo) => todo.label).sort();
+    if (!this.list.length) return 0;
+    const sortedLabels = Array.from(this.list, (todo) => todo.label).sort();
 
     for (let i = 0; i < sortedLabels.length; i++) {
       if (sortedLabels[i] !== i) {
