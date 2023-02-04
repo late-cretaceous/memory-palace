@@ -26,7 +26,7 @@ const Todo = React.forwardRef((props, ref) => {
 
     const childTodo = {
       id: Date.now().toString(),
-      label: todo.newNumber(todo).toString(),
+      label: todo.newNumber(),
       index: todo.list.length,
       parent: todo.id,
       message: "",

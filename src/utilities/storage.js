@@ -80,25 +80,22 @@ const TodoKit = class {
     });
   }
 
-  newNumber(parent) {
-    let scaffoldCount = 0;
-    if (parent.list.length) {
+  newNumber() {
+    if (this.list.length) {
       let sortedTodoLabels = Array.from(
-        parent.list,
+        this.list,
         (todo) => todo.label
       ).sort();
 
       for (let i = 0; i < sortedTodoLabels.length; i++) {
         if (!sortedTodoLabels[i + 1]) {
-          scaffoldCount = i + 1;
-          break;
+          return sortedTodoLabels[i] + 1;
         } else if (sortedTodoLabels[i] < sortedTodoLabels[i + 1] - 1) {
-          scaffoldCount = i + 1;
-          break;
+          return i + 1;
         }
       }
     }
-    return scaffoldCount;
+    return 0;
   }
 };
 
