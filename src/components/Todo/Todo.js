@@ -9,11 +9,6 @@ const Todo = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     if (props.bigTodo) {
-      if (!localStorage.getItem("bigTodo")) {
-        todo.store();
-        return;
-      }
-
       const newTodo = new TodoKit(todo.pull("bigTodo"));
       newTodo.pullDescendents();
 

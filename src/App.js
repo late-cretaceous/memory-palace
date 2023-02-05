@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import Todo from "./components/Todo/Todo";
+import TodoKit from "./utilities/storage";
 
 function App() {
   const bigTodo = {
@@ -10,15 +11,16 @@ function App() {
     parent: null,
     message: "",
     list: [],
+  };
+
+  if (!localStorage.getItem("bigTodo")) {
+    new TodoKit(bigTodo).store();
   }
 
   return (
     <>
       <Header />
-      <Todo
-        bigTodo
-        todo={bigTodo}
-      />
+      <Todo bigTodo todo={bigTodo} />
     </>
   );
 }

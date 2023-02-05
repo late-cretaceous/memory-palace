@@ -19,19 +19,25 @@
   cursor: pointer;
   background-color: transparent;
   color: gray;
-  border: 2px solid grey;
-  border-radius: 25px;
   user-select: none;
+  border: none;
 }
 
 .todohead button:hover {
   opacity: 50%;
 }
 
+.todohead-row__cancel button {
+  border: 2px solid grey;
+  border-radius: 25px;
+}
+
 .todohead h4 {
   margin: 0 0 0.25rem 0;
 }
 
+/* Note: apparently there is no native way to make textarea expand like a div to accommodate its content
+For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
 .todohead textarea {
   background-color:transparent;
   border: none;

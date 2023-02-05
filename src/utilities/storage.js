@@ -16,6 +16,19 @@ const TodoKit = class {
     return JSON.parse(localStorage.getItem(id));
   }
 
+  pullChildren() {
+    const ids = [...this.list];
+
+    this.list = [];
+
+    for (const id of ids) {
+      const newTodo = new TodoKit(this.pull(id));
+      this.list.push(newTodo);
+    }
+
+    this.list.sort((a, b) => a.index - b.index);
+  }
+
   pullDescendents() {
     if (!this.list.length) return;
 
