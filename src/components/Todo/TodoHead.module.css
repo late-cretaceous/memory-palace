@@ -21,6 +21,7 @@
   color: gray;
   user-select: none;
   border: none;
+  transition: all 0.1s ease-out 0s;
 }
 
 .todohead button:hover {
@@ -53,4 +54,8 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
 .todohead textarea:hover {
   background-color:white;
   opacity:50%;
+}
+
+.arrowopen {
+  transform:rotate(90deg);
 }

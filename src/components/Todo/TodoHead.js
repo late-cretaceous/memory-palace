@@ -37,7 +37,7 @@ const TodoHead = (props) => {
         autoFocus
       ></textarea>
       <div className={styles["todohead-row"]}>
-        <button onClick={props.onListToggle}>{'\u25B6'}</button>
+        <button className={props.arrowOpen ? styles.arrowopen : ''}onClick={props.onListToggle}>{'\u25B6'}</button>
       </div>
     </div>
   );
