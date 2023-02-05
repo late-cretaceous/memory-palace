@@ -3,7 +3,6 @@ import styles from "./TodoHead.module.css";
 
 const TodoHead = (props) => {
   const [content, setContent] = useState(props.message);
-  const [listOpen, setListOpen] = useState(false);
 
   const typeContentHandler = (e) => {
     setContent(e.target.value);
@@ -11,10 +10,6 @@ const TodoHead = (props) => {
 
   const stopBubbleHandler = (e) => {
     e.stopPropagation();
-  };
-
-  const toggleListOpenHandler = () => {
-    setListOpen(!listOpen);
   };
 
   return (
@@ -41,7 +36,7 @@ const TodoHead = (props) => {
         autoFocus
       ></textarea>
       <div className={styles["todohead-row"]}>
-        <button onClick={toggleListOpenHandler}>{'\u25B6'}</button>
+        <button onClick={props.onListToggle}>{'\u25B6'}</button>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(new TodoKit({...props.todo, list: []}));
+  const [listOpen, setListOpen] = useState(false);
 
   useEffect(() => {
     const newTodo = new TodoKit(props.todo);
@@ -54,6 +55,11 @@ const Todo = React.forwardRef((props, ref) => {
     setTodos(new TodoKit(todo));
   };
 
+  const toggleListOpenHandler = () => {
+    setListOpen(!listOpen);
+    console.log(listOpen);
+  };
+
   const requiredDragProps = props.provided
     ? {
         ref,
@@ -68,6 +74,7 @@ const Todo = React.forwardRef((props, ref) => {
       id={props.todo.id}
       label={props.todo.label}
       onClose={props.onClose}
+      onListToggle={toggleListOpenHandler}
     />
   ) : null;
 
