@@ -3,6 +3,7 @@ import styles from "./TodoHead.module.css";
 
 const TodoHead = (props) => {
   const [content, setContent] = useState(props.message);
+  console.log(props.arrowOpen);
 
   const typeContentHandler = (e) => {
     setContent(e.target.value);

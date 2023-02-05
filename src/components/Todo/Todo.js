@@ -57,7 +57,6 @@ const Todo = React.forwardRef((props, ref) => {
 
   const toggleListOpenHandler = () => {
     setListOpen(!listOpen);
-    console.log(listOpen);
   };
 
   const requiredDragProps = props.provided
@@ -75,6 +74,7 @@ const Todo = React.forwardRef((props, ref) => {
       label={props.todo.label}
       onClose={props.onClose}
       onListToggle={toggleListOpenHandler}
+      arrowOpen={listOpen}
     />
   ) : null;
 
