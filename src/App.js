@@ -3,17 +3,21 @@ import Todo from "./components/Todo/Todo";
 import TodoKit from "./utilities/storage";
 
 function App() {
-  const bigTodo = {
-    level: 0,
-    id: "bigTodo",
-    label: null,
-    index: null,
-    parent: null,
-    message: "",
-    list: [],
-  };
+  const storageEmpty = !localStorage.getItem("bigTodo");
 
-  if (!localStorage.getItem("bigTodo")) {
+  const bigTodo = storageEmpty
+    ? {
+        level: 0,
+        id: "bigTodo",
+        label: null,
+        index: null,
+        parent: null,
+        message: "",
+        list: []
+      }
+    : TodoKit.pull("bigTodo");
+
+  if (storageEmpty) {
     new TodoKit(bigTodo).store();
   }
 

@@ -5,15 +5,13 @@ import TodoList from "./TodoList";
 import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
-  const [todo, setTodos] = useState(new TodoKit(props.todo));
+  const [todo, setTodos] = useState(new TodoKit({...props.todo, list: []}));
 
   useEffect(() => {
-    if (props.bigTodo) {
-      const newTodo = new TodoKit(todo.pull("bigTodo"));
-      newTodo.pullDescendents();
+    const newTodo = new TodoKit(props.todo);
+    newTodo.pullChildren();
 
-      setTodos(newTodo);
-    }
+    setTodos(newTodo);
   }, []);
 
   const todoAddHandler = () => {
@@ -72,6 +70,8 @@ const Todo = React.forwardRef((props, ref) => {
       onClose={props.onClose}
     />
   ) : null;
+
+
 
   //Below conditional is temporary pending collapsable lists
   const todoStyles = todo.parent

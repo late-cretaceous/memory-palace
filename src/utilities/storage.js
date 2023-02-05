@@ -8,12 +8,12 @@ const TodoKit = class {
     this.list = todo.list;
   }
 
-  add(todo) {
-    this.list.push(todo);
+  static pull(id) {
+    return JSON.parse(localStorage.getItem(id));
   }
 
-  pull(id) {
-    return JSON.parse(localStorage.getItem(id));
+  add(todo) {
+    this.list.push(todo);
   }
 
   pullChildren() {
@@ -22,23 +22,7 @@ const TodoKit = class {
     this.list = [];
 
     for (const id of ids) {
-      const newTodo = new TodoKit(this.pull(id));
-      this.list.push(newTodo);
-    }
-
-    this.list.sort((a, b) => a.index - b.index);
-  }
-
-  pullDescendents() {
-    if (!this.list.length) return;
-
-    const ids = [...this.list];
-
-    this.list = [];
-
-    for (const id of ids) {
-      const newTodo = new TodoKit(this.pull(id));
-      newTodo.pullDescendents();
+      const newTodo = new TodoKit(TodoKit.pull(id));
       this.list.push(newTodo);
     }
 
