@@ -37,7 +37,14 @@
   border: none;
   resize: none;
   font: inherit;
+  margin: 0.5rem 0 0.5rem 0;
   font-weight:bold;
   outline: none;
-  overflow-y:show;
+  display:block;
+  transition: all 0.5s ease-out 0s;
+}
+
+.todohead textarea:hover {
+  background-color:white;
+  opacity:50%;
 }
