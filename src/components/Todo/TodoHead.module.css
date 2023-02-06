@@ -38,7 +38,7 @@
 .todohead-row__cancel button span {
   position: relative;
   right: 0.96px;
-  left: 0.32.px;
+  top: 0.32px;
 }
 
 .todohead h4 {

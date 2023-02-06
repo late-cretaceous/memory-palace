@@ -24,7 +24,7 @@ const TodoHead = (props) => {
           onClick={props.onClose}
           id={props.id}
         >
-          <span>{"\u2715"}</span>
+          <span id={props.id}>{"\u2715"}</span>
         </button>
       </div>
       <textarea
