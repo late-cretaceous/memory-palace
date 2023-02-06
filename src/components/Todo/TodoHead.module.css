@@ -29,8 +29,16 @@
 }
 
 .todohead-row__cancel button {
+  width: 1.5rem;
+  height: 1.5rem;
   border: 2px solid grey;
   border-radius: 25px;
+}
+
+.todohead-row__cancel button span {
+  position: relative;
+  right: 0.96px;
+  left: 0.32.px;
 }
 
 .todohead h4 {
