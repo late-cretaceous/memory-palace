@@ -1,9 +1,11 @@
 .list {
     padding: 0px;
+    flex: auto;
+    border: 0.25rem solid lightcoral;
+    border-radius: 10px;
 }
 
 .flexcol {
     display: flex;
     flex-direction: column;
-    flex: auto;
 }

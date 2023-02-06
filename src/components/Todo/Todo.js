@@ -5,7 +5,7 @@ import TodoList from "./TodoList";
 import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
-  const [todo, setTodos] = useState(new TodoKit({...props.todo, list: []}));
+  const [todo, setTodos] = useState(new TodoKit({ ...props.todo, list: [] }));
   const [listOpen, setListOpen] = useState(false);
 
   useEffect(() => {
@@ -78,22 +78,24 @@ const Todo = React.forwardRef((props, ref) => {
     />
   ) : null;
 
-
-
   //Below conditional is temporary pending collapsable lists
   const todoStyles = todo.parent
     ? styles.todo
     : `${styles.todo} + ${styles.flexcol}`;
 
+  const listOpenCondition = listOpen || !todo.parent;
+
   return (
     <div className={todoStyles} {...requiredDragProps}>
       {todoHead}
-      <TodoList
-        todos={todo.list}
-        onAdd={todoAddHandler}
-        onMove={todoMoveHandler}
-        onRemove={todoRemoveHandler}
-      />
+      {listOpenCondition && (
+        <TodoList
+          todos={todo.list}
+          onAdd={todoAddHandler}
+          onMove={todoMoveHandler}
+          onRemove={todoRemoveHandler}
+        />
+      )}
     </div>
   );
 });
