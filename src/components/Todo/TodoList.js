@@ -1,8 +1,11 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo";
+import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const TodoList = (props) => {
+  if (!props.todos.length) return <PhantomTodo />;
+
   let recentMouseDown = false;
 
   const todoComponentList = props.todos.map((todo, index) => {
@@ -33,32 +36,26 @@ const TodoList = (props) => {
     props.onAdd();
   };
 
-  const listContent = props.todos.length ? (
-    <DragDropContext onDragEnd={props.onMove}>
-      <Droppable droppableId="todoDropArea">
-        {(provided) => (
-          <ul
-            className={`${styles.flexcol} ${styles.list}`}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {todoComponentList}
-            {provided.placeholder}
-          </ul>
-        )}
-      </Droppable>
-    </DragDropContext>
-  ) : (
-    ""
-  );
-
   return (
     <div
       className={styles.flexcol}
       onClick={todoAddHandler}
       onMouseDown={allowAddHandler}
     >
-      {listContent}
+      <DragDropContext onDragEnd={props.onMove}>
+        <Droppable droppableId="todoDropArea">
+          {(provided) => (
+            <ul
+              className={`${styles.flexcol} ${styles.list}`}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {todoComponentList}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };

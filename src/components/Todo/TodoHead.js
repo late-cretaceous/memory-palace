@@ -13,7 +13,7 @@ const TodoHead = (props) => {
   };
 
   return (
-    <div className={styles.todohead} id={props.id} onClick={stopBubbleHandler}>
+    <div className={`${styles.todohead} ${styles.normal}`} id={props.id} onClick={stopBubbleHandler}>
       <div
         className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
       >

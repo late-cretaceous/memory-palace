@@ -2,8 +2,15 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: thistle;
   padding: 0.5rem;
+}
+
+.normal {
+  background-color: thistle;
+}
+
+.phantom {
+  background-color:peachpuff;
 }
 
 .todohead-row {
