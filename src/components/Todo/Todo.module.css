@@ -1,14 +1,20 @@
 .todo {
   margin: 0.5rem;
+  margin-right: 0;
 }
 
-.flexcol {
+.phantom {
+  border: 3px solid gainsboro;
+  border-radius: 10px;
+  background-color:aliceblue;
+  padding: 0.5rem;
+}
+
+.bigTodo {
     display: flex;
     flex-direction: column;
     flex:auto;
+    margin: 0.5rem;
   }
-
-
-
 
   

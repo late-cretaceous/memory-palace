@@ -4,7 +4,8 @@ import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const TodoList = (props) => {
-  if (!props.todos.length && props.parent !== 'bigTodo') return <PhantomTodo onAdd={props.todoAddHandler}/>;
+  if (!props.todos.length && props.parent !== "bigTodo")
+    return <PhantomTodo text="Phantom Todo" onAdd={props.onAdd} />;
 
   let recentMouseDown = false;
 
@@ -31,9 +32,9 @@ const TodoList = (props) => {
     }, 250);
   };
 
-  const todoAddHandler = () => {
+  const todoAddHandler = (e) => {
     if (!recentMouseDown) return;
-    props.onAdd();
+    props.onAdd(e);
   };
 
   return (
@@ -51,6 +52,7 @@ const TodoList = (props) => {
               {...provided.droppableProps}
             >
               {todoComponentList}
+              <PhantomTodo text='Add Todo' onAdd={props.onAdd} />
               {provided.placeholder}
             </ul>
           )}

@@ -15,8 +15,10 @@ const Todo = React.forwardRef((props, ref) => {
     setTodos(newTodo);
   }, []);
 
-  const todoAddHandler = () => {
-    console.log(todo.id);
+  console.log(todo.id);
+  const todoAddHandler = (e) => {
+    e.stopPropagation();
+    
     const thisTodo = new TodoKit(todo);
 
     const childTodo = new TodoKit({
@@ -82,7 +84,7 @@ const Todo = React.forwardRef((props, ref) => {
   //Below conditional is temporary pending collapsable lists
   const todoStyles = todo.parent
     ? styles.todo
-    : `${styles.todo} + ${styles.flexcol}`;
+    : `${styles.todo} + ${styles.flexcol} + ${styles.bigTodo}`;
 
   const listOpenCondition = listOpen || !todo.parent;
 
