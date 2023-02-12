@@ -4,7 +4,8 @@ import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const TodoList = (props) => {
-  if (!props.todos.length) return <PhantomTodo />;
+  console.log(props.parent);
+  if (!props.todos.length && props.parent !== 'bigTodo') return <PhantomTodo onAdd={props.todoAddHandler}/>;
 
   let recentMouseDown = false;
 

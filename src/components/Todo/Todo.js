@@ -16,6 +16,7 @@ const Todo = React.forwardRef((props, ref) => {
   }, []);
 
   const todoAddHandler = () => {
+    console.log(todo.id);
     const thisTodo = new TodoKit(todo);
 
     const childTodo = new TodoKit({
@@ -91,6 +92,7 @@ const Todo = React.forwardRef((props, ref) => {
       {listOpenCondition && (
         <TodoList
           todos={todo.list}
+          parent={todo.id}
           onAdd={todoAddHandler}
           onMove={todoMoveHandler}
           onRemove={todoRemoveHandler}
