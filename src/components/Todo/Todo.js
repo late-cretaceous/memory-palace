@@ -15,10 +15,9 @@ const Todo = React.forwardRef((props, ref) => {
     setTodos(newTodo);
   }, []);
 
-  console.log(todo.id);
   const todoAddHandler = (e) => {
     e.stopPropagation();
-    
+
     const thisTodo = new TodoKit(todo);
 
     const childTodo = new TodoKit({
@@ -70,7 +69,7 @@ const Todo = React.forwardRef((props, ref) => {
       }
     : {};
 
-  const todoHead = todo.parent ? (
+  const todoHead = todo.parent && (
     <TodoHead
       message={props.todo.message}
       id={props.todo.id}
@@ -79,27 +78,29 @@ const Todo = React.forwardRef((props, ref) => {
       onListToggle={toggleListOpenHandler}
       arrowOpen={listOpen}
     />
-  ) : null;
+  );
+
+  const listOpenCondition = listOpen || !todo.parent;
+
+  const todoList = listOpenCondition && (
+    <TodoList
+      todos={todo.list}
+      parent={todo.id}
+      onAdd={todoAddHandler}
+      onMove={todoMoveHandler}
+      onRemove={todoRemoveHandler}
+    />
+  );
 
   //Below conditional is temporary pending collapsable lists
   const todoStyles = todo.parent
     ? styles.todo
     : `${styles.todo} + ${styles.flexcol} + ${styles.bigTodo}`;
 
-  const listOpenCondition = listOpen || !todo.parent;
-
   return (
     <div className={todoStyles} {...requiredDragProps}>
       {todoHead}
-      {listOpenCondition && (
-        <TodoList
-          todos={todo.list}
-          parent={todo.id}
-          onAdd={todoAddHandler}
-          onMove={todoMoveHandler}
-          onRemove={todoRemoveHandler}
-        />
-      )}
+      {todoList}
     </div>
   );
 });
