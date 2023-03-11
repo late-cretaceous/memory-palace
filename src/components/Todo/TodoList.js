@@ -2,6 +2,7 @@ import styles from "./TodoList.module.css";
 import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import Drop from "../../utilities/Drop";
 
 const TodoList = (props) => {
   if (!props.todos.length && props.parent !== "bigTodo")
@@ -44,19 +45,12 @@ const TodoList = (props) => {
       onMouseDown={allowAddHandler}
     >
       <DragDropContext onDragEnd={props.onMove}>
-        <Droppable droppableId="todoDropArea">
-          {(provided) => (
-            <ul
-              className={`${styles.flexcol} ${styles.list}`}
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {todoComponentList}
-              <PhantomTodo text='Add Todo' onAdd={props.onAdd} />
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
+        <Drop id="todoDropArea">
+          <ul className={`${styles.flexcol} ${styles.list}`}>
+            {todoComponentList}
+            <PhantomTodo text="Add Todo" onAdd={props.onAdd} />
+          </ul>
+        </Drop>
       </DragDropContext>
     </div>
   );
