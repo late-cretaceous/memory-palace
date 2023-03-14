@@ -61,13 +61,9 @@ const Todo = React.forwardRef((props, ref) => {
     setListOpen(!listOpen);
   };
 
-  const requiredDragProps = props.provided
-    ? {
-        ref,
-        ...props.provided.draggableProps,
-        ...props.provided.dragHandleProps,
-      }
-    : {};
+  const dragRef = props.provided && ref;
+  const draggableProps = props.provided && {...props.provided.draggableProps};
+  const dragHandleProps = props.provided && props.provided.dragHandleProps;
 
   const todoHead = todo.parent && (
     <TodoHead
@@ -77,6 +73,7 @@ const Todo = React.forwardRef((props, ref) => {
       onClose={props.onClose}
       onListToggle={toggleListOpenHandler}
       arrowOpen={listOpen}
+      dragHandleProps={dragHandleProps}
     />
   );
 
@@ -98,7 +95,7 @@ const Todo = React.forwardRef((props, ref) => {
     : `${styles.todo} + ${styles.flexcol} + ${styles.bigTodo}`;
 
   return (
-    <div className={todoStyles} {...requiredDragProps}>
+    <div className={todoStyles} ref={dragRef} {...draggableProps}>
       {todoHead}
       {todoList}
     </div>
