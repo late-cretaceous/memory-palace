@@ -5,11 +5,15 @@ import TodoList from "./TodoList";
 import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
-  const [todo, setTodos] = useState(new TodoKit({ ...props.todo, list: [] }));
+  const [todo, setTodos] = useState(
+    new TodoKit({ ...props.todo, parent: props.parent, list: [] })
+  );
   const [listOpen, setListOpen] = useState(false);
+  
+  console.log(todo.parent);
 
   useEffect(() => {
-    const newTodo = new TodoKit(props.todo);
+    const newTodo = new TodoKit({...todo, list: props.todo.list});
     newTodo.pullChildren();
 
     setTodos(newTodo);
@@ -62,7 +66,7 @@ const Todo = React.forwardRef((props, ref) => {
   };
 
   const dragRef = props.provided && ref;
-  const draggableProps = props.provided && {...props.provided.draggableProps};
+  const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
 
   const todoHead = todo.parent && (
