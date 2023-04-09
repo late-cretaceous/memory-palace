@@ -16,6 +16,7 @@ const TodoList = (props) => {
         {(provided) => (
           <Todo
             todo={todo}
+            parent={props.parent}
             ref={provided.innerRef}
             provided={provided}
             onClose={props.onRemove}
