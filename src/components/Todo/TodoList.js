@@ -5,7 +5,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Drop from "../../utilities/Drop";
 
 const TodoList = (props) => {
-  if (!props.todos.length && props.parent !== "bigTodo")
+  if (!props.todos.length && props.parent.id !== "bigTodo")
     return <PhantomTodo text="Phantom Todo" onAdd={props.onAdd} />;
 
   let recentMouseDown = false;

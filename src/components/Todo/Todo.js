@@ -82,7 +82,7 @@ const Todo = React.forwardRef((props, ref) => {
   const todoList = listOpenCondition && (
     <TodoList
       todos={todo.list}
-      parent={todo.id}
+      parent={todo}
       onAdd={todoAddHandler}
       onMove={todoMoveHandler}
       onRemove={todoRemoveHandler}
