@@ -92,7 +92,7 @@ const Todo = React.forwardRef((props, ref) => {
   //Below conditional is temporary pending collapsable lists
   const todoStyles = todo.parent
     ? styles.todo
-    : `${styles.todo} + ${styles.flexcol} + ${styles.bigTodo}`;
+    : `${styles.todo} ${styles.bigTodo}`;
 
   return (
     <div className={todoStyles} ref={dragRef} {...draggableProps}>
