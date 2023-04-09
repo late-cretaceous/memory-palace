@@ -24,7 +24,7 @@ function App() {
   return (
     <>
       <Header />
-      <Todo bigTodo todo={bigTodo} />
+      <Todo todo={bigTodo} />
     </>
   );
 }
