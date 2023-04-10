@@ -9,8 +9,12 @@ const Todo = React.forwardRef((props, ref) => {
     new TodoKit({ ...props.todo, parent: props.parent, list: [] })
   );
   const [listOpen, setListOpen] = useState(false);
-  
-  console.log(todo.parent);
+
+/*
+  if (todo.id === 'bigTodo') {
+    console.log(todo);
+  }
+*/
 
   useEffect(() => {
     const newTodo = new TodoKit({...todo, list: props.todo.list});
@@ -28,7 +32,7 @@ const Todo = React.forwardRef((props, ref) => {
       id: Date.now().toString(),
       label: todo.newNumber(),
       index: todo.list.length,
-      parent: todo.id,
+      parent: todo,
       message: "",
       list: [],
     });

@@ -6,10 +6,26 @@ const TodoKit = class {
     this.message = todo.message;
     this.parent = todo.parent;
     this.list = todo.list;
+
+    if (TodoKit.isTodo(this.parent) && this.parent.hasTodo(this)) {
+      this.linkToParent();
+    }
   }
 
   static pull(id) {
     return JSON.parse(localStorage.getItem(id));
+  }
+
+  static isTodo(todo) {
+    return todo instanceof TodoKit
+  }
+
+  hasTodo(todo) {
+    return Boolean(this.lookup(todo.id));
+  }
+
+  indexOf(id) {
+    return this.list.findIndex((todo) => todo.id === id);
   }
 
   add(todo) {
@@ -42,22 +58,33 @@ const TodoKit = class {
   store() {
     const todoFlat = new TodoKit({
       ...this,
+      parent: this.parent ? this.parent.id : null,
       list: Array.from(this.list, (item) => item.id),
     });
 
     localStorage.setItem(todoFlat.id, JSON.stringify(todoFlat));
   }
 
-  remove(id) {
-    const index = this.list.findIndex((todo) => todo.id === id);
+  lookup(id) {
+    return this.list[this.indexOf(id)];
+  }
 
-    const removee = this.list[index];
+  remove(id) {
+    const removee = this.lookup(id);
 
     this.list = this.list.filter((todo) => todo.id !== removee.id);
   }
 
   reorderStorage() {
     this.list.forEach((todo) => todo.store());
+  }
+
+  linkToParent() {
+    if (!(this.parent instanceof TodoKit)) return;
+
+    const index = this.parent.indexOf(this.id);
+
+    this.parent.list.splice(index, 1, this);
   }
 
   newNumber() {
