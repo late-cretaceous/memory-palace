@@ -5,19 +5,19 @@ import TodoList from "./TodoList";
 import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
-  const [todo, setTodos] = useState(
-    new TodoKit({ ...props.todo, parent: props.parent, list: [] })
-  );
+  const [todo, setTodos] = useState({ parent: null, list: [] });
   const [listOpen, setListOpen] = useState(false);
 
-/*
-  if (todo.id === 'bigTodo') {
+  if (todo.id === "bigTodo") {
     console.log(todo);
   }
-*/
 
   useEffect(() => {
-    const newTodo = new TodoKit({...todo, list: props.todo.list});
+    const newTodo = new TodoKit({
+      ...props.todo,
+      parent: props.parent,
+      list: props.todo.list,
+    });
     newTodo.pullChildren();
 
     setTodos(newTodo);
@@ -25,8 +25,6 @@ const Todo = React.forwardRef((props, ref) => {
 
   const todoAddHandler = (e) => {
     e.stopPropagation();
-
-    const thisTodo = new TodoKit(todo);
 
     const childTodo = new TodoKit({
       id: Date.now().toString(),
@@ -37,12 +35,12 @@ const Todo = React.forwardRef((props, ref) => {
       list: [],
     });
 
-    thisTodo.add(childTodo);
+    todo.add(childTodo);
 
-    thisTodo.store();
+    todo.store();
     childTodo.store();
 
-    setTodos(thisTodo);
+    setTodos(new TodoKit(todo));
   };
 
   const todoRemoveHandler = (e) => {

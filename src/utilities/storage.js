@@ -17,7 +17,7 @@ const TodoKit = class {
   }
 
   static isTodo(todo) {
-    return todo instanceof TodoKit
+    return todo instanceof TodoKit;
   }
 
   hasTodo(todo) {
