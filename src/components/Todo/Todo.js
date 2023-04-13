@@ -8,10 +8,6 @@ const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState({ ...props.todo, parent: props.parent, list: []});
   const [listOpen, setListOpen] = useState(false);
 
-  if (todo.id === "bigTodo") {
-    console.log(todo);
-  }
-
   useEffect(() => {
     const newTodo = new TodoKit({
       ...props.todo,
