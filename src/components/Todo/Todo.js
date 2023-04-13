@@ -5,7 +5,7 @@ import TodoList from "./TodoList";
 import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
-  const [todo, setTodos] = useState({ parent: null, list: [] });
+  const [todo, setTodos] = useState({ ...props.todo, parent: props.parent, list: []});
   const [listOpen, setListOpen] = useState(false);
 
   if (todo.id === "bigTodo") {
