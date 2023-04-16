@@ -21,6 +21,10 @@ function App() {
     new TodoKit(bigTodo).store();
   }
 
+  const testTodo = new TodoKit(bigTodo);
+  testTodo.pullDescendants();
+  console.log(testTodo);
+
   return (
     <>
       <Header />

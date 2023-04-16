@@ -45,6 +45,14 @@ const TodoKit = class {
     this.list.sort((a, b) => a.index - b.index);
   }
 
+  pullDescendants() {
+    this.pullChildren();
+
+    for (const child of this.list) {
+      child.pullDescendants();
+    }
+  }
+
   move(fromIndex, toIndex) {
     const [draggedTodo] = this.list.splice(fromIndex, 1);
     this.list.splice(toIndex, 0, draggedTodo);
