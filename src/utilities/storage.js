@@ -56,16 +56,15 @@ const TodoKit = class {
   }
 
   listDescendants() {
-    console.log(this);
     if (!this.listLoaded || !this.list.length) {
       return [];
     }
 
     const descendants = [];
 
-    for (const child of this.list) {
+    this.list.forEach((child) => {
       descendants.push(...child.listDescendants());
-    }
+    });
 
     return descendants.concat(this.list);
   }
@@ -87,7 +86,7 @@ const TodoKit = class {
       list: Array.from(this.list, (item) => item.id),
       listLoaded: false,
     });
-    
+
     localStorage.setItem(todoFlat.id, JSON.stringify(todoFlat));
   }
 
