@@ -13,17 +13,14 @@ function App() {
         index: null,
         parent: null,
         message: "",
-        list: []
+        list: [],
+        listLoaded: true
       }
     : TodoKit.pull("bigTodo");
 
   if (storageEmpty) {
     new TodoKit(bigTodo).store();
   }
-
-  const testTodo = new TodoKit(bigTodo);
-  testTodo.pullDescendants();
-  console.log(testTodo);
 
   return (
     <>

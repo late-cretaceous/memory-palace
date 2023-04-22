@@ -6,6 +6,7 @@ const TodoKit = class {
     this.message = todo.message;
     this.parent = todo.parent;
     this.list = todo.list;
+    this.listLoaded = todo.listLoaded;
 
     if (TodoKit.isTodo(this.parent) && this.parent.hasTodo(this)) {
       this.linkToParent();
@@ -43,6 +44,7 @@ const TodoKit = class {
     }
 
     this.list.sort((a, b) => a.index - b.index);
+    this.listLoaded = true;
   }
 
   pullDescendants() {
@@ -51,6 +53,21 @@ const TodoKit = class {
     for (const child of this.list) {
       child.pullDescendants();
     }
+  }
+
+  listDescendants() {
+    console.log(this);
+    if (!this.listLoaded || !this.list.length) {
+      return [];
+    }
+
+    const descendants = [];
+
+    for (const child of this.list) {
+      descendants.push(...child.listDescendants());
+    }
+
+    return descendants.concat(this.list);
   }
 
   move(fromIndex, toIndex) {
@@ -68,8 +85,9 @@ const TodoKit = class {
       ...this,
       parent: this.parent ? this.parent.id : null,
       list: Array.from(this.list, (item) => item.id),
+      listLoaded: false,
     });
-
+    
     localStorage.setItem(todoFlat.id, JSON.stringify(todoFlat));
   }
 

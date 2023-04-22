@@ -19,6 +19,10 @@ const Todo = React.forwardRef((props, ref) => {
     setTodos(newTodo);
   }, []);
 
+  if (todo instanceof TodoKit && !todo.parent) {
+    console.dir(todo.listDescendants());
+  }
+
   const todoAddHandler = (e) => {
     e.stopPropagation();
 
