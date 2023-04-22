@@ -14,7 +14,8 @@ const TodoKit = class {
   }
 
   static pull(id) {
-    return JSON.parse(localStorage.getItem(id));
+    const object = JSON.parse(localStorage.getItem(id));
+    return new TodoKit(object);
   }
 
   static isTodo(todo) {
@@ -39,7 +40,7 @@ const TodoKit = class {
     this.list = [];
 
     for (const id of ids) {
-      const newTodo = new TodoKit(TodoKit.pull(id));
+      const newTodo = TodoKit.pull(id);
       this.list.push(newTodo);
     }
 
@@ -56,17 +57,21 @@ const TodoKit = class {
   }
 
   listDescendants() {
-    if (!this.listLoaded || !this.list.length) {
+    if (!this.list.length) {
       return [];
     }
 
     const descendants = [];
 
-    this.list.forEach((child) => {
+    const children = this.listLoaded
+      ? this.list
+      : this.list.map((id) => TodoKit.pull(id));
+    
+    children.forEach((child) => {
       descendants.push(...child.listDescendants());
     });
 
-    return descendants.concat(this.list);
+    return children.concat(descendants);
   }
 
   move(fromIndex, toIndex) {
