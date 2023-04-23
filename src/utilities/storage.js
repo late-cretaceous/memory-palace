@@ -102,7 +102,15 @@ const TodoKit = class {
   remove(id) {
     const removee = this.lookup(id);
 
+    removee.removeDescendantsFromStorage();
+    
     this.list = this.list.filter((todo) => todo.id !== removee.id);
+  }
+
+  removeDescendantsFromStorage() {
+    this.listDescendants().forEach((descendant) =>
+      localStorage.removeItem(descendant.id)
+    );
   }
 
   reorderStorage() {
