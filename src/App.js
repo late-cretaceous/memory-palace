@@ -9,7 +9,7 @@ function App() {
     ? {
         level: 0,
         id: "bigTodo",
-        label: null,
+        label: [],
         index: null,
         parent: null,
         message: "",

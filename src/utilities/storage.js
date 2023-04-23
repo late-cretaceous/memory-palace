@@ -66,7 +66,7 @@ const TodoKit = class {
     const children = this.listLoaded
       ? this.list
       : this.list.map((id) => TodoKit.pull(id));
-    
+
     children.forEach((child) => {
       descendants.push(...child.listDescendants());
     });
@@ -119,13 +119,16 @@ const TodoKit = class {
 
   newNumber() {
     if (!this.list.length) return 0;
-    const sortedLabels = Array.from(this.list, (todo) => todo.label).sort();
+    const todoNumbers = Array.from(
+      this.list,
+      (todo) => todo.label[this.list.length - 1]
+    ).sort();
 
-    for (let i = 0; i < sortedLabels.length; i++) {
-      if (sortedLabels[i] !== i) {
+    for (let i = 0; i < todoNumbers.length; i++) {
+      if (todoNumbers[i] !== i) {
         return i;
-      } else if (!sortedLabels[i + 1]) {
-        return sortedLabels[i] + 1;
+      } else if (!todoNumbers[i + 1]) {
+        return todoNumbers[i] + 1;
       }
     }
   }

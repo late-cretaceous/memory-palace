@@ -17,7 +17,7 @@ const TodoHead = (props) => {
       <div
         className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
       >
-        <h4>{props.label}</h4>
+        <h4>{props.label.join('.')}</h4>
         <button
           type="button"
           className="close-button"
