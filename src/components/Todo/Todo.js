@@ -9,12 +9,11 @@ const Todo = React.forwardRef((props, ref) => {
   const [listOpen, setListOpen] = useState(false);
 
   useEffect(() => {
-    const newTodo = new TodoKit({
-      ...props.todo,
-      parent: props.parent,
-      list: props.todo.list,
-    });
-    newTodo.pullChildren();
+    const newTodo = new TodoKit(props.todo);
+
+    if (!newTodo.listLoaded) {
+      newTodo.pullChildren();
+    }
 
     setTodos(newTodo);
   }, []);
