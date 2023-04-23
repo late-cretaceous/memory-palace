@@ -103,7 +103,7 @@ const TodoKit = class {
     const removee = this.lookup(id);
 
     removee.removeDescendantsFromStorage();
-    
+
     this.list = this.list.filter((todo) => todo.id !== removee.id);
   }
 
@@ -127,9 +127,10 @@ const TodoKit = class {
 
   newNumber() {
     if (!this.list.length) return 0;
+
     const todoNumbers = Array.from(
       this.list,
-      (todo) => todo.label[this.list.length - 1]
+      (todo) => todo.label[todo.label.length - 1]
     ).sort();
 
     for (let i = 0; i < todoNumbers.length; i++) {
