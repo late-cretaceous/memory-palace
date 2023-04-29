@@ -1,36 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./TodoHead.module.css";
 
 const TodoHead = (props) => {
-  const [content, setContent] = useState(props.message);
+  const todo = props.todo;
+  const [message, setMessage] = useState(todo.message);
 
-  const typeContentHandler = (e) => {
-    setContent(e.target.value);
+  const typeMessageHandler = (e) => {
+    setMessage(e.target.value);
   };
 
   const stopBubbleHandler = (e) => {
     e.stopPropagation();
   };
 
+  useEffect(() => {
+    const storeMessage = setTimeout(()=> {
+      todo.message = message;
+    }, 750);
+
+    return () => {
+      clearTimeout(storeMessage);
+    }
+
+  },[message])
+
   return (
-    <div className={styles.todohead} id={props.id} onClick={stopBubbleHandler} {...props.dragHandleProps}>
+    <div className={styles.todohead} id={todo.id} onClick={stopBubbleHandler} {...props.dragHandleProps}>
       <div
         className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
       >
-        <h4>{props.label.join('.')}</h4>
+        <h4>{todo.label.join('.')}</h4>
         <button
           type="button"
           className="close-button"
           onClick={props.onClose}
-          id={props.id}
+          id={todo.id}
         >
-          <span id={props.id}>{"\u2715"}</span>
+          <span id={todo.id}>{"\u2715"}</span>
         </button>
       </div>
       <textarea
         placeholder="Type a to-do"
-        onChange={typeContentHandler}
-        value={content}
+        onChange={typeMessageHandler}
+        value={message}
         autoFocus
       ></textarea>
       <div className={styles["todohead-row"]}>

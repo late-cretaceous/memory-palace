@@ -72,9 +72,7 @@ const Todo = React.forwardRef((props, ref) => {
 
   const todoHead = todo.parent && (
     <TodoHead
-      message={props.todo.message}
-      id={props.todo.id}
-      label={props.todo.label}
+      todo={props.todo}
       onClose={props.onClose}
       onListToggle={toggleListOpenHandler}
       arrowOpen={listOpen}
