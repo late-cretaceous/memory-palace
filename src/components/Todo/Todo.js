@@ -18,10 +18,6 @@ const Todo = React.forwardRef((props, ref) => {
     setTodos(newTodo);
   }, []);
 
-  if (todo instanceof TodoKit && !todo.parent) {
-    console.dir(todo.listDescendants());
-  }
-
   const todoAddHandler = (e) => {
     e.stopPropagation();
 
@@ -32,6 +28,7 @@ const Todo = React.forwardRef((props, ref) => {
       parent: todo,
       message: "",
       list: [],
+      listLoaded: true
     });
 
     todo.add(childTodo);
@@ -72,7 +69,7 @@ const Todo = React.forwardRef((props, ref) => {
 
   const todoHead = todo.parent && (
     <TodoHead
-      todo={props.todo}
+      todo={todo}
       onClose={props.onClose}
       onListToggle={toggleListOpenHandler}
       arrowOpen={listOpen}

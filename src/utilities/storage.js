@@ -41,10 +41,12 @@ const TodoKit = class {
 
     for (const id of ids) {
       const newTodo = TodoKit.pull(id);
+      newTodo.parent = this;
       this.list.push(newTodo);
     }
 
     this.list.sort((a, b) => a.index - b.index);
+
     this.listLoaded = true;
   }
 
