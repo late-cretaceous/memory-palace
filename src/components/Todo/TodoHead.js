@@ -16,7 +16,7 @@ const TodoHead = (props) => {
   useEffect(() => {
     const storeMessage = setTimeout(()=> {
       todo.message = message;
-
+      todo.store();
     }, 750);
 
     return () => {
