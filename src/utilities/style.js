@@ -1,15 +1,3 @@
-export const getShadesOfColor = ([hue, sat = 0, light = 0], steps) => {
-  const shades = [];
-  const satStep = (100 - sat) / steps;
-  const lightStep = (100 - light) / steps;
-
-  for (let i = 1; i <= steps; i++) {
-    shades.push(`hsl(${hue}, ${i * satStep + sat}%, ${i * lightStep + light}%`);
-  }
-
-  return shades;
-};
-
 export class HSL {
   constructor(hue, sat, light) {
     this.hue = hue;
@@ -28,7 +16,7 @@ export class HSL {
   }
 
   toString() {
-    return `hsl(${this.hue}, ${this.sat}%, ${this.light}%`;
+    return `hsl(${this.hue}, ${this.sat}%, ${this.light}%)`;
   }
 
   zipArrays() {
@@ -49,15 +37,3 @@ function divideRange(start, end, numDivisions) {
     (_, i) => start + 1 + i * divisionSize
   );
 }
-
-export const divideHSL = ([hue, sat = 0, light = 0], steps, options = {}) => {
-  const shades = [];
-  const satStep = (100 - sat) / steps;
-  const lightStep = (100 - light) / steps;
-
-  for (let i = 1; i <= steps; i++) {
-    shades.push(`hsl(${hue}, ${i * satStep + sat}%, ${i * lightStep + light}%`);
-  }
-
-  return shades;
-};
