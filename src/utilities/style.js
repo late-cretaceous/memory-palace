@@ -5,6 +5,10 @@ export class HSL {
     this.light = light;
   }
 
+  toString() {
+    return `hsl(${this.hue}, ${this.sat}%, ${this.light}%)`;
+  }
+
   hslRange(other, steps) {
     const ranges = new HSL([], [], []);
 
@@ -13,10 +17,6 @@ export class HSL {
     }
 
     return Array.from(ranges.zipArrays(), (hsl) => hsl.toString());
-  }
-
-  toString() {
-    return `hsl(${this.hue}, ${this.sat}%, ${this.light}%)`;
   }
 
   zipArrays() {
