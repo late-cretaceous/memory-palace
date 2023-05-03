@@ -14,23 +14,28 @@ const TodoHead = (props) => {
   };
 
   useEffect(() => {
-    const storeMessage = setTimeout(()=> {
+    const storeMessage = setTimeout(() => {
       todo.message = message;
       todo.store();
     }, 750);
 
     return () => {
       clearTimeout(storeMessage);
-    }
-
-  },[message])
+    };
+  }, [message]);
 
   return (
-    <div className={styles.todohead} id={todo.id} onClick={stopBubbleHandler} {...props.dragHandleProps}>
+    <div
+      className={styles.todohead}
+      style={{ backgroundColor: props.color.toString() }}
+      id={todo.id}
+      onClick={stopBubbleHandler}
+      {...props.dragHandleProps}
+    >
       <div
         className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
       >
-        <h4>{todo.label.join('.')}</h4>
+        <h4>{todo.label.join(".")}</h4>
         <button
           type="button"
           className="close-button"

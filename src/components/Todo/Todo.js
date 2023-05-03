@@ -74,6 +74,7 @@ const Todo = React.forwardRef((props, ref) => {
       onListToggle={toggleListOpenHandler}
       arrowOpen={listOpen}
       dragHandleProps={dragHandleProps}
+      color={props.color}
     />
   );
 
@@ -86,6 +87,7 @@ const Todo = React.forwardRef((props, ref) => {
       onAdd={todoAddHandler}
       onMove={todoMoveHandler}
       onRemove={todoRemoveHandler}
+      color={props.color}
     />
   );
 

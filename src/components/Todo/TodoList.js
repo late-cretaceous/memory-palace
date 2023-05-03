@@ -1,7 +1,7 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import Drop from "../../utilities/Drop";
 
 const TodoList = (props) => {
@@ -20,6 +20,7 @@ const TodoList = (props) => {
             ref={provided.innerRef}
             provided={provided}
             onClose={props.onRemove}
+            color={props.color}
           />
         )}
       </Draggable>

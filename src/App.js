@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import Todo from "./components/Todo/Todo";
 import TodoKit from "./utilities/storage";
+import HSL from "./utilities/colors";
 
 function App() {
   const storageEmpty = !localStorage.getItem("bigTodo");
@@ -14,7 +15,7 @@ function App() {
         parent: null,
         message: "",
         list: [],
-        listLoaded: true
+        listLoaded: true,
       }
     : TodoKit.pull("bigTodo");
 
@@ -25,7 +26,7 @@ function App() {
   return (
     <>
       <Header />
-      <Todo todo={bigTodo} parent={null} />
+      <Todo todo={bigTodo} parent={null} color={HSL.random()} />
     </>
   );
 }
