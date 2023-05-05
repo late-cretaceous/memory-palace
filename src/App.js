@@ -23,10 +23,12 @@ function App() {
     new TodoKit(bigTodo).store();
   }
 
+  const color = HSL.random();
+
   return (
     <>
-      <Header />
-      <Todo todo={bigTodo} parent={null} color={HSL.random()} />
+      <Header color={color} />
+      <Todo todo={bigTodo} parent={null} color={color} />
     </>
   );
 }
