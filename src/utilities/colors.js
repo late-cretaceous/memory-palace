@@ -32,14 +32,18 @@ class HSL {
     return `hsl(${this.hue}, ${this.sat}%, ${this.light}%)`;
   }
 
-  hslRange(other, steps) {
+  negative() {
+    return new HSL(this.hue + 180, this.sat + 50, this.light + 50);
+  }
+
+  shades(other, steps) {
     const ranges = new HSL([], [], []);
 
     for (const dimension in this) {
       ranges[dimension] = divideRange(this[dimension], other[dimension], steps);
     }
 
-    return Array.from(ranges.zipArrays(), (hsl) => hsl.toString());
+    return ranges.zipArrays();
   }
 
   zipArrays() {
@@ -57,7 +61,7 @@ function divideRange(start, end, numDivisions) {
 
   return Array.from(
     { length: numDivisions + 1 },
-    (_, i) => start + 1 + i * divisionSize
+    (_, i) => (start + 1) + i * divisionSize
   );
 }
 

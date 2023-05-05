@@ -27,7 +27,10 @@ const TodoHead = (props) => {
   return (
     <div
       className={styles.todohead}
-      style={{ backgroundColor: props.color.toString() }}
+      style={{
+        backgroundColor: props.color.toString(),
+        color: props.color.negative().toString(),
+      }}
       id={todo.id}
       onClick={stopBubbleHandler}
       {...props.dragHandleProps}

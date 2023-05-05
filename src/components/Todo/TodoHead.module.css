@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 0.5rem;
-  background-color: thistle;
 }
 
 .todohead-row {
@@ -18,7 +17,7 @@
   font-weight: bold;
   cursor: pointer;
   background-color: transparent;
-  color: gray;
+  color: inherit;
   user-select: none;
   border: none;
   transition: all 0.1s ease-out 0s;
@@ -31,7 +30,7 @@
 .todohead-row__cancel button {
   width: 1.5rem;
   height: 1.5rem;
-  border: 2px solid grey;
+  border: 2px solid;
   border-radius: 25px;
 }
 
@@ -57,11 +56,16 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
   outline: none;
   display:block;
   transition: all 0.5s ease-out 0s;
+  color: inherit;
 }
 
 .todohead textarea:hover {
   background-color:white;
   opacity:50%;
+}
+
+.todohead textarea::placeholder {
+  color: inherit;
 }
 
 .arrowopen {
