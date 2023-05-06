@@ -3,12 +3,20 @@ import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import Drop from "../../utilities/Drop";
+import HSL from "../../utilities/colors";
 
 const TodoList = (props) => {
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return <PhantomTodo text="Phantom Todo" onAdd={props.onAdd} />;
 
   let recentMouseDown = false;
+
+  const spectrum = props.color.shades(
+    new HSL(props.color.hue + 120, props.color.sat, props.color.light),
+    props.todos.length
+  );
+
+  console.log(spectrum);
 
   const todoComponentList = props.todos.map((todo, index) => {
     return (
@@ -20,7 +28,7 @@ const TodoList = (props) => {
             ref={provided.innerRef}
             provided={provided}
             onClose={props.onRemove}
-            color={props.color}
+            color={spectrum[index]}
           />
         )}
       </Draggable>

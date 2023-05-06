@@ -61,7 +61,7 @@ function divideRange(start, end, numDivisions) {
 
   return Array.from(
     { length: numDivisions + 1 },
-    (_, i) => (start + 1) + i * divisionSize
+    (_, i) => start + i * divisionSize
   );
 }
 
