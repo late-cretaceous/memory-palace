@@ -12,11 +12,16 @@ const TodoList = (props) => {
   let recentMouseDown = false;
 
   const spectrum = props.color.shades(
-    new HSL(props.color.hue + 120, props.color.sat, props.color.light),
+    new HSL(
+      props.color.hue + props.spectrumRange,
+      props.color.sat,
+      props.color.light
+    ),
     props.todos.length
   );
 
   console.log(spectrum);
+  console.log(props.spectrumRange);
 
   const todoComponentList = props.todos.map((todo, index) => {
     return (
@@ -29,6 +34,7 @@ const TodoList = (props) => {
             provided={provided}
             onClose={props.onRemove}
             color={spectrum[index]}
+            spectrumRange={props.spectrumRange / props.todos.length}
           />
         )}
       </Draggable>

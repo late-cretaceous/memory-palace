@@ -28,7 +28,7 @@ function App() {
   return (
     <>
       <Header color={color} />
-      <Todo todo={bigTodo} parent={null} color={color} />
+      <Todo todo={bigTodo} parent={null} color={color} spectrumRange={120} />
     </>
   );
 }
