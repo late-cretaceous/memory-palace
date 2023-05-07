@@ -23,6 +23,9 @@ const TodoList = (props) => {
   console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
   const todoComponentList = props.todos.map((todo, index) => {
+    todo.pullChildren();
+    console.log(todo);
+
     return (
       <Draggable key={todo.id} draggableId={todo.id} index={index}>
         {(provided) => (

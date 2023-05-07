@@ -7,8 +7,7 @@ function App() {
   const storageEmpty = !localStorage.getItem("bigTodo");
 
   const bigTodo = storageEmpty
-    ? {
-        level: 0,
+    ? new TodoKit({
         id: "bigTodo",
         label: [],
         index: null,
@@ -16,11 +15,12 @@ function App() {
         message: "",
         list: [],
         listLoaded: true,
-      }
+      })
     : TodoKit.pull("bigTodo");
-
   if (storageEmpty) {
-    new TodoKit(bigTodo).store();
+    new bigTodo.store();
+  } else {
+    bigTodo.pullChildren();
   }
 
   const color = HSL.random();
@@ -33,7 +33,7 @@ function App() {
         parent={null}
         color={color}
         spectrumRange={60}
-        lightRange={color.randomSignWithinBounds(20, 'light')}
+        lightRange={color.randomSignWithinBounds(20, "light")}
       />
     </>
   );

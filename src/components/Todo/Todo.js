@@ -5,20 +5,11 @@ import TodoList from "./TodoList";
 import styles from "./Todo.module.css";
 
 const Todo = React.forwardRef((props, ref) => {
-  const [todo, setTodos] = useState({ ...props.todo, list: []});
+  const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(false);
 
-  useEffect(() => {
-    const newTodo = new TodoKit(props.todo);
-
-    if (!newTodo.listLoaded) {
-      newTodo.pullChildren();
-    }
-
-    setTodos(newTodo);
-  }, []);
-
   const todoAddHandler = (e) => {
+    console.log(todo);
     e.stopPropagation();
 
     const childTodo = new TodoKit({
@@ -28,7 +19,7 @@ const Todo = React.forwardRef((props, ref) => {
       parent: todo,
       message: "",
       list: [],
-      listLoaded: true
+      listLoaded: true,
     });
 
     todo.add(childTodo);
@@ -79,6 +70,8 @@ const Todo = React.forwardRef((props, ref) => {
   );
 
   const listOpenCondition = listOpen || !todo.parent;
+  console.log(listOpenCondition);
+  console.log(todo);
 
   const todoList = listOpenCondition && (
     <TodoList
