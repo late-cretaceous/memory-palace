@@ -89,6 +89,7 @@ const Todo = React.forwardRef((props, ref) => {
       onRemove={todoRemoveHandler}
       color={props.color}
       spectrumRange={props.spectrumRange}
+      lightRange={props.lightRange}
     />
   );
 

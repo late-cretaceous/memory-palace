@@ -32,7 +32,8 @@ function App() {
         todo={bigTodo}
         parent={null}
         color={color}
-        spectrumRange={color.randomSignWithinBounds(60, 'hue')}
+        spectrumRange={60}
+        lightRange={color.randomSignWithinBounds(20, 'light')}
       />
     </>
   );

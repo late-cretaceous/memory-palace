@@ -12,15 +12,15 @@ const TodoList = (props) => {
   let recentMouseDown = false;
 
   const spectrum = props.color.shades(
-    new HSL(
-      props.color.hue + props.spectrumRange,
-      props.color.sat,
-      props.color.light + 20
-    ),
+    {
+      hue: props.color.hue + props.spectrumRange,
+      sat: props.color.sat,
+      light: props.color.light + props.lightRange,
+    },
     props.todos.length
   );
 
-  console.log(spectrumLog(spectrum, props.spectrumRange, 0, 20)); 
+  console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
   const todoComponentList = props.todos.map((todo, index) => {
     return (
@@ -34,6 +34,7 @@ const TodoList = (props) => {
             onClose={props.onRemove}
             color={spectrum[index]}
             spectrumRange={props.spectrumRange / props.todos.length}
+            lightRange={props.lightRange}
           />
         )}
       </Draggable>
@@ -75,7 +76,7 @@ const spectrumLog = (spectrum, hueStep, satStep, lightStep) => {
   const shades = Array.from(spectrum, (shade) => shade.toString());
   const increments = `\nIncrements\nhue: ${hueStep}\nsaturation: ${satStep}\nlight: ${lightStep}`;
 
-  return shades.join("\n") + '\n' + increments;
+  return shades.join("\n") + "\n" + increments;
 };
 
 export default TodoList;
