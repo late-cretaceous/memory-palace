@@ -54,6 +54,12 @@ class HSL {
       (_, i) => new HSL(this.hue[i], this.sat[i], this.light[i])
     );
   }
+
+  randomSignWithinBounds(magnitude, dimension = "hue") {
+    const range = dimension === "hue" ? 360 : 100;
+
+    return randomDirectionWithinBounds(this[dimension], magnitude, range);
+  }
 }
 
 function divideRange(start, end, numDivisions) {
@@ -64,5 +70,15 @@ function divideRange(start, end, numDivisions) {
     (_, i) => start + i * divisionSize
   );
 }
+
+const coinToss = () => Math.round(Math.random());
+
+const isOutOfRange = (a, b, range) => a + b >= range || a + b < 0;
+
+export const randomDirectionWithinBounds = (original, adjustment, range) => {
+  adjustment = coinToss() ? adjustment : -adjustment;
+
+  return isOutOfRange(original, adjustment, range) ? -adjustment : adjustment;
+};
 
 export default HSL;

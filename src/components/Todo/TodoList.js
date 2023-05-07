@@ -15,13 +15,12 @@ const TodoList = (props) => {
     new HSL(
       props.color.hue + props.spectrumRange,
       props.color.sat,
-      props.color.light
+      props.color.light + 20
     ),
     props.todos.length
   );
 
   console.log(spectrum);
-  console.log(props.spectrumRange);
 
   const todoComponentList = props.todos.map((todo, index) => {
     return (
