@@ -22,9 +22,9 @@ class HSL {
 
   static random() {
     return new HSL(
-      Math.random() * 360,
-      Math.random() * 100,
-      Math.random() * 100
+      Math.round(Math.random() * 360),
+      Math.round(Math.random() * 100),
+      Math.round(Math.random() * 100)
     );
   }
 

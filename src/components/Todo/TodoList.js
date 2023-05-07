@@ -20,7 +20,7 @@ const TodoList = (props) => {
     props.todos.length
   );
 
-  console.log(spectrum);
+  console.log(spectrumLog(spectrum, props.spectrumRange, 0, 20)); 
 
   const todoComponentList = props.todos.map((todo, index) => {
     return (
@@ -69,6 +69,13 @@ const TodoList = (props) => {
       </DragDropContext>
     </div>
   );
+};
+
+const spectrumLog = (spectrum, hueStep, satStep, lightStep) => {
+  const shades = Array.from(spectrum, (shade) => shade.toString());
+  const increments = `\nIncrements\nhue: ${hueStep}\nsaturation: ${satStep}\nlight: ${lightStep}`;
+
+  return shades.join("\n") + '\n' + increments;
 };
 
 export default TodoList;
