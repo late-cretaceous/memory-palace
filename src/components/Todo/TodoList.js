@@ -35,7 +35,7 @@ const TodoList = (props) => {
             onClose={props.onRemove}
             color={spectrum[index]}
             spectrumRange={props.spectrumRange / props.todos.length}
-            lightRange={props.lightRange}
+            lightRange={props.lightRange / props.todos.length }
           />
         )}
       </Draggable>
