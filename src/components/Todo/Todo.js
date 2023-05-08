@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TodoKit from "../../utilities/storage";
 import TodoHead from "./TodoHead";
 import TodoList from "./TodoList";
@@ -9,7 +9,6 @@ const Todo = React.forwardRef((props, ref) => {
   const [listOpen, setListOpen] = useState(false);
 
   const todoAddHandler = (e) => {
-    console.log(todo);
     e.stopPropagation();
 
     const childTodo = new TodoKit({
@@ -70,8 +69,6 @@ const Todo = React.forwardRef((props, ref) => {
   );
 
   const listOpenCondition = listOpen || !todo.parent;
-  console.log(listOpenCondition);
-  console.log(todo);
 
   const todoList = listOpenCondition && (
     <TodoList

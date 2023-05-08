@@ -17,8 +17,9 @@ function App() {
         listLoaded: true,
       })
     : TodoKit.pull("bigTodo");
+
   if (storageEmpty) {
-    new bigTodo.store();
+    bigTodo.store();
   } else {
     bigTodo.pullChildren();
   }

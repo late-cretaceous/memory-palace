@@ -3,7 +3,6 @@ import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import Drop from "../../utilities/Drop";
-import HSL from "../../utilities/colors";
 
 const TodoList = (props) => {
   if (!props.todos.length && props.parent.id !== "bigTodo")
@@ -24,7 +23,6 @@ const TodoList = (props) => {
 
   const todoComponentList = props.todos.map((todo, index) => {
     todo.pullChildren();
-    console.log(todo);
 
     return (
       <Draggable key={todo.id} draggableId={todo.id} index={index}>

@@ -35,6 +35,8 @@ const TodoKit = class {
   }
 
   pullChildren() {
+    if (this.listLoaded) return;
+
     const ids = [...this.list];
 
     this.list = [];
