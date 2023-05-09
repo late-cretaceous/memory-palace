@@ -24,4 +24,5 @@ yarn-error.log*
 
 #my additions
 *.docx
+*.pptx
 scrap*
