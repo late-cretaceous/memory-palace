@@ -38,7 +38,7 @@ const TodoHead = (props) => {
       <div
         className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
       >
-        <h4>{todo.label.join(".")}</h4>
+        <h4>{todo.label}</h4>
         <button
           type="button"
           className="close-button"

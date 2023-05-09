@@ -10,10 +10,12 @@ const Todo = React.forwardRef((props, ref) => {
 
   const todoAddHandler = (e) => {
     e.stopPropagation();
+    const lineage = todo.lineage.concat(todo.newNumber());
 
     const childTodo = new TodoKit({
       id: Date.now().toString(),
-      label: todo.label.concat(todo.newNumber()),
+      lineage: lineage,
+      label: lineage.join('.'),
       index: todo.list.length,
       parent: todo,
       message: "",

@@ -1,6 +1,7 @@
 const TodoKit = class {
   constructor(todo) {
     this.id = todo.id;
+    this.lineage = todo.lineage;
     this.label = todo.label;
     this.index = todo.index;
     this.message = todo.message;
@@ -134,7 +135,7 @@ const TodoKit = class {
 
     const todoNumbers = Array.from(
       this.list,
-      (todo) => todo.label[todo.label.length - 1]
+      (todo) => todo.lineage[todo.lineage.length - 1]
     ).sort();
 
     for (let i = 0; i < todoNumbers.length; i++) {

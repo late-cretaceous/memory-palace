@@ -9,7 +9,8 @@ function App() {
   const bigTodo = storageEmpty
     ? new TodoKit({
         id: "bigTodo",
-        label: [],
+        lineage: [],
+        label: '0',
         index: null,
         parent: null,
         message: "",
