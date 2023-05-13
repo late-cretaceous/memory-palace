@@ -24,6 +24,9 @@ const TodoHead = (props) => {
     };
   }, [message]);
 
+  const label = todo.hasChildren() ? message : todo.lineage.join('.');
+  const display = todo.hasChildren() ? todo.list[0].message : message;
+
   return (
     <div
       className={styles.todohead}
@@ -38,7 +41,7 @@ const TodoHead = (props) => {
       <div
         className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
       >
-        <h4>{todo.label}</h4>
+        <h4>{label}</h4>
         <button
           type="button"
           className="close-button"
@@ -51,7 +54,7 @@ const TodoHead = (props) => {
       <textarea
         placeholder="Type a to-do"
         onChange={typeMessageHandler}
-        value={message}
+        value={display}
         autoFocus
       ></textarea>
       <div className={styles["todohead-row"]}>

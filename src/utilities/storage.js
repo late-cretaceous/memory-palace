@@ -27,6 +27,10 @@ const TodoKit = class {
     return Boolean(this.lookup(todo.id));
   }
 
+  hasChildren() {
+    return Boolean(this.list.length);
+  }
+
   indexOf(id) {
     return this.list.findIndex((todo) => todo.id === id);
   }

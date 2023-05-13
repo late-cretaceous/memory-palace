@@ -15,7 +15,6 @@ const Todo = React.forwardRef((props, ref) => {
     const childTodo = new TodoKit({
       id: Date.now().toString(),
       lineage: lineage,
-      label: lineage.join('.'),
       index: todo.list.length,
       parent: todo,
       message: "",

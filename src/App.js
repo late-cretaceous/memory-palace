@@ -10,7 +10,6 @@ function App() {
     ? new TodoKit({
         id: "bigTodo",
         lineage: [],
-        label: '0',
         index: null,
         parent: null,
         message: "",
