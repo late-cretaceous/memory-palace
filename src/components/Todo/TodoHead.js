@@ -24,8 +24,9 @@ const TodoHead = (props) => {
     };
   }, [message]);
 
-  const label = todo.hasChildren() ? message : todo.lineage.join('.');
+  const label = todo.hasChildren() ? message : todo.lineage.join(".");
   const display = todo.hasChildren() ? todo.list[0].message : message;
+  const showDisplay = !props.listOpen || !todo.hasChildren()
 
   return (
     <div
@@ -51,12 +52,15 @@ const TodoHead = (props) => {
           <span id={todo.id}>{"\u2715"}</span>
         </button>
       </div>
-      <textarea
-        placeholder="Type a to-do"
-        onChange={typeMessageHandler}
-        value={display}
-        autoFocus
-      ></textarea>
+      {showDisplay && (
+        <textarea
+          placeholder="Type a to-do"
+          onChange={typeMessageHandler}
+          value={display}
+          autoFocus
+        ></textarea>
+      )}
+
       <div className={styles["todohead-row"]}>
         <button
           className={props.arrowOpen ? styles.arrowopen : ""}

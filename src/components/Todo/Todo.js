@@ -66,6 +66,7 @@ const Todo = React.forwardRef((props, ref) => {
       arrowOpen={listOpen}
       dragHandleProps={dragHandleProps}
       color={props.color}
+      listOpen={listOpen}
     />
   );
 
