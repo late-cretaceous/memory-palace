@@ -26,7 +26,7 @@ const TodoHead = (props) => {
 
   const label = todo.hasChildren() ? message : todo.lineage.join(".");
   const display = todo.hasChildren() ? todo.list[0].message : message;
-  const showDisplay = !props.listOpen || !todo.hasChildren()
+  const showDisplay = !props.listOpen || !todo.hasChildren();
 
   return (
     <div
@@ -42,7 +42,16 @@ const TodoHead = (props) => {
       <div
         className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
       >
-        <h4>{label}</h4>
+        {todo.hasChildren() ? (
+          <textarea
+            className={`${styles.label}`}
+            placeholder="Type a list title"
+            onChange={typeMessageHandler}
+            value={label}
+          ></textarea>
+        ) : (
+          <h4 className={`${styles.label}`}>{label}</h4>
+        )}
         <button
           type="button"
           className="close-button"
@@ -54,6 +63,7 @@ const TodoHead = (props) => {
       </div>
       {showDisplay && (
         <textarea
+          className={`${styles.display}`}
           placeholder="Type a to-do"
           onChange={typeMessageHandler}
           value={display}
