@@ -24,9 +24,9 @@ const TodoHead = (props) => {
     };
   }, [message]);
 
-  const label = todo.hasChildren() ? message : todo.lineage.join(".");
-  const display = todo.hasChildren() ? todo.youngestDescendant().message : message;
-  const showDisplay = !props.listOpen || !todo.hasChildren();
+  const label = todo.isParent() ? message : todo.lineage.join(".");
+  const display = todo.isParent() ? todo.youngestDescendant().message : message;
+  const showDisplay = !props.listOpen || !todo.isParent();
 
   return (
     <div
@@ -42,7 +42,7 @@ const TodoHead = (props) => {
       <div
         className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
       >
-        {todo.hasChildren() ? (
+        {todo.isParent() ? (
           <textarea
             className={`${styles.label}`}
             placeholder="Type a list title"

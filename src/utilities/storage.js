@@ -27,7 +27,7 @@ const TodoKit = class {
     return Boolean(this.lookup(todo.id));
   }
 
-  hasChildren() {
+  isParent() {
     return Boolean(this.list.length);
   }
 
@@ -150,7 +150,7 @@ const TodoKit = class {
   }
 
   youngestDescendant() {
-    if (!this.hasChildren()) {
+    if (!this.isParent()) {
       return this;
     }
 
