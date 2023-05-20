@@ -57,11 +57,7 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
   display:block;
   transition: all 0.5s ease-out 0s;
   color: inherit;
-}
-
-.todohead textarea:hover {
-  background-color:white;
-  opacity:50%;
+  flex-grow: 1;
 }
 
 .todohead textarea::placeholder {
