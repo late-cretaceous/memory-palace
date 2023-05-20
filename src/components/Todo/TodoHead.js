@@ -25,7 +25,7 @@ const TodoHead = (props) => {
   }, [message]);
 
   const label = todo.hasChildren() ? message : todo.lineage.join(".");
-  const display = todo.hasChildren() ? todo.list[0].message : message;
+  const display = todo.hasChildren() ? todo.youngestDescendant().message : message;
   const showDisplay = !props.listOpen || !todo.hasChildren();
 
   return (

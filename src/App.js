@@ -21,7 +21,7 @@ function App() {
   if (storageEmpty) {
     bigTodo.store();
   } else {
-    bigTodo.pullChildren();
+    bigTodo.pullDescendants();
   }
 
   const color = HSL.random();

@@ -60,9 +60,7 @@ const TodoKit = class {
   pullDescendants() {
     this.pullChildren();
 
-    for (const child of this.list) {
-      child.pullDescendants();
-    }
+    this.list.forEach((child) => child.pullDescendants());
   }
 
   listDescendants() {
@@ -149,6 +147,14 @@ const TodoKit = class {
         return todoNumbers[i] + 1;
       }
     }
+  }
+
+  youngestDescendant() {
+    if (!this.hasChildren()) {
+      return this;
+    }
+
+    return this.list[0].youngestDescendant();
   }
 };
 
