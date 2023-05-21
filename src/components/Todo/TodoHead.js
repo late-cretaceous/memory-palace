@@ -3,10 +3,27 @@ import styles from "./TodoHead.module.css";
 
 const TodoHead = (props) => {
   const todo = props.todo;
-  const [message, setMessage] = useState(todo.message);
+  const [label, setLabel] = useState(
+    todo.isParent() ? todo.message : todo.lineage.join(".")
+  );
+  const [body, setBody] = useState(
+    todo.isParent() ? todo.youngestDescendant().message : todo.message
+  );
 
-  const typeMessageHandler = (e) => {
-    setMessage(e.target.value);
+  const typeBodyHandler = (e) => {
+    setBody(e.target.value);
+
+    if (todo.isParent) {
+      todo.youngestDescendant().message = e.target.value;
+    } else {
+      todo.message = e.target.value;
+    }
+  };
+
+  const typeLabelHandler = (e) => {
+    setLabel(e.target.value);
+    
+    todo.message = e.target.value;
   };
 
   const stopBubbleHandler = (e) => {
@@ -15,18 +32,15 @@ const TodoHead = (props) => {
 
   useEffect(() => {
     const storeMessage = setTimeout(() => {
-      todo.message = message;
       todo.store();
     }, 750);
 
     return () => {
       clearTimeout(storeMessage);
     };
-  }, [message]);
+  }, [body]);
 
-  const label = todo.isParent() ? message : todo.lineage.join(".");
-  const display = todo.isParent() ? todo.youngestDescendant().message : message;
-  const showDisplay = !props.listOpen || !todo.isParent();
+  const showBody = !props.listOpen || !todo.isParent();
 
   return (
     <div
@@ -46,7 +60,7 @@ const TodoHead = (props) => {
           <textarea
             className={`${styles.label}`}
             placeholder="Type a list title"
-            onChange={typeMessageHandler}
+            onChange={typeLabelHandler}
             value={label}
           ></textarea>
         ) : (
@@ -61,12 +75,12 @@ const TodoHead = (props) => {
           <span id={todo.id}>{"\u2715"}</span>
         </button>
       </div>
-      {showDisplay && (
+      {showBody && (
         <textarea
-          className={`${styles.display}`}
+          className={`${styles.visible}`}
           placeholder="Type a to-do"
-          onChange={typeMessageHandler}
-          value={display}
+          onChange={typeBodyHandler}
+          value={body}
           autoFocus
         ></textarea>
       )}
