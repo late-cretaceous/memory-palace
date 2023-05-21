@@ -22,7 +22,7 @@ const TodoHead = (props) => {
 
   const typeLabelHandler = (e) => {
     setLabel(e.target.value);
-    
+
     todo.message = e.target.value;
   };
 
@@ -33,12 +33,13 @@ const TodoHead = (props) => {
   useEffect(() => {
     const storeMessage = setTimeout(() => {
       todo.store();
+      if (todo.isParent) todo.youngestDescendant().store();
     }, 750);
 
     return () => {
       clearTimeout(storeMessage);
     };
-  }, [body]);
+  }, [body, label]);
 
   const showBody = !props.listOpen || !todo.isParent();
 
