@@ -41,10 +41,6 @@
   top: 0.32px;
 }
 
-.todohead h4 {
-  margin: 0 0 0.25rem 0;
-}
-
 /* Note: apparently there is no native way to make textarea expand like a div to accommodate its content
 For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
 .todohead textarea {
@@ -57,6 +53,7 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
   display:block;
   transition: all 0.5s ease-out 0s;
   color: inherit;
+  padding: 0px;
   flex-grow: 1;
 }
 
@@ -66,7 +63,7 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
 
 .todohead .label {
   height: 1.25em;
-  margin: 0 0 0.5em 0;
+  margin: 0 0 0.5em 0; 
 }
 
 .todohead .display {

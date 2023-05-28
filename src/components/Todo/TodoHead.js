@@ -57,16 +57,17 @@ const TodoHead = (props) => {
       <div
         className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
       >
-        {todo.isParent() ? (
-          <textarea
-            className={`${styles.label}`}
-            placeholder="Type a list title"
-            onChange={typeLabelHandler}
-            value={label}
-          ></textarea>
-        ) : (
-          <h4 className={`${styles.label}`}>{label}</h4>
-        )}
+        <h5 className={`${styles.label}`}>
+          {todo.isParent() ? (
+            <textarea
+              placeholder="Type a list title"
+              onChange={typeLabelHandler}
+              value={label}
+            ></textarea>
+          ) : (
+            label
+          )}
+        </h5>
         <button
           type="button"
           className="close-button"
