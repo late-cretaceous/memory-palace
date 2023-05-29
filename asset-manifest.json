@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/memory-palace/static/css/main.e92502e3.css",
+    "main.js": "/memory-palace/static/js/main.2c3f0238.js",
+    "index.html": "/memory-palace/index.html",
+    "main.e92502e3.css.map": "/memory-palace/static/css/main.e92502e3.css.map",
+    "main.2c3f0238.js.map": "/memory-palace/static/js/main.2c3f0238.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e92502e3.css",
+    "static/js/main.2c3f0238.js"
+  ]
+}
