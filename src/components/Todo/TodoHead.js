@@ -9,6 +9,14 @@ const TodoHead = (props) => {
   const [body, setBody] = useState(
     todo.isParent() ? todo.youngestDescendant().message : todo.message
   );
+  
+  const todoIsParent = todo.isParent();
+  const showBody = !props.listOpen || !todo.isParent();
+
+  useEffect(() => {
+    setLabel(todoIsParent ? todo.message : todo.lineage.join("."));
+    setBody(todoIsParent ? todo.youngestDescendant().message : todo.message);
+  }, [todoIsParent, showBody])
 
   const typeBodyHandler = (e) => {
     setBody(e.target.value);
@@ -40,8 +48,6 @@ const TodoHead = (props) => {
       clearTimeout(storeMessage);
     };
   }, [body, label]);
-
-  const showBody = !props.listOpen || !todo.isParent();
 
   return (
     <div
