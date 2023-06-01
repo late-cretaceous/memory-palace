@@ -26,6 +26,11 @@ function App() {
 
   const color = HSL.random();
 
+  //scaffold to print messages in case of update crash
+  for (const todo of bigTodo.listDescendants()) {
+    console.log(`${todo.lineage.join('.')} ${todo.message}`);
+  }
+
   return (
     <>
       <Header color={color} />
