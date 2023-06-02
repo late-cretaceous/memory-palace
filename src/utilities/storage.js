@@ -63,6 +63,7 @@ const TodoKit = class {
     this.list.forEach((child) => child.pullDescendants());
   }
 
+  //not used. hard-to-follow logic replaced by more hiearchal version below
   listDescendants() {
     if (!this.list.length) {
       return [];
@@ -79,6 +80,21 @@ const TodoKit = class {
     });
 
     return children.concat(descendants);
+  }
+
+  listHierarchy() {
+    if (!this.list.length) {
+      return []
+    }
+
+    const descendants = [];
+
+    for (const child of this.list) {
+      descendants.push(child);
+      descendants.push(...child.listHierarchy());
+    }
+
+    return descendants
   }
 
   move(fromIndex, toIndex) {

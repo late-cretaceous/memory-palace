@@ -27,7 +27,7 @@ function App() {
   const color = HSL.random();
 
   //scaffold to print messages in case of update crash
-  for (const todo of bigTodo.listDescendants()) {
+  for (const todo of bigTodo.listHierarchy()) {
     console.log(`${todo.lineage.join('.')} ${todo.message}`);
   }
 
