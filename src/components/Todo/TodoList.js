@@ -1,14 +1,21 @@
 import styles from "./TodoList.module.css";
+import {useState} from "react";
 import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import Drop from "../../utilities/Drop";
 
 const TodoList = (props) => {
+  const [hoverBetween, setHoverBetween] = useState(false);
+
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return <PhantomTodo text="Phantom Todo" onAdd={props.onAdd} />;
 
   let recentMouseDown = false;
+
+  const hoverBetweenHandler = () => {
+    setHoverBetween(prevHoverBetween => !prevHoverBetween);
+  }
 
   const spectrum = props.color.shades(
     {
@@ -36,6 +43,7 @@ const TodoList = (props) => {
             color={spectrum[index]}
             spectrumRange={props.spectrumRange / props.todos.length}
             lightRange={props.lightRange / props.todos.length }
+            onHover={hoverBetweenHandler}
           />
         )}
       </Draggable>
@@ -63,7 +71,7 @@ const TodoList = (props) => {
     >
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
-          <ul className={`${styles.flexcol} ${styles.list}`}>
+          <ul className={`${styles.flexcol} ${styles.list} ${hoverBetween ? styles['hover-between'] : ''}`}>
             {todoComponentList}
             <PhantomTodo text="Add Todo" onAdd={props.onAdd} />
           </ul>

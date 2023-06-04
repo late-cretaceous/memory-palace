@@ -1,6 +1,7 @@
+@import '/src/index.css';
+
 .todo {
-  margin: 0.5rem;
-  margin-right: 0;
+  margin-left: 0.5rem;
 }
 
 .phantom {
@@ -21,4 +22,12 @@
     margin-right: 1rem;
   }
 
-  
+.gap {
+  height: 1rem;
+  transition: var(--between-transition)
+}
+
+.gap:hover {
+  height: 2rem;
+  padding-bottom: var(--between-spread);
+}

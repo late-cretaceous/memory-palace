@@ -94,6 +94,7 @@ const Todo = React.forwardRef((props, ref) => {
     <div className={todoStyles} ref={dragRef} {...draggableProps}>
       {todoHead}
       {todoList}
+      <div className={styles.gap} index={todo.index + 1} onMouseEnter={props.onHover} onMouseLeave={props.onHover}></div>
     </div>
   );
 });
