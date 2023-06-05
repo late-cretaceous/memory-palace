@@ -1,18 +1,12 @@
-@import '/src/index.css';
-
 .list {
-    padding: var(--between-spread) 0 0 0;
+    padding:0.5rem 0 0 0;
     flex: auto;
+    justify-content:space-between;
     margin: 0;
-    transition: var(--between-transition)
 }
 
 .flexcol {
     display: flex;
     flex-direction: column;
-    flex: auto;
-}
-
-.hover-between {
-    padding-top: 0;
+    flex:auto;
 }

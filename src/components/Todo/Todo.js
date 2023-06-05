@@ -7,6 +7,7 @@ import styles from "./Todo.module.css";
 const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(false);
+  const [hoverBetween, setHoverBetween] = useState(false);
 
   const todoAddHandler = (e) => {
     e.stopPropagation();
@@ -54,6 +55,10 @@ const Todo = React.forwardRef((props, ref) => {
     setListOpen(!listOpen);
   };
 
+  const hoverBetweenHandler = () => {
+    setHoverBetween((prevHoverBetween) => !prevHoverBetween);
+  };
+
   const dragRef = props.provided && ref;
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
@@ -85,16 +90,20 @@ const Todo = React.forwardRef((props, ref) => {
     />
   );
 
-  //Below conditional is temporary pending collapsable lists
-  const todoStyles = todo.parent
-    ? styles.todo
-    : `${styles.todo} ${styles.bigTodo}`;
+  let todoStyles = styles.todo;
+  todoStyles += hoverBetween ? ` ${styles["hover-between"]}` : "";
+  todoStyles += !todo.parent ? ` ${styles.bigTodo}` : "";
 
   return (
     <div className={todoStyles} ref={dragRef} {...draggableProps}>
       {todoHead}
       {todoList}
-      <div className={styles.gap} index={todo.index + 1} onMouseEnter={props.onHover} onMouseLeave={props.onHover}></div>
+      <div
+        className={styles.gap}
+        index={todo.index + 1}
+        onMouseEnter={hoverBetweenHandler}
+        onMouseLeave={hoverBetweenHandler}
+      ></div>
     </div>
   );
 });

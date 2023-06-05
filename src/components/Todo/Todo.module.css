@@ -1,7 +1,9 @@
-@import '/src/index.css';
-
 .todo {
   margin-left: 0.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.1s ease-in-out 0s;
 }
 
 .phantom {
@@ -11,23 +13,21 @@
   text-align: center;
   border-radius: 10px;
   padding: 0.5rem;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .bigTodo {
-    display: flex;
-    flex-direction: column;
-    flex:auto;
-    margin: 0.5rem;
-    margin-right: 1rem;
-  }
-
-.gap {
-  height: 1rem;
-  transition: var(--between-transition)
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+  margin: 0.5rem;
+  margin-right: 1rem;
 }
 
-.gap:hover {
-  height: 2rem;
-  padding-bottom: var(--between-spread);
+.gap {
+  flex-grow: 1;
+}
+
+.hover-between {
+  flex-grow: 3;
 }

@@ -1,21 +1,15 @@
 import styles from "./TodoList.module.css";
-import {useState} from "react";
 import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import Drop from "../../utilities/Drop";
+import ExtraFlex from "./Containers/ExtraFlex";
 
 const TodoList = (props) => {
-  const [hoverBetween, setHoverBetween] = useState(false);
-
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return <PhantomTodo text="Phantom Todo" onAdd={props.onAdd} />;
 
   let recentMouseDown = false;
-
-  const hoverBetweenHandler = () => {
-    setHoverBetween(prevHoverBetween => !prevHoverBetween);
-  }
 
   const spectrum = props.color.shades(
     {
@@ -42,8 +36,7 @@ const TodoList = (props) => {
             onClose={props.onRemove}
             color={spectrum[index]}
             spectrumRange={props.spectrumRange / props.todos.length}
-            lightRange={props.lightRange / props.todos.length }
-            onHover={hoverBetweenHandler}
+            lightRange={props.lightRange / props.todos.length}
           />
         )}
       </Draggable>
@@ -71,10 +64,13 @@ const TodoList = (props) => {
     >
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
-          <ul className={`${styles.flexcol} ${styles.list} ${hoverBetween ? styles['hover-between'] : ''}`}>
+          <ExtraFlex
+            className={`${styles.flexcol} ${styles.list}`}
+            measure= 'firstChild'
+          >
             {todoComponentList}
-            <PhantomTodo text="Add Todo" onAdd={props.onAdd} />
-          </ul>
+          </ExtraFlex>
+          <PhantomTodo text="Add Todo" onAdd={props.onAdd} />
         </Drop>
       </DragDropContext>
     </div>
