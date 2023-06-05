@@ -6,6 +6,10 @@
   transition: all 0.1s ease-out 0s;
 }
 
+.todohead:hover{
+  opacity: 90%;
+}
+
 .todohead-row {
   display: flex;
 }

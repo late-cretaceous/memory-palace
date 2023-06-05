@@ -3,7 +3,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  transition: all 0.1s ease-in-out 0s;
+  transition: all 0.1s ease-out 0s;
 }
 
 .phantom {
@@ -29,5 +29,5 @@
 }
 
 .hover-between {
-  flex-grow: 3;
+  flex-grow: 5;
 }
