@@ -1,9 +1,8 @@
 .todo {
-  margin-left: 0.5rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  transition: all 0.1s ease-out 0s;
+  transition: flex-grow 0.1s ease-out 0s;
 }
 
 .phantom {
@@ -20,14 +19,4 @@
   display: flex;
   flex-direction: column;
   flex: auto;
-  margin: 0.5rem;
-  margin-right: 1rem;
-}
-
-.gap {
-  flex-grow: 1;
-}
-
-.hover-between {
-  flex-grow: 5;
 }

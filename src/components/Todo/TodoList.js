@@ -3,7 +3,6 @@ import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import Drop from "../../utilities/Drop";
-import ExtraFlex from "./Containers/ExtraFlex";
 
 const TodoList = (props) => {
   if (!props.todos.length && props.parent.id !== "bigTodo")
@@ -64,12 +63,11 @@ const TodoList = (props) => {
     >
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
-          <ExtraFlex
+          <ul
             className={`${styles.flexcol} ${styles.list}`}
-            measure= 'firstChild'
           >
             {todoComponentList}
-          </ExtraFlex>
+          </ul>
           <PhantomTodo text="Add Todo" onAdd={props.onAdd} />
         </Drop>
       </DragDropContext>
