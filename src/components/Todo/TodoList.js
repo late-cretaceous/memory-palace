@@ -6,7 +6,16 @@ import Drop from "../../utilities/Drop";
 
 const TodoList = (props) => {
   if (!props.todos.length && props.parent.id !== "bigTodo")
-    return <PhantomTodo text="Phantom Todo" onAdd={props.onAdd} />;
+    return (
+      <PhantomTodo
+        text="Phantom Todo"
+        onAdd={props.onAdd}
+        style={{
+          backgroundColor: props.color.toString(),
+          color: props.color.negative().toString(),
+        }}
+      />
+    );
 
   let recentMouseDown = false;
 
@@ -63,12 +72,17 @@ const TodoList = (props) => {
     >
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
-          <ul
-            className={`${styles.flexcol} ${styles.list}`}
-          >
+          <ul className={`${styles.flexcol} ${styles.list}`}>
             {todoComponentList}
           </ul>
-          <PhantomTodo text="Add Todo" onAdd={props.onAdd} />
+          <PhantomTodo
+            text="Add Todo"
+            onAdd={props.onAdd}
+            style={{
+              backgroundColor: props.color.toString(),
+              color: props.color.negative().toString(),
+            }}
+          />
         </Drop>
       </DragDropContext>
     </div>
