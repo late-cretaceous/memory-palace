@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./TodoHead.module.css";
+import TodoBottom from "./TodoBottom";
 
 const TodoHead = (props) => {
   const todo = props.todo;
@@ -93,14 +94,8 @@ const TodoHead = (props) => {
         ></textarea>
       )}
 
-      <div className={styles["todohead-row"]}>
-        <button
-          className={props.arrowOpen ? styles.arrowopen : ""}
-          onClick={props.onListToggle}
-        >
-          {"\u25B6"}
-        </button>
-      </div>
+      <TodoBottom arrowOpen={props.arrowOpen} onListToggle={props.onListToggle} />
+
     </div>
   );
 };
