@@ -10,14 +10,15 @@ const TodoHead = (props) => {
   const [body, setBody] = useState(
     todo.isParent() ? todo.youngestDescendant().message : todo.message
   );
-  
+  const [hover, setHover] = useState(false);
+
   const todoIsParent = todo.isParent();
   const showBody = !props.listOpen || !todo.isParent();
 
   useEffect(() => {
     setLabel(todoIsParent ? todo.message : todo.lineage.join("."));
     setBody(todoIsParent ? todo.youngestDescendant().message : todo.message);
-  }, [todoIsParent, showBody])
+  }, [todoIsParent, showBody]);
 
   const typeBodyHandler = (e) => {
     setBody(e.target.value);
@@ -37,6 +38,10 @@ const TodoHead = (props) => {
 
   const stopBubbleHandler = (e) => {
     e.stopPropagation();
+  };
+
+  const hoverHandler = () => {
+    setHover((prevHover) => !prevHover);
   };
 
   useEffect(() => {
@@ -59,6 +64,8 @@ const TodoHead = (props) => {
       }}
       id={todo.id}
       onClick={stopBubbleHandler}
+      onMouseEnter={hoverHandler}
+      onMouseLeave={hoverHandler}
       {...props.dragHandleProps}
     >
       <div
@@ -94,8 +101,11 @@ const TodoHead = (props) => {
         ></textarea>
       )}
 
-      <TodoBottom arrowOpen={props.arrowOpen} onListToggle={props.onListToggle} />
-
+      <TodoBottom
+        hover={hover}
+        arrowOpen={props.arrowOpen}
+        onListToggle={props.onListToggle}
+      />
     </div>
   );
 };

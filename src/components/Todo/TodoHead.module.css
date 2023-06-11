@@ -14,6 +14,8 @@
 
 .todohead-row {
   display: flex;
+  overflow: hidden;
+  transition: all 0.1s ease-out 0s;
 }
 
 .todohead-row__cancel {
@@ -43,7 +45,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .todohead-row__cancel button span {
@@ -90,4 +91,8 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
 
 .todohead h5 {
   flex-grow: 1;
+}
+
+.hidden {
+  height: 0px;
 }
