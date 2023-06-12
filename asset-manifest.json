@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/memory-palace/static/css/main.d65b212a.css",
-    "main.js": "/memory-palace/static/js/main.78390a5d.js",
+    "main.css": "/memory-palace/static/css/main.5b86553a.css",
+    "main.js": "/memory-palace/static/js/main.d0c61cfc.js",
     "index.html": "/memory-palace/index.html",
-    "main.d65b212a.css.map": "/memory-palace/static/css/main.d65b212a.css.map",
-    "main.78390a5d.js.map": "/memory-palace/static/js/main.78390a5d.js.map"
+    "main.5b86553a.css.map": "/memory-palace/static/css/main.5b86553a.css.map",
+    "main.d0c61cfc.js.map": "/memory-palace/static/js/main.d0c61cfc.js.map"
   },
   "entrypoints": [
-    "static/css/main.d65b212a.css",
-    "static/js/main.78390a5d.js"
+    "static/css/main.5b86553a.css",
+    "static/js/main.d0c61cfc.js"
   ]
 }
