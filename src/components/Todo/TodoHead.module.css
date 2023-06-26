@@ -4,8 +4,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0.5rem var(--global-left-padding);
   transition: all 0.1s ease-out 0s;
+}
+
+.todoface {
+  padding: 0.5rem var(--global-left-padding);
 }
 
 .todohead:hover{
@@ -95,4 +98,8 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
 
 .hidden {
   height: 0px;
+}
+
+.edge-hitbox {
+  height: 5px;
 }

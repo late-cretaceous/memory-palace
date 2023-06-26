@@ -66,46 +66,60 @@ const TodoHead = (props) => {
       onClick={stopBubbleHandler}
       onMouseEnter={hoverHandler}
       onMouseLeave={hoverHandler}
-      {...props.dragHandleProps}
     >
       <div
-        className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
-      >
-        <h5 className={`${styles.label}`}>
-          {todo.isParent() ? (
-            <textarea
-              placeholder="Type a list title"
-              onChange={typeLabelHandler}
-              value={label}
-            ></textarea>
-          ) : (
-            label
-          )}
-        </h5>
-        <button
-          type="button"
-          className="close-button"
-          onClick={props.onClose}
-          id={todo.id}
+        className={styles["edge-hitbox"]}
+        onMouseEnter={(e) => {
+          props.mouseEdgeEnterHandler(e, todo.index);
+        }}
+        onMouseLeave={props.mouseEdgeLeaveHandler}
+      ></div>
+      <div className={styles.todoface} {...props.dragHandleProps}>
+        <div
+          className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
         >
-          <span id={todo.id}>{"\u2715"}</span>
-        </button>
+          <h5 className={`${styles.label}`}>
+            {todo.isParent() ? (
+              <textarea
+                placeholder="Type a list title"
+                onChange={typeLabelHandler}
+                value={label}
+              ></textarea>
+            ) : (
+              label
+            )}
+          </h5>
+          <button
+            type="button"
+            className="close-button"
+            onClick={props.onClose}
+            id={todo.id}
+          >
+            <span id={todo.id}>{"\u2715"}</span>
+          </button>
+        </div>
+        {showBody && (
+          <textarea
+            className={`${styles.visible}`}
+            placeholder="Type a to-do"
+            onChange={typeBodyHandler}
+            value={body}
+            autoFocus
+          ></textarea>
+        )}
+        <TodoBottom
+          hover={hover}
+          arrowOpen={props.arrowOpen}
+          onListToggle={props.onListToggle}
+        />
       </div>
-      {showBody && (
-        <textarea
-          className={`${styles.visible}`}
-          placeholder="Type a to-do"
-          onChange={typeBodyHandler}
-          value={body}
-          autoFocus
-        ></textarea>
-      )}
-
-      <TodoBottom
-        hover={hover}
-        arrowOpen={props.arrowOpen}
-        onListToggle={props.onListToggle}
-      />
+      <div
+        className={styles["edge-hitbox"]}
+        onMouseEnter={(e) => {
+          props.mouseEdgeEnterHandler(e, todo.index + 1);
+        }}
+        onMouseLeave={props.mouseEdgeLeaveHandler}
+      ></div>
     </div>
   );
 };

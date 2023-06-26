@@ -2,9 +2,12 @@ import styles from "./TodoList.module.css";
 import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
+import { useState } from "react";
 import Drop from "../../utilities/Drop";
 
 const TodoList = (props) => {
+  const [edgeOver, setEdgeOver] = useState(null);
+
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return (
       <PhantomTodo
@@ -30,6 +33,16 @@ const TodoList = (props) => {
 
   console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
+  const mouseEdgeEnterHandler = (e, index) => {
+    setEdgeOver(index);
+  }
+
+  const mouseEdgeLeaveHandler = (e) => {
+    if(e.relatedTarget.id !== "add") {
+      setEdgeOver(null);
+    }
+  }
+
   const todoComponentList = props.todos.map((todo, index) => {
     todo.pullChildren();
 
@@ -45,11 +58,31 @@ const TodoList = (props) => {
             color={spectrum[index]}
             spectrumRange={props.spectrumRange / props.todos.length}
             lightRange={props.lightRange / props.todos.length}
+            mouseEdgeEnterHandler={mouseEdgeEnterHandler}
+            mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
           />
         )}
       </Draggable>
     );
   });
+
+  if (edgeOver) {
+    todoComponentList.splice(
+      edgeOver,
+      0,
+      <PhantomTodo
+        text="Add Todo"
+        onAdd={props.onAdd}
+        style={{
+          backgroundColor: props.color.toString(),
+          color: props.color.negative().toString(),
+        }}
+        key={Date.now().toString()}
+        mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
+        index={edgeOver}
+      />
+    );
+  }
 
   const allowAddHandler = (e) => {
     recentMouseDown = true;
@@ -75,14 +108,6 @@ const TodoList = (props) => {
           <ul className={`${styles.flexcol} ${styles.list}`}>
             {todoComponentList}
           </ul>
-          <PhantomTodo
-            text="Add Todo"
-            onAdd={props.onAdd}
-            style={{
-              backgroundColor: props.color.toString(),
-              color: props.color.negative().toString(),
-            }}
-          />
         </Drop>
       </DragDropContext>
     </div>

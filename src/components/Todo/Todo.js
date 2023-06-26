@@ -7,7 +7,6 @@ import styles from "./Todo.module.css";
 const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(false);
-  const [hoverBetween, setHoverBetween] = useState(false);
 
   const todoAddHandler = (e) => {
     e.stopPropagation();
@@ -35,6 +34,7 @@ const Todo = React.forwardRef((props, ref) => {
     const todoCopy = new TodoKit(todo);
 
     todoCopy.remove(e.target.id);
+    console.log(e.target)
 
     todoCopy.store();
     localStorage.removeItem(e.target.id);
@@ -55,10 +55,6 @@ const Todo = React.forwardRef((props, ref) => {
     setListOpen(!listOpen);
   };
 
-  const hoverBetweenHandler = () => {
-    setHoverBetween((prevHoverBetween) => !prevHoverBetween);
-  };
-
   const dragRef = props.provided && ref;
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
@@ -72,6 +68,8 @@ const Todo = React.forwardRef((props, ref) => {
       dragHandleProps={dragHandleProps}
       color={props.color}
       listOpen={listOpen}
+      mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
+      mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
     />
   );
 
@@ -91,19 +89,12 @@ const Todo = React.forwardRef((props, ref) => {
   );
 
   let todoStyles = styles.todo;
-  todoStyles += hoverBetween ? ` ${styles["hover-between"]}` : "";
   todoStyles += !todo.parent ? ` ${styles.bigTodo}` : "";
 
   return (
     <div className={todoStyles} ref={dragRef} {...draggableProps}>
       {todoHead}
       {todoList}
-      <div
-        className={styles.gap}
-        index={todo.index + 1}
-        onMouseEnter={hoverBetweenHandler}
-        onMouseLeave={hoverBetweenHandler}
-      ></div>
     </div>
   );
 });
