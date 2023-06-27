@@ -1,4 +1,5 @@
 import styles from "./Todo.module.css";
+import { useEffect, useState } from "react";
 
 const PhantomTodo = (props) => {
   const classes = `${styles[props.className]} ${styles.todo} ${styles.phantom}`;
