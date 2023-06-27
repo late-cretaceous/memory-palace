@@ -8,7 +8,7 @@
 }
 
 .todoface {
-  padding: 0.5rem var(--global-left-padding);
+  padding: 0 var(--global-left-padding);
 }
 
 .todohead:hover{
@@ -96,10 +96,10 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
   flex-grow: 1;
 }
 
-.hidden {
+.collapsed {
   height: 0px;
 }
 
 .edge-hitbox {
-  height: 5px;
+  height: 10px;
 }

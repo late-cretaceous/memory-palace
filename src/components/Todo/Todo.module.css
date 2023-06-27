@@ -7,8 +7,8 @@
 .phantom {
   font-weight: bold;
   text-align: center;
-  padding: 0.5rem;
-  height: 1.5rem;
+  padding: 0.25rem;
+  height: 1rem;
   cursor: pointer;
   justify-content: center;
   overflow: hidden;
@@ -20,7 +20,7 @@
   flex: auto;
 }
 
-.hidden {
+.collapsed {
   height: 0;
   padding: 0;
 }

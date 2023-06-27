@@ -1,18 +1,11 @@
 import styles from "./TodoHead.module.css";
-import { useRef } from "react";
 
 const TodoBottom = (props) => {
-  const classList = `${styles["todohead-row"]} ${
-    props.hover ? "" : styles.hidden
-  }`;
-  const containerRef = useRef();
-  const containerStyle = props.hover ? containerRef.current.scrollHeight : 0;
+  const classes = `${styles["todohead-row"]} ${props.hover}`;
 
   return (
     <div
-      className={classList}
-      ref={containerRef}
-      style={{ height: `${containerStyle}px` }}
+      className={classes}
     >
       <button
         className={props.arrowOpen ? styles.arrowopen : ""}
