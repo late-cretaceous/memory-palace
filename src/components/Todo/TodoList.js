@@ -4,6 +4,7 @@ import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { useState } from "react";
 import Drop from "../../utilities/Drop";
+import { Transition } from "react-transition-group";
 
 const TodoList = (props) => {
   const [edgeOver, setEdgeOver] = useState(null);
@@ -38,9 +39,11 @@ const TodoList = (props) => {
   };
 
   const mouseEdgeLeaveHandler = (e) => {
-    const mouseTo = e.relatedTarget.dataset.name;
+    const mouseTo = e.relatedTarget.dataset
+      ? e.relatedTarget.dataset.name
+      : null;
 
-    if (mouseTo !== "add" && mouseTo !==  "edgebox") {
+    if (mouseTo !== "add" && mouseTo !== "edgebox") {
       setEdgeOver(null);
     }
   };
@@ -49,9 +52,24 @@ const TodoList = (props) => {
     todo.pullChildren();
 
     return (
-      <Draggable key={todo.id} draggableId={todo.id} index={index}>
-        {(provided) =>
-          (
+      <>
+        <Transition in={Boolean(edgeOver)} timeout={1000} key={`${index}+`}>
+          {(state) => (
+            <PhantomTodo
+              onAdd={props.onAdd}
+              style={{
+                backgroundColor: props.color.toString(),
+                color: props.color.negative().toString(),
+              }}
+              className={state === 'exited' ? 'hidden' : ''}
+              mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
+            >
+              {state}
+            </PhantomTodo>
+          )}
+        </Transition>
+        <Draggable key={todo.id} draggableId={todo.id} index={index}>
+          {(provided) => (
             <Todo
               todo={todo}
               parent={props.parent}
@@ -64,29 +82,11 @@ const TodoList = (props) => {
               mouseEdgeEnterHandler={mouseEdgeEnterHandler}
               mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
             />
-          )
-        }
-      </Draggable>
+          )}
+        </Draggable>
+      </>
     );
   });
-
-  if (edgeOver) {
-    todoComponentList.splice(
-      edgeOver,
-      0,
-      <PhantomTodo
-        text="Add Todo"
-        onAdd={props.onAdd}
-        style={{
-          backgroundColor: props.color.toString(),
-          color: props.color.negative().toString(),
-        }}
-        key={Date.now().toString()}
-        mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
-        index={edgeOver}
-      />
-    );
-  }
 
   const allowAddHandler = (e) => {
     recentMouseDown = true;

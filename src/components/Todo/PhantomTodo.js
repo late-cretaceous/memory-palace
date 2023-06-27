@@ -1,24 +1,17 @@
 import styles from "./Todo.module.css";
-import { useState, useEffect } from "react";
 
 const PhantomTodo = (props) => {
-  const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
-    requestAnimationFrame(() => setExpanded(true));
-  }, []);
+  const classes = `${styles[props.className]} ${styles.todo} ${styles.phantom}`;
 
   return (
     <div
-      className={`${styles.todo} ${styles.phantom} ${
-        expanded ? "" : styles.hidden
-      }`}
+      className={classes}
       onClick={props.onAdd}
       style={props.style}
       onMouseLeave={props.mouseEdgeLeaveHandler}
       data-name={"add"}
     >
-      {props.text}
+      {props.children}
     </div>
   );
 };
