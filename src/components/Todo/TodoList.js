@@ -8,6 +8,7 @@ import { Transition } from "react-transition-group";
 
 const TodoList = (props) => {
   const [edgeOver, setEdgeOver] = useState(null);
+  const transitionTime = 300;
 
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return (
@@ -48,20 +49,35 @@ const TodoList = (props) => {
     }
   };
 
+  const transitionClass = {
+    entering: "revealed",
+    entered: "revealed",
+    exiting: "hidden",
+    exited: "hidden",
+  };
+
   const todoComponentList = props.todos.map((todo, index) => {
     todo.pullChildren();
+    const isAtEdge = edgeOver === index;
 
     return (
       <>
-        <Transition in={Boolean(edgeOver)} timeout={1000} key={`${index}+`}>
+        <Transition
+          in={isAtEdge}
+          timeout={transitionTime}
+          key={`${index}+`}
+          mountOnEnter
+          unmountOnExit
+        >
           {(state) => (
             <PhantomTodo
               onAdd={props.onAdd}
               style={{
                 backgroundColor: props.color.toString(),
                 color: props.color.negative().toString(),
+                transition: `all ${transitionTime}ms ease-out`
               }}
-              className={state === 'exited' ? 'hidden' : ''}
+              className={transitionClass[state]}
               mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
             >
               {state}
