@@ -73,6 +73,7 @@ const TodoHead = (props) => {
           props.mouseEdgeEnterHandler(e, todo.index);
         }}
         onMouseLeave={props.mouseEdgeLeaveHandler}
+        data-name="edgebox"
       ></div>
       <div className={styles.todoface} {...props.dragHandleProps}>
         <div

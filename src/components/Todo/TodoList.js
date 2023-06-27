@@ -35,33 +35,37 @@ const TodoList = (props) => {
 
   const mouseEdgeEnterHandler = (e, index) => {
     setEdgeOver(index);
-  }
+  };
 
   const mouseEdgeLeaveHandler = (e) => {
-    if(e.relatedTarget.id !== "add") {
+    const mouseTo = e.relatedTarget.dataset.name;
+
+    if (mouseTo !== "add" && mouseTo !==  "edgebox") {
       setEdgeOver(null);
     }
-  }
+  };
 
   const todoComponentList = props.todos.map((todo, index) => {
     todo.pullChildren();
 
     return (
       <Draggable key={todo.id} draggableId={todo.id} index={index}>
-        {(provided) => (
-          <Todo
-            todo={todo}
-            parent={props.parent}
-            ref={provided.innerRef}
-            provided={provided}
-            onClose={props.onRemove}
-            color={spectrum[index]}
-            spectrumRange={props.spectrumRange / props.todos.length}
-            lightRange={props.lightRange / props.todos.length}
-            mouseEdgeEnterHandler={mouseEdgeEnterHandler}
-            mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
-          />
-        )}
+        {(provided) =>
+          (
+            <Todo
+              todo={todo}
+              parent={props.parent}
+              ref={provided.innerRef}
+              provided={provided}
+              onClose={props.onRemove}
+              color={spectrum[index]}
+              spectrumRange={props.spectrumRange / props.todos.length}
+              lightRange={props.lightRange / props.todos.length}
+              mouseEdgeEnterHandler={mouseEdgeEnterHandler}
+              mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
+            />
+          )
+        }
       </Draggable>
     );
   });

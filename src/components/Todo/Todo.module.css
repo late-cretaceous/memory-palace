@@ -9,10 +9,17 @@
   text-align: center;
   padding: 0.5rem;
   cursor: pointer;
+  height: 1.5rem;
+  transition: all 0.1s ease-out 0s;
+  justify-content: center;
 }
 
 .bigTodo {
   display: flex;
   flex-direction: column;
   flex: auto;
+}
+
+.hidden {
+  height: 0px;
 }
