@@ -114,13 +114,15 @@ const TodoHead = (props) => {
           onListToggle={props.onListToggle}
         />
       </div>
-      <div
-        className={styles["edge-hitbox"]}
-        onMouseEnter={(e) => {
-          props.mouseEdgeEnterHandler(e, todo.index + 1);
-        }}
-        onMouseLeave={props.mouseEdgeLeaveHandler}
-      ></div>
+      {!props.listOpen && (
+        <div
+          className={styles["edge-hitbox"]}
+          onMouseEnter={(e) => {
+            props.mouseEdgeEnterHandler(e, todo.index + 1);
+          }}
+          onMouseLeave={props.mouseEdgeLeaveHandler}
+        ></div>
+      )}
     </div>
   );
 };
