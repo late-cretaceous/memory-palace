@@ -10,6 +10,10 @@ const TodoList = (props) => {
   const [edgeOver, setEdgeOver] = useState(null);
   const transitionTime = 200;
 
+  for (const todo of props.todos) {
+    console.dir(todo.index);
+  }
+
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return (
       <PhantomTodo
@@ -23,6 +27,11 @@ const TodoList = (props) => {
     );
 
   let recentMouseDown = false;
+
+  const clickAddHandler = (e, index) => {
+    setEdgeOver(null);
+    props.onAdd(e, index);
+  }
 
   const spectrum = props.color.shades(
     {
@@ -71,7 +80,8 @@ const TodoList = (props) => {
         >
           {(state) => (
             <PhantomTodo
-              onAdd={props.onAdd}
+              index={index}
+              onAdd={clickAddHandler}
               style={{
                 backgroundColor: props.color.toString(),
                 color: props.color.negative().toString(),

@@ -8,14 +8,14 @@ const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(false);
 
-  const todoAddHandler = (e) => {
+  const todoAddHandler = (e, index) => {
     e.stopPropagation();
     const lineage = todo.lineage.concat(todo.newNumber());
 
     const childTodo = new TodoKit({
       id: Date.now().toString(),
       lineage: lineage,
-      index: todo.list.length,
+      index: index,
       parent: todo,
       message: "",
       list: [],
@@ -34,7 +34,6 @@ const Todo = React.forwardRef((props, ref) => {
     const todoCopy = new TodoKit(todo);
 
     todoCopy.remove(e.target.id);
-    console.log(e.target)
 
     todoCopy.store();
     localStorage.removeItem(e.target.id);

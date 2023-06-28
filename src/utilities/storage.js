@@ -36,7 +36,8 @@ const TodoKit = class {
   }
 
   add(todo) {
-    this.list.push(todo);
+    this.list.splice(todo.index, 0, todo);
+    this.reIndex();
   }
 
   pullChildren() {
@@ -128,6 +129,7 @@ const TodoKit = class {
     removee.removeDescendantsFromStorage();
 
     this.list = this.list.filter((todo) => todo.id !== removee.id);
+    this.reIndex();
   }
 
   removeDescendantsFromStorage() {

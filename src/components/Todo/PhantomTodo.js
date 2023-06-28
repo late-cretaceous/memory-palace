@@ -1,5 +1,4 @@
 import styles from "./Todo.module.css";
-import { useEffect, useState } from "react";
 
 const PhantomTodo = (props) => {
   const classes = `${styles[props.className]} ${styles.todo} ${styles.phantom}`;
@@ -7,7 +6,7 @@ const PhantomTodo = (props) => {
   return (
     <div
       className={classes}
-      onClick={props.onAdd}
+      onClick={(e) => {props.onAdd(e, props.index)}}
       style={props.style}
       onMouseLeave={props.mouseEdgeLeaveHandler}
       data-name={"add"}
