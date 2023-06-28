@@ -92,7 +92,7 @@ const TodoHead = (props) => {
           </h5>
           <button
             type="button"
-            className="close-button"
+            className={`${hover ? styles.opaque : styles.transparent}`}
             onClick={props.onClose}
             id={todo.id}
           >

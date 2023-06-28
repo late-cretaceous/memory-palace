@@ -20,7 +20,6 @@
 .todohead-row {
   display: flex;
   overflow: hidden;
-  transition: all var(--transition-time) ease-out 0s;
 }
 
 .todohead-row__cancel {
