@@ -1,10 +1,12 @@
 @import '../../index.css';
 
 .todohead {
+  --transition-time: 0.5s;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: all 0.1s ease-out 0s;
+  transition: all var(--transition-time) ease-out 0s;
+  opacity: 1;
 }
 
 .todoface {
@@ -18,7 +20,7 @@
 .todohead-row {
   display: flex;
   overflow: hidden;
-  transition: all 0.1s ease-out 0s;
+  transition: all var(--transition-time) ease-out 0s;
 }
 
 .todohead-row__cancel {
@@ -100,6 +102,14 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
   height: 0px;
 }
 
+.transparent {
+  opacity: 0;
+}
+
+.opaque {
+  opacity: 1;
+}
+
 .edge-hitbox {
-  height: 10px;
+  height: 5px;
 }

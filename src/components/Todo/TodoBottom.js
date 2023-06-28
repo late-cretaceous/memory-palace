@@ -1,7 +1,7 @@
 import styles from "./TodoHead.module.css";
 
 const TodoBottom = (props) => {
-  const classes = `${styles["todohead-row"]} ${props.hover}`;
+  const classes = `${styles["todohead-row"]} ${props.hover ? styles.opaque : styles.transparent}`;
 
   return (
     <div
