@@ -10,10 +10,6 @@ const TodoList = (props) => {
   const [edgeOver, setEdgeOver] = useState(null);
   const transitionTime = 200;
 
-  for (const todo of props.todos) {
-    console.dir(todo.index);
-  }
-
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return (
       <PhantomTodo
