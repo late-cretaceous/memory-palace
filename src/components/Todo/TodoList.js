@@ -4,11 +4,9 @@ import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { useState } from "react";
 import Drop from "../../utilities/Drop";
-import { Transition } from "react-transition-group";
 
 const TodoList = (props) => {
   const [edgeOver, setEdgeOver] = useState(null);
-  const transitionTime = 200;
 
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return (
@@ -54,42 +52,10 @@ const TodoList = (props) => {
     }
   };
 
-  const transitionClass = {
-    entering: "revealed",
-    entered: "revealed",
-    exiting: "collapsed",
-    exited: "collapsed",
-  };
-
   const todoComponentList = props.todos.map((todo, index) => {
     todo.pullChildren();
-    const isAtEdge = edgeOver === index;
 
     return (
-      <>
-        <Transition
-          in={isAtEdge}
-          timeout={transitionTime}
-          key={`${index}+`}
-          mountOnEnter
-          unmountOnExit
-        >
-          {(state) => (
-            <PhantomTodo
-              index={index}
-              onAdd={clickAddHandler}
-              style={{
-                backgroundColor: props.color.toString(),
-                color: props.color.negative().toString(),
-                transition: `all ${transitionTime}ms ease-out ${transitionTime / 4}ms`
-              }}
-              className={transitionClass[state]}
-              mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
-            >
-              +Todo
-            </PhantomTodo>
-          )}
-        </Transition>
         <Draggable key={todo.id} draggableId={todo.id} index={index}>
           {(provided) => (
             <Todo
@@ -103,10 +69,10 @@ const TodoList = (props) => {
               lightRange={props.lightRange / props.todos.length}
               mouseEdgeEnterHandler={mouseEdgeEnterHandler}
               mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
+              adderIndex={edgeOver}
             />
           )}
         </Draggable>
-      </>
     );
   });
 

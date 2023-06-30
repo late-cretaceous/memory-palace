@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import TodoKit from "../../utilities/storage";
 import TodoHead from "./TodoHead";
 import TodoList from "./TodoList";
+import PhantomTodo from "./PhantomTodo";
 import styles from "./Todo.module.css";
+import { Transition } from "react-transition-group";
 
 const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(false);
+  const transitionTime = 200;
 
   const todoAddHandler = (e, index) => {
     e.stopPropagation();
@@ -87,6 +90,39 @@ const Todo = React.forwardRef((props, ref) => {
     />
   );
 
+  const transitionClass = {
+    entering: "revealed",
+    entered: "revealed",
+    exiting: "collapsed",
+    exited: "collapsed",
+  };
+
+  const todoAdder = (
+    <Transition
+      in={todo.index + 1 === props.adderIndex}
+      timeout={transitionTime}
+      mountOnEnter
+      unmountOnExit
+    >
+      {(state) => (
+        <PhantomTodo
+          onAdd={props.clickAddHandler}
+          style={{
+            backgroundColor: props.color.toString(),
+            color: props.color.negative().toString(),
+            transition: `all ${transitionTime}ms ease-out ${
+              transitionTime / 4
+            }ms`,
+          }}
+          className={transitionClass[state]}
+          mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
+        >
+          +Todo
+        </PhantomTodo>
+      )}
+    </Transition>
+  );
+
   let todoStyles = styles.todo;
   todoStyles += !todo.parent ? ` ${styles.bigTodo}` : "";
 
@@ -94,6 +130,7 @@ const Todo = React.forwardRef((props, ref) => {
     <div className={todoStyles} ref={dragRef} {...draggableProps}>
       {todoHead}
       {todoList}
+      {todoAdder}
     </div>
   );
 });
