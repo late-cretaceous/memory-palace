@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TodoKit from "../../utilities/storage";
 import TodoHead from "./TodoHead";
 import TodoList from "./TodoList";
-import PhantomTodo from "./PhantomTodo";
+import TodoAdder from "./TodoAdder";
 import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 
@@ -111,7 +111,7 @@ const Todo = React.forwardRef((props, ref) => {
       unmountOnExit
     >
       {(state) => (
-        <PhantomTodo
+        <TodoAdder
           index={todo.index}
           style={{
             backgroundColor: props.color.toString(),
@@ -125,11 +125,11 @@ const Todo = React.forwardRef((props, ref) => {
           onAdd={adderClickedHandler}
         >
           +Todo
-        </PhantomTodo>
+        </TodoAdder>
       )}
     </Transition>
   ) : (
-    <PhantomTodo
+    <TodoAdder
       index={-1}
       style={{
         backgroundColor: props.color.toString(),
@@ -140,7 +140,7 @@ const Todo = React.forwardRef((props, ref) => {
       onAdd={addChildHandler}
     >
       +Todo
-    </PhantomTodo>
+    </TodoAdder>
   );
 
   let todoStyles = styles.todo;

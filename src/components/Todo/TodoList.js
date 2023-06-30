@@ -1,6 +1,6 @@
 import styles from "./TodoList.module.css";
 import Todo from "./Todo";
-import PhantomTodo from "./PhantomTodo";
+import TodoAdder from "./TodoAdder";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { useState } from "react";
 import Drop from "../../utilities/Drop";
@@ -17,7 +17,7 @@ const TodoList = (props) => {
 
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return (
-      <PhantomTodo
+      <TodoAdder
         text="Phantom Todo"
         onAdd={clickAddHandler}
         style={{

@@ -1,6 +1,6 @@
 import styles from "./Todo.module.css";
 
-const PhantomTodo = (props) => {
+const TodoAdder = (props) => {
   const classes = `${styles[props.className]} ${styles.todo} ${styles.phantom}`;
 
   return (
@@ -16,4 +16,4 @@ const PhantomTodo = (props) => {
   );
 };
 
-export default PhantomTodo;
+export default TodoAdder;
