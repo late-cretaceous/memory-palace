@@ -11,8 +11,9 @@ const Todo = React.forwardRef((props, ref) => {
   const [listOpen, setListOpen] = useState(false);
   const transitionTime = 200;
 
-  const todoAddHandler = (e, index) => {
+  const addChildHandler = (e, index) => {
     e.stopPropagation();
+    console.log(`Top level index: ${index}`);
     const lineage = todo.lineage.concat(todo.newNumber());
 
     const childTodo = new TodoKit({
@@ -31,6 +32,11 @@ const Todo = React.forwardRef((props, ref) => {
     childTodo.store();
 
     setTodos(new TodoKit(todo));
+  };
+
+  const adderClickedHandler = (e, index) => {
+    console.log(`Bottom level index: ${index}`);
+    props.onAdd(e, index);
   };
 
   const todoRemoveHandler = (e) => {
@@ -81,7 +87,7 @@ const Todo = React.forwardRef((props, ref) => {
     <TodoList
       todos={todo.list}
       parent={todo}
-      onAdd={todoAddHandler}
+      onAdd={addChildHandler}
       onMove={todoMoveHandler}
       onRemove={todoRemoveHandler}
       color={props.color}
@@ -97,7 +103,7 @@ const Todo = React.forwardRef((props, ref) => {
     exited: "collapsed",
   };
 
-  const todoAdder = (
+  const todoAdder = todo.parent ? (
     <Transition
       in={todo.index + 1 === props.adderIndex}
       timeout={transitionTime}
@@ -106,7 +112,7 @@ const Todo = React.forwardRef((props, ref) => {
     >
       {(state) => (
         <PhantomTodo
-          onAdd={props.clickAddHandler}
+          index={todo.index}
           style={{
             backgroundColor: props.color.toString(),
             color: props.color.negative().toString(),
@@ -116,11 +122,25 @@ const Todo = React.forwardRef((props, ref) => {
           }}
           className={transitionClass[state]}
           mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
+          onAdd={adderClickedHandler}
         >
           +Todo
         </PhantomTodo>
       )}
     </Transition>
+  ) : (
+    <PhantomTodo
+      index={-1}
+      style={{
+        backgroundColor: props.color.toString(),
+        color: props.color.negative().toString(),
+        transition: `all ${transitionTime}ms ease-out ${transitionTime / 4}ms`,
+      }}
+      mouseEdgeLeaveHandler={() => {return}}
+      onAdd={addChildHandler}
+    >
+      +Todo
+    </PhantomTodo>
   );
 
   let todoStyles = styles.todo;

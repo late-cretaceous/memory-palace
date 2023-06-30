@@ -6,7 +6,7 @@ const PhantomTodo = (props) => {
   return (
     <div
       className={classes}
-      onClick={(e) => {props.onAdd(e, props.index)}}
+      onClick={(e) => {props.onAdd(e, props.index + 1)}}
       style={props.style}
       onMouseLeave={props.mouseEdgeLeaveHandler}
       data-name={"add"}

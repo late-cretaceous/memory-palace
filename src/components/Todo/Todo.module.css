@@ -1,7 +1,7 @@
 .todo {
   display: flex;
   flex-direction: column;
-  transition: flex-grow 0.1s ease-out 0s;
+  transition: all 1s ease-out 0s;
 }
 
 .phantom {

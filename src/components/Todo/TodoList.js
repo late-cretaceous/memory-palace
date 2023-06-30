@@ -4,28 +4,28 @@ import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { useState } from "react";
 import Drop from "../../utilities/Drop";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const TodoList = (props) => {
   const [edgeOver, setEdgeOver] = useState(null);
+
+  const clickAddHandler = (e, index) => {
+    console.log(index);
+    setEdgeOver(null);
+    props.onAdd(e, index);
+  };
 
   if (!props.todos.length && props.parent.id !== "bigTodo")
     return (
       <PhantomTodo
         text="Phantom Todo"
-        onAdd={props.onAdd}
+        onAdd={clickAddHandler}
         style={{
           backgroundColor: props.color.toString(),
           color: props.color.negative().toString(),
         }}
       />
     );
-
-  let recentMouseDown = false;
-
-  const clickAddHandler = (e, index) => {
-    setEdgeOver(null);
-    props.onAdd(e, index);
-  }
 
   const spectrum = props.color.shades(
     {
@@ -52,10 +52,11 @@ const TodoList = (props) => {
     }
   };
 
+
   const todoComponentList = props.todos.map((todo, index) => {
     todo.pullChildren();
-
     return (
+      <CSSTransition key={todo.id} timeout={2000} classNames={{...styles}} >
         <Draggable key={todo.id} draggableId={todo.id} index={index}>
           {(provided) => (
             <Todo
@@ -70,35 +71,24 @@ const TodoList = (props) => {
               mouseEdgeEnterHandler={mouseEdgeEnterHandler}
               mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
               adderIndex={edgeOver}
+              index={index}
+              onAdd={clickAddHandler}
             />
           )}
         </Draggable>
+      </CSSTransition>
     );
   });
 
-  const allowAddHandler = (e) => {
-    recentMouseDown = true;
-
-    setTimeout(() => {
-      recentMouseDown = false;
-    }, 250);
-  };
-
-  const todoAddHandler = (e) => {
-    if (!recentMouseDown) return;
-    props.onAdd(e);
-  };
 
   return (
     <div
       className={styles.flexcol}
-      onClick={todoAddHandler}
-      onMouseDown={allowAddHandler}
     >
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
           <ul className={`${styles.flexcol} ${styles.list}`}>
-            {todoComponentList}
+            <TransitionGroup>{todoComponentList}</TransitionGroup>
           </ul>
         </Drop>
       </DragDropContext>

@@ -10,3 +10,39 @@
     flex-direction: column;
     flex:auto;
 }
+
+.appear {
+    opacity: 1;
+}
+
+.appearActive {
+    opacity: 1;
+}
+
+.appearDone {
+    opacity: 1;
+}
+
+.enter {
+    opacity: 0;
+}
+
+.enterActive {
+    opacity: 0;
+}
+
+.enterDone {
+    opacity: 1;
+}
+
+.exit {
+    opacity: 0;
+}
+
+.exitActive {
+    opacity: 0;
+}
+
+.exitDone {
+    opacity: 0;
+}
