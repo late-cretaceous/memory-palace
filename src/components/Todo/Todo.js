@@ -10,10 +10,10 @@ const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(false);
   const transitionTime = 200;
+  const isPhantom = props.todo.id === "phantom";
 
   const addChildHandler = (e, index) => {
     e.stopPropagation();
-    console.log(`Top level index: ${index}`);
     const lineage = todo.lineage.concat(todo.newNumber());
 
     const childTodo = new TodoKit({
@@ -35,7 +35,6 @@ const Todo = React.forwardRef((props, ref) => {
   };
 
   const adderClickedHandler = (e, index) => {
-    console.log(`Bottom level index: ${index}`);
     props.onAdd(e, index);
   };
 
@@ -67,7 +66,7 @@ const Todo = React.forwardRef((props, ref) => {
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
 
-  const todoHead = todo.parent && (
+  const todoHead = !isPhantom && todo.parent && (
     <TodoHead
       todo={todo}
       onClose={props.onClose}
@@ -81,9 +80,9 @@ const Todo = React.forwardRef((props, ref) => {
     />
   );
 
-  const listOpenCondition = listOpen || !todo.parent;
+  const listOpenConditions = !isPhantom && (listOpen || !todo.parent);
 
-  const todoList = listOpenCondition && (
+  const todoList = listOpenConditions && (
     <TodoList
       todos={todo.list}
       parent={todo}
@@ -103,7 +102,7 @@ const Todo = React.forwardRef((props, ref) => {
     exited: "collapsed",
   };
 
-  const todoAdder = todo.parent ? (
+  const todoAdder = !isPhantom ? (
     <Transition
       in={todo.index + 1 === props.adderIndex}
       timeout={transitionTime}
@@ -123,6 +122,7 @@ const Todo = React.forwardRef((props, ref) => {
           className={transitionClass[state]}
           mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
           onAdd={adderClickedHandler}
+          mouseName={"add"}
         >
           +Todo
         </TodoAdder>
@@ -136,10 +136,13 @@ const Todo = React.forwardRef((props, ref) => {
         color: props.color.negative().toString(),
         transition: `all ${transitionTime}ms ease-out ${transitionTime / 4}ms`,
       }}
-      mouseEdgeLeaveHandler={() => {return}}
-      onAdd={addChildHandler}
+      mouseEdgeLeaveHandler={() => {
+        return;
+      }}
+      onAdd={adderClickedHandler}
+      mouseName={"phantom"}
     >
-      +Todo
+      Phantom
     </TodoAdder>
   );
 

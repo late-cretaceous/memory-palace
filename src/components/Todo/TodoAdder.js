@@ -9,7 +9,7 @@ const TodoAdder = (props) => {
       onClick={(e) => {props.onAdd(e, props.index + 1)}}
       style={props.style}
       onMouseLeave={props.mouseEdgeLeaveHandler}
-      data-name={"add"}
+      data-name={props.mouseName}
     >
       {props.children}
     </div>
