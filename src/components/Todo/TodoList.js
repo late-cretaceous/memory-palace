@@ -83,7 +83,7 @@ const TodoList = ({ todos, ...props }) => {
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
           <ul className={`${styles.flexcol} ${styles.list}`}>
-            <TransitionGroup>{todoComponentList}</TransitionGroup>
+            <TransitionGroup component={null}>{todoComponentList}</TransitionGroup>
           </ul>
         </Drop>
       </DragDropContext>
