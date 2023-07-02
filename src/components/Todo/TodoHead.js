@@ -110,7 +110,7 @@ const TodoHead = (props) => {
         )}
         <TodoBottom
           hover={hover}
-          arrowOpen={props.arrowOpen}
+          listOpen={props.listOpen}
           onListToggle={props.onListToggle}
         />
       </div>

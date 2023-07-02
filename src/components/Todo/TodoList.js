@@ -1,4 +1,5 @@
 import styles from "./TodoList.module.css";
+import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
@@ -42,10 +43,9 @@ const TodoList = ({ todos, ...props }) => {
 
   const todoComponentList = todos.length ? (
     todos.map((todo, index) => {
-      console.dir(todo);
       todo.pullChildren();
       return (
-        <CSSTransition key={todo.id} timeout={2000} classNames={{ ...styles }}>
+        <CSSTransition key={todo.id} timeout={1000} classNames={{ ...todoStyles }}>
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (
               <Todo

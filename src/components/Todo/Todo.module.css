@@ -1,7 +1,9 @@
+@import '../../index.css';
+
 .todo {
   display: flex;
   flex-direction: column;
-  transition: all 1s ease-out 0s;
+  height: var(--global-todo-height)
 }
 
 .phantom {
@@ -27,4 +29,31 @@
 
 .revealed {
   height: 1.5rem;
+}
+
+.appear {
+  height: 0;
+}
+
+.appearActive {
+  height: var(--global-todo-height);
+  transition: height var(--global-transition-time);
+}
+
+.enter {
+  height: 0;
+}
+
+.enterActive {
+  height: var(--global-todo-height);
+  transition: height var(--global-transition-time);
+}
+
+.exit {
+  height: var(--global-todo-height);
+}
+
+.exitActive {
+  height: 0;
+  transition: height var(--global-transition-time);
 }

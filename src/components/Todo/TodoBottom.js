@@ -8,7 +8,7 @@ const TodoBottom = (props) => {
       className={classes}
     >
       <button
-        className={props.arrowOpen ? styles.arrowopen : ""}
+        className={props.listOpen ? styles.arrowopen : ""}
         onClick={props.onListToggle}
       >
         {"\u25B6"}

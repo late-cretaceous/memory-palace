@@ -1,5 +1,7 @@
 #root {
   --global-left-padding: 1.5%;
+  --global-todo-height: 6rem;
+  --global-transition-time: 500ms;
 }
 
 html {

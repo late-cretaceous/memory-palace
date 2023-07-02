@@ -58,10 +58,6 @@ const Todo = React.forwardRef((props, ref) => {
     setTodos(new TodoKit(todo));
   };
 
-  const toggleListOpenHandler = () => {
-    setListOpen(!listOpen);
-  };
-
   const dragRef = props.provided && ref;
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
@@ -70,11 +66,10 @@ const Todo = React.forwardRef((props, ref) => {
     <TodoHead
       todo={todo}
       onClose={props.onClose}
-      onListToggle={toggleListOpenHandler}
-      arrowOpen={listOpen}
+      onListToggle={() => setListOpen(!listOpen)}
+      listOpen={listOpen}
       dragHandleProps={dragHandleProps}
       color={props.color}
-      listOpen={listOpen}
       mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
       mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
     />
@@ -150,7 +145,7 @@ const Todo = React.forwardRef((props, ref) => {
   todoStyles += !todo.parent ? ` ${styles.bigTodo}` : "";
 
   return (
-    <div className={todoStyles} ref={dragRef} {...draggableProps}>
+    <div className={todoStyles} ref={dragRef} {...draggableProps} style={props.style}>
       {todoHead}
       {todoList}
       {todoAdder}
