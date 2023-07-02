@@ -6,14 +6,18 @@
   height: var(--global-todo-height)
 }
 
+/* .phantom {
+  height: 0;
+} */
+
 .adder {
   font-weight: bold;
   text-align: center;
-  padding: 0.25rem;
   height: 1rem;
   cursor: pointer;
   justify-content: center;
-  overflow: hidden;
+  height: 1.5rem;
+  padding: 0.25rem;
 }
 
 .bigTodo {
@@ -22,13 +26,16 @@
   flex: auto;
 }
 
-.collapsed {
-  height: 0;
+.adder-entering {
+  overflow: hidden;
+  height: 1.5rem;
   padding: 0;
 }
 
-.revealed {
-  height: 1.5rem;
+.adder-exiting {
+  overflow: hidden;
+  height: 0rem;
+  padding: 0;
 }
 
 .appear {

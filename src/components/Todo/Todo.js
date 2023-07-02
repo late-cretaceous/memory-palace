@@ -91,10 +91,10 @@ const Todo = React.forwardRef((props, ref) => {
   );
 
   const transitionClass = {
-    entering: "revealed",
-    entered: "revealed",
-    exiting: "collapsed",
-    exited: "collapsed",
+    entering: "adder-entering",
+    entered: "adder-entering",
+    exiting: "adder-exiting",
+    exited: "adder-exiting",
   };
 
   const todoAdder = !isPhantom ? (
@@ -143,6 +143,7 @@ const Todo = React.forwardRef((props, ref) => {
 
   let todoStyles = styles.todo;
   todoStyles += !todo.parent ? ` ${styles.bigTodo}` : "";
+  todoStyles += isPhantom && ` ${styles.phantom}`;
 
   return (
     <div className={todoStyles} ref={dragRef} {...draggableProps} style={props.style}>
