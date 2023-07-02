@@ -92,9 +92,15 @@ const Todo = React.forwardRef((props, ref) => {
 
   const transitionClass = {
     entering: "adder-entering",
-    entered: "adder-entering",
+    entered: "adder-entered",
     exiting: "adder-exiting",
-    exited: "adder-exiting",
+    exited: "adder-exited",
+  };
+
+  const todoAdderInlineStyles = {
+    backgroundColor: props.color.adjustedHCL(30, -10, 0).toString(),
+    color: props.color.negative().adjustedHCL(30, -10, 0).toString(),
+    transition: `all ${transitionTime}ms ease-out ${transitionTime / 4}ms`,
   };
 
   const todoAdder = !isPhantom ? (
@@ -107,13 +113,7 @@ const Todo = React.forwardRef((props, ref) => {
       {(state) => (
         <TodoAdder
           index={todo.index}
-          style={{
-            backgroundColor: props.color.toString(),
-            color: props.color.negative().toString(),
-            transition: `all ${transitionTime}ms ease-out ${
-              transitionTime / 4
-            }ms`,
-          }}
+          style={todoAdderInlineStyles}
           className={transitionClass[state]}
           mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
           onAdd={adderClickedHandler}
@@ -126,11 +126,7 @@ const Todo = React.forwardRef((props, ref) => {
   ) : (
     <TodoAdder
       index={-1}
-      style={{
-        backgroundColor: props.color.toString(),
-        color: props.color.negative().toString(),
-        transition: `all ${transitionTime}ms ease-out ${transitionTime / 4}ms`,
-      }}
+      style={todoAdderInlineStyles}
       mouseEdgeLeaveHandler={() => {
         return;
       }}
@@ -143,10 +139,15 @@ const Todo = React.forwardRef((props, ref) => {
 
   let todoStyles = styles.todo;
   todoStyles += !todo.parent ? ` ${styles.bigTodo}` : "";
-  todoStyles += isPhantom && ` ${styles.phantom}`;
+  todoStyles += isPhantom ? ` ${styles.phantom}` : "";
 
   return (
-    <div className={todoStyles} ref={dragRef} {...draggableProps} style={props.style}>
+    <div
+      className={todoStyles}
+      ref={dragRef}
+      {...draggableProps}
+      style={props.style}
+    >
       {todoHead}
       {todoList}
       {todoAdder}

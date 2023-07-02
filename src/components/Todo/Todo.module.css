@@ -29,10 +29,19 @@
 .adder-entering {
   overflow: hidden;
   height: 1.5rem;
-  padding: 0;
+}
+
+.adder-entered {
+  height: 1.5rem;
 }
 
 .adder-exiting {
+  overflow: hidden;
+  height: 0rem;
+  padding:0; 
+}
+
+.adder-exited {
   overflow: hidden;
   height: 0rem;
   padding: 0;
