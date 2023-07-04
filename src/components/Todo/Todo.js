@@ -98,8 +98,8 @@ const Todo = React.forwardRef((props, ref) => {
   };
 
   const todoAdderInlineStyles = {
-    backgroundColor: props.color.adjustedHCL(30, -10, 0).toString(),
-    color: props.color.negative().adjustedHCL(30, -10, 0).toString(),
+    backgroundColor: props.color.adjustedHCL(0, 0, 5).toString(),
+    color: props.color.negative().adjustedHCL(0, 0, 5).toString(),
     transition: `all ${transitionTime}ms ease-out ${transitionTime / 4}ms`,
   };
 
