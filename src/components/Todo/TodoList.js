@@ -69,7 +69,7 @@ const TodoList = ({ todos, ...props }) => {
       );
     })
   ) : (
-    <CSSTransition key={'phantom'} timeout={2000} classNames={{ ...styles }}>
+    <CSSTransition key={'phantom'} timeout={1000} classNames={{ ...todoStyles }}>
       <PhantomTodo
         parent={props.parent}
         color={props.color}

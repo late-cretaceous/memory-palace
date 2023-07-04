@@ -3,7 +3,6 @@
 .todo {
   display: flex;
   flex-direction: column;
-  height: auto;
 }
 
 .appear {
@@ -12,7 +11,18 @@
 
 .appearActive {
   height: var(--global-todo-height);
-  transition: height var(--global-transition-time);
+  transition: all var(--global-transition-time);
+}
+
+.appear {
+  height: 0;
+  visibility: hidden;
+}
+
+.appearActive {
+  height: var(--global-todo-height);
+  transition: all var(--global-transition-time);
+  visibility: hidden;
 }
 
 .enter {
@@ -21,7 +31,7 @@
 
 .enterActive {
   height: var(--global-todo-height);
-  transition: height var(--global-transition-time);
+  transition: all var(--global-transition-time);
 }
 
 .exit {
@@ -30,13 +40,36 @@
 
 .exitActive {
   height: 0;
-  transition: height var(--global-transition-time);
+  transition: all var(--global-transition-time);
+}
+
+enter.phantom {
+  height: 0;
+  transition: all var(--global-transition-time);
+  overflow: hidden;
+}
+
+.enterActive.phantom {
+  height: 2rem;
+  transition: all var(--global-transition-time);
+  overflow: hidden;
+}
+
+.exit.phantom {
+  height: 2rem;
+  transition: all var(--global-transition-time);
+  overflow: hidden;
+}
+
+.exitActive.phantom {
+  height: 0;
+  transition: all var(--global-transition-time);
+  overflow: hidden;
 }
 
 .adder {
   font-weight: bold;
   text-align: center;
-  height: 1rem;
   cursor: pointer;
   justify-content: center;
   height: 1.5rem;
@@ -68,8 +101,4 @@
   display: flex;
   flex-direction: column;
   flex: auto;
-}
-
-.phantom {
-  height: auto;
 }
