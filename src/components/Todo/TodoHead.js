@@ -4,26 +4,24 @@ import TodoBottom from "./TodoBottom";
 
 const TodoHead = (props) => {
   const todo = props.todo;
-  const [label, setLabel] = useState(
-    todo.isParent() ? todo.message : todo.lineage.join(".")
-  );
+  const isParent = todo.isParent();
+  const listOpen = props.listOpen;
+
+  const [label, setLabel] = useState(todo.lineage.join("."));
   const [body, setBody] = useState(
-    todo.isParent() ? todo.youngestDescendant().message : todo.message
+    isParent ? todo.youngestDescendant().message : todo.message
   );
   const [hover, setHover] = useState(false);
 
-  const todoIsParent = todo.isParent();
-  const showBody = !props.listOpen || !todo.isParent();
-
   useEffect(() => {
-    setLabel(todoIsParent ? todo.message : todo.lineage.join("."));
-    setBody(todoIsParent ? todo.youngestDescendant().message : todo.message);
-  }, [todoIsParent, showBody]);
+    setLabel(isParent || listOpen ? todo.message : todo.lineage.join("."));
+    setBody(isParent ? todo.youngestDescendant().message : todo.message);
+  }, [isParent, listOpen]);
 
   const typeBodyHandler = (e) => {
     setBody(e.target.value);
 
-    if (todo.isParent) {
+    if (isParent) {
       todo.youngestDescendant().message = e.target.value;
     } else {
       todo.message = e.target.value;
@@ -47,7 +45,7 @@ const TodoHead = (props) => {
   useEffect(() => {
     const storeMessage = setTimeout(() => {
       todo.store();
-      if (todo.isParent) todo.youngestDescendant().store();
+      if (isParent) todo.youngestDescendant().store();
     }, 750);
 
     return () => {
@@ -55,9 +53,13 @@ const TodoHead = (props) => {
     };
   }, [body, label]);
 
+  const todoHeadStyles = `${styles.todohead} ${
+    listOpen ? styles.preview : styles.full
+  }`;
+
   return (
     <div
-      className={styles.todohead}
+      className={todoHeadStyles}
       style={{
         backgroundColor: props.color.toString(),
         color: props.color.negative().toString(),
@@ -80,7 +82,7 @@ const TodoHead = (props) => {
           className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
         >
           <h5 className={`${styles.label}`}>
-            {todo.isParent() ? (
+            {isParent ? (
               <textarea
                 placeholder="Type a list title"
                 onChange={typeLabelHandler}
@@ -99,7 +101,7 @@ const TodoHead = (props) => {
             <span id={todo.id}>{"\u2715"}</span>
           </button>
         </div>
-        {showBody && (
+        {!listOpen && (
           <textarea
             className={`${styles.visible}`}
             placeholder="Type a to-do"
@@ -110,11 +112,11 @@ const TodoHead = (props) => {
         )}
         <TodoBottom
           hover={hover}
-          listOpen={props.listOpen}
+          listOpen={listOpen}
           onListToggle={props.onListToggle}
         />
       </div>
-      {!props.listOpen && (
+      {!listOpen && (
         <div
           className={styles["edge-hitbox"]}
           onMouseEnter={(e) => {

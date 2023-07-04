@@ -3,48 +3,7 @@
 .todo {
   display: flex;
   flex-direction: column;
-  height: var(--global-todo-height)
-}
-
-/* .phantom {
-  height: 0;
-} */
-
-.adder {
-  font-weight: bold;
-  text-align: center;
-  height: 1rem;
-  cursor: pointer;
-  justify-content: center;
-  height: 1.5rem;
-  padding: 0.25rem;
-}
-
-.bigTodo {
-  display: flex;
-  flex-direction: column;
-  flex: auto;
-}
-
-.adder-entering {
-  overflow: hidden;
-  height: 1.5rem;
-}
-
-.adder-entered {
-  height: 1.5rem;
-}
-
-.adder-exiting {
-  overflow: hidden;
-  height: 0rem;
-  padding:0; 
-}
-
-.adder-exited {
-  overflow: hidden;
-  height: 0rem;
-  padding: 0;
+  height: auto;
 }
 
 .appear {
@@ -72,4 +31,45 @@
 .exitActive {
   height: 0;
   transition: height var(--global-transition-time);
+}
+
+.adder {
+  font-weight: bold;
+  text-align: center;
+  height: 1rem;
+  cursor: pointer;
+  justify-content: center;
+  height: 1.5rem;
+  padding: 0.25rem;
+}
+
+.adder-entering {
+  overflow: hidden;
+  height: 1.5rem;
+}
+
+.adder-entered {
+  height: 1.5rem;
+}
+
+.adder-exiting {
+  overflow: hidden;
+  height: 0rem;
+  padding:0; 
+}
+
+.adder-exited {
+  overflow: hidden;
+  height: 0rem;
+  padding: 0;
+}
+
+.bigTodo {
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+}
+
+.phantom {
+  height: auto;
 }

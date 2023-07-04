@@ -1,14 +1,21 @@
 @import '../../index.css';
 
 .todohead {
-  --transition-time: 0.5s;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   justify-content: space-between;
-  transition: all var(--transition-time) ease-out 0s;
+  transition: all var(--global-transition-time) ease-out 0s;
   opacity: 1;
   overflow: hidden;
+}
+
+.todohead.full {
+  height: var(--global-todo-height);
+}
+
+.todohead.preview {
+  height: 3rem;
 }
 
 .todoface {
