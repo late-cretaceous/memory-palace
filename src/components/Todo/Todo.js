@@ -146,7 +146,6 @@ const Todo = React.forwardRef((props, ref) => {
       className={todoStyles}
       ref={dragRef}
       {...draggableProps}
-      style={props.style}
     >
       {todoHead}
       {todoList}
