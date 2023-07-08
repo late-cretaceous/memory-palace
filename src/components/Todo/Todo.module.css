@@ -7,15 +7,6 @@
 
 .appear {
   height: 0;
-}
-
-.appearActive {
-  height: var(--global-todo-height);
-  transition: all var(--global-transition-time);
-}
-
-.appear {
-  height: 0;
   visibility: hidden;
 }
 

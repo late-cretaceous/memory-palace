@@ -5,6 +5,7 @@ import TodoList from "./TodoList";
 import TodoAdder from "./TodoAdder";
 import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
+import constants from "../constants.js";
 
 const Todo = React.forwardRef((props, ref) => {
   const [todo, setTodos] = useState(props.todo);
@@ -76,21 +77,42 @@ const Todo = React.forwardRef((props, ref) => {
   );
 
   const listOpenConditions = !isPhantom && (listOpen || !todo.parent);
+  const listHeight = todo.list.length
+    ? todo.list.length * constants.TODO_HEIGHT_REM
+    : constants.ADDER_HEIGHT_REM;
 
-  const todoList = listOpenConditions && (
-    <TodoList
-      todos={todo.list}
-      parent={todo}
-      onAdd={addChildHandler}
-      onMove={todoMoveHandler}
-      onRemove={todoRemoveHandler}
-      color={props.color}
-      spectrumRange={props.spectrumRange}
-      lightRange={props.lightRange}
-    />
+  const listTransition = {
+    entering: { height: `${listHeight}rem`, overflow:"hidden" },
+    entered: { height: `${listHeight}rem`},
+    exiting: { height: 0, overflow: "hidden" },
+    exited: { height: 0, overflow: "hidden" },
+  };
+
+  const todoList = (
+    <Transition
+      in={listOpenConditions}
+      timeout={500}
+      unmountOnExit
+    >
+      {(state) => (
+        <TodoList
+          todos={todo.list}
+          parent={todo}
+          onAdd={addChildHandler}
+          onMove={todoMoveHandler}
+          onRemove={todoRemoveHandler}
+          color={props.color}
+          spectrumRange={props.spectrumRange}
+          lightRange={props.lightRange}
+          style={{
+            ...listTransition[state],
+            transition: `all ${500}ms ease-in-out`,
+          }}
+        />
+      )}
+    </Transition>
   );
-
-  const transitionClass = {
+  const adderTransitionClass = {
     entering: "adder-entering",
     entered: "adder-entered",
     exiting: "adder-exiting",
@@ -114,7 +136,7 @@ const Todo = React.forwardRef((props, ref) => {
         <TodoAdder
           index={todo.index}
           style={todoAdderInlineStyles}
-          className={transitionClass[state]}
+          className={adderTransitionClass[state]}
           mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
           onAdd={adderClickedHandler}
           mouseName={"add"}
@@ -142,12 +164,7 @@ const Todo = React.forwardRef((props, ref) => {
   todoStyles += isPhantom ? ` ${styles.phantom}` : "";
 
   return (
-    <div
-      className={todoStyles}
-      ref={dragRef}
-      {...draggableProps}
-      style={props.style}
-    >
+    <div className={todoStyles} ref={dragRef} {...draggableProps}>
       {todoHead}
       {todoList}
       {todoAdder}

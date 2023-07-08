@@ -79,7 +79,7 @@ const TodoList = ({ todos, ...props }) => {
   );
 
   return (
-    <div className={styles.flexcol}>
+    <div className={styles.flexcol} style={props.style}>
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
           <ul className={`${styles.flexcol} ${styles.list}`}>
