@@ -45,35 +45,46 @@ const TodoList = ({ todos, ...props }) => {
     todos.map((todo, index) => {
       todo.pullChildren();
       return (
-        <CSSTransition key={todo.id} timeout={1000} classNames={{ ...todoStyles }}>
+        <CSSTransition
+          key={todo.id}
+          timeout={1000}
+          classNames={{ ...todoStyles }}
+        >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (
-              <Todo
-                todo={todo}
-                parent={props.parent}
-                ref={provided.innerRef}
-                provided={provided}
-                onClose={props.onRemove}
-                color={spectrum[index]}
-                spectrumRange={props.spectrumRange / todos.length}
-                lightRange={props.lightRange / todos.length}
-                mouseEdgeEnterHandler={mouseEdgeEnterHandler}
-                mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
-                adderIndex={edgeOver}
-                index={index}
-                onAdd={clickAddHandler}
-              />
+              <div ref={provided.innerRef}>
+                <Todo
+                  todo={todo}
+                  parent={props.parent}
+                  provided={provided}
+                  onClose={props.onRemove}
+                  color={spectrum[index]}
+                  spectrumRange={props.spectrumRange / todos.length}
+                  lightRange={props.lightRange / todos.length}
+                  mouseEdgeEnterHandler={mouseEdgeEnterHandler}
+                  mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
+                  adderIndex={edgeOver}
+                  index={index}
+                  onAdd={clickAddHandler}
+                  onResize={props.onResizeChild}
+                />
+              </div>
             )}
           </Draggable>
         </CSSTransition>
       );
     })
   ) : (
-    <CSSTransition key={'phantom'} timeout={1000} classNames={{ ...todoStyles }}>
+    <CSSTransition
+      key={"phantom"}
+      timeout={1000}
+      classNames={{ ...todoStyles }}
+    >
       <PhantomTodo
         parent={props.parent}
         color={props.color}
         onAdd={clickAddHandler}
+        onResize={props.onResizeChild}
       />
     </CSSTransition>
   );
@@ -83,7 +94,9 @@ const TodoList = ({ todos, ...props }) => {
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
           <ul className={`${styles.flexcol} ${styles.list}`}>
-            <TransitionGroup component={null}>{todoComponentList}</TransitionGroup>
+            <TransitionGroup component={null}>
+              {todoComponentList}
+            </TransitionGroup>
           </ul>
         </Drop>
       </DragDropContext>

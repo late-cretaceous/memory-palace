@@ -1,6 +1,6 @@
 const constants = {
-  TODO_HEIGHT_REM: 6,
-  ADDER_HEIGHT_REM: 2,
+  TODO_HEIGHT_PX: 96,
+  ADDER_HEIGHT_PX: 32,
 };
 
 export default constants;
