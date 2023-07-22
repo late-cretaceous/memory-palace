@@ -32,13 +32,7 @@ const TodoList = ({ todos, ...props }) => {
   };
 
   const mouseEdgeLeaveHandler = (e) => {
-    const mouseTo = e.relatedTarget.dataset
-      ? e.relatedTarget.dataset.name
-      : null;
-
-    if (mouseTo !== "add" && mouseTo !== "edgebox") {
-      setEdgeOver(null);
-    }
+    setEdgeOver(null);
   };
 
   const todoComponentList = todos.length ? (
@@ -66,7 +60,7 @@ const TodoList = ({ todos, ...props }) => {
                   adderIndex={edgeOver}
                   index={index}
                   onAdd={clickAddHandler}
-                  onResize={props.onResizeChild}
+                  onResize={props.onResizedChild}
                 />
               </div>
             )}

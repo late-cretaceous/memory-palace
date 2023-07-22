@@ -25,10 +25,6 @@ function App() {
     bigTodo.pullDescendants();
   }
 
-  bigTodo.listHierarchy().forEach(todo => {
-    todo.height = constants.TODO_HEIGHT_PX;
-  });
-
   const color = HSL.random();
 
   //scaffold to print messages in case of update crash

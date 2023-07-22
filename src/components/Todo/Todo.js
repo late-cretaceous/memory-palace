@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import TodoKit from "../../utilities/storage";
 import TodoHead from "./TodoHead";
 import TodoList from "./TodoList";
@@ -10,13 +10,14 @@ import constants from "../constants.js";
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(false);
-  const [resized, setResized] = useState(false);
+  const [listHeight, setListHeight] = useState(
+    todo.list.length
+      ? todo.list.length * constants.TODO_HEIGHT_PX
+      : constants.ADDER_HEIGHT_PX
+  );
   const adderOpen = todo.index + 1 === props.adderIndex;
   const transitionTime = 200;
   const isPhantom = props.todo.id === "phantom";
-  const ref = useRef(null);
-  const onResize = props.onResize;
-  console.log(`${todo.id}: ${todo.height}`);
 
   const addChildHandler = (e, index) => {
     e.stopPropagation();
@@ -32,15 +33,14 @@ const Todo = (props) => {
       listLoaded: true,
     });
 
-    childTodo.height = constants.TODO_HEIGHT_PX;
-
     todo.add(childTodo);
 
     todo.store();
     childTodo.store();
 
     setTodos(new TodoKit(todo));
-    setResized(true);
+
+    props.onResize(constants.TODO_HEIGHT_PX);
   };
 
   const adderClickedHandler = (e, index) => {
@@ -56,6 +56,8 @@ const Todo = (props) => {
     localStorage.removeItem(e.target.id);
 
     setTodos(todoCopy);
+
+    props.onResize(-constants.TODO_HEIGHT_PX);
   };
 
   const todoMoveHandler = (e) => {
@@ -67,23 +69,27 @@ const Todo = (props) => {
     setTodos(new TodoKit(todo));
   };
 
-  const resizeChildHandler = () => {
-    console.log(`${todo.id} resized`);
-    setResized(false);
-  };
+  const resizedChildHandler = (adjustment) => {
+    const newHeight =
+      listHeight + adjustment !== 0
+        ? listHeight + adjustment
+        : constants.ADDER_HEIGHT_PX;
 
-  useEffect(() => {
-    if (resized) {
-      todo.height = ref.current.offsetHeight;
-      onResize();
-      setResized(false);
-    }
-  }, [resized, onResize, todo]);
+    setListHeight(newHeight);
+
+    props.onResize(adjustment);
+  };
 
   const adderOpenHandler = (e, index) => {
-    setResized(true);
+    props.onResize(constants.ADDER_HEIGHT_PX);
     props.mouseEdgeEnterHandler(e, index);
   };
+
+  const adderCloseHandler = () => {
+    props.onResize(-constants.ADDER_HEIGHT_PX);
+    console.log(`Constance minus: ${-constants.ADDER_HEIGHT_PX}`)
+    props.mouseEdgeLeaveHandler();
+  }
 
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
@@ -97,17 +103,11 @@ const Todo = (props) => {
       dragHandleProps={dragHandleProps}
       color={props.color}
       mouseEdgeEnterHandler={adderOpenHandler}
-      mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
+      mouseEdgeLeaveHandler={adderCloseHandler}
     />
   );
 
   const listOpenConditions = !isPhantom && (listOpen || !todo.parent);
-  const listHeight = todo.list.length
-    ? todo.list.reduce(
-        (accumulator, currentTodo) => accumulator + currentTodo.height,
-        0
-      )
-    : constants.ADDER_HEIGHT_PX;
 
   const listTransition = {
     entering: { height: `${listHeight}px`, overflow: "hidden" },
@@ -125,7 +125,7 @@ const Todo = (props) => {
           onAdd={addChildHandler}
           onMove={todoMoveHandler}
           onRemove={todoRemoveHandler}
-          onResizeChild={resizeChildHandler}
+          onResizedChild={resizedChildHandler}
           color={props.color}
           spectrumRange={props.spectrumRange}
           lightRange={props.lightRange}
@@ -147,7 +147,7 @@ const Todo = (props) => {
   const todoAdderInlineStyles = {
     backgroundColor: props.color.adjustedHCL(0, 0, 5).toString(),
     color: props.color.negative().adjustedHCL(0, 0, 5).toString(),
-    transition: `all ${transitionTime}ms ease-out ${transitionTime / 4}ms`,
+    transition: `all ${transitionTime}ms ease-out`,
   };
 
   const todoAdder = !isPhantom ? (
@@ -189,7 +189,7 @@ const Todo = (props) => {
   todoStyles += isPhantom ? ` ${styles.phantom}` : "";
 
   return (
-    <div className={todoStyles} {...draggableProps} ref={ref}>
+    <div className={todoStyles} {...draggableProps}>
       {todoHead}
       {todoList}
       {todoAdder}
