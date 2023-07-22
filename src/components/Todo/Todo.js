@@ -10,11 +10,7 @@ import constants from "../constants.js";
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(false);
-  const [listHeight, setListHeight] = useState(
-    todo.list.length
-      ? todo.list.length * constants.TODO_HEIGHT_PX
-      : constants.ADDER_HEIGHT_PX
-  );
+
   const adderOpen = todo.index + 1 === props.adderIndex;
   const transitionTime = 200;
   const isPhantom = props.todo.id === "phantom";
@@ -39,8 +35,6 @@ const Todo = (props) => {
     childTodo.store();
 
     setTodos(new TodoKit(todo));
-
-    props.onResize(constants.TODO_HEIGHT_PX);
   };
 
   const adderClickedHandler = (e, index) => {
@@ -56,8 +50,6 @@ const Todo = (props) => {
     localStorage.removeItem(e.target.id);
 
     setTodos(todoCopy);
-
-    props.onResize(-constants.TODO_HEIGHT_PX);
   };
 
   const todoMoveHandler = (e) => {
@@ -69,27 +61,7 @@ const Todo = (props) => {
     setTodos(new TodoKit(todo));
   };
 
-  const resizedChildHandler = (adjustment) => {
-    const newHeight =
-      listHeight + adjustment !== 0
-        ? listHeight + adjustment
-        : constants.ADDER_HEIGHT_PX;
-
-    setListHeight(newHeight);
-
-    props.onResize(adjustment);
-  };
-
-  const adderOpenHandler = (e, index) => {
-    props.onResize(constants.ADDER_HEIGHT_PX);
-    props.mouseEdgeEnterHandler(e, index);
-  };
-
-  const adderCloseHandler = () => {
-    props.onResize(-constants.ADDER_HEIGHT_PX);
-    console.log(`Constance minus: ${-constants.ADDER_HEIGHT_PX}`)
-    props.mouseEdgeLeaveHandler();
-  }
+  const resizedChildHandler = (adjustment) => {};
 
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
@@ -102,12 +74,18 @@ const Todo = (props) => {
       listOpen={listOpen}
       dragHandleProps={dragHandleProps}
       color={props.color}
-      mouseEdgeEnterHandler={adderOpenHandler}
-      mouseEdgeLeaveHandler={adderCloseHandler}
+      mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
+      mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
     />
   );
 
   const listOpenConditions = !isPhantom && (listOpen || !todo.parent);
+
+  const listHeight = todo.isBigTodo()
+    ? "auto"
+    : todo.list.length
+    ? todo.list.length * constants.TODO_HEIGHT_PX
+    : constants.ADDER_HEIGHT_PX;
 
   const listTransition = {
     entering: { height: `${listHeight}px`, overflow: "hidden" },
@@ -116,8 +94,17 @@ const Todo = (props) => {
     exited: { height: 0, overflow: "hidden" },
   };
 
+  const enterFunc = (node) => {
+    node.style.height = "auto";
+  };
+
   const todoList = (
-    <Transition in={listOpenConditions} timeout={500} unmountOnExit>
+    <Transition
+      in={listOpenConditions}
+      timeout={500}
+      unmountOnExit
+      onEntered={enterFunc}
+    >
       {(state) => (
         <TodoList
           todos={todo.list}

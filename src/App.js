@@ -2,7 +2,6 @@ import Header from "./components/Header";
 import Todo from "./components/Todo/Todo";
 import TodoKit from "./utilities/storage";
 import HSL from "./utilities/colors";
-import constants from "./components/constants";
 
 function App() {
   const storageEmpty = !localStorage.getItem("bigTodo");

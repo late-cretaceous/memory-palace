@@ -41,7 +41,7 @@ const TodoList = ({ todos, ...props }) => {
       return (
         <CSSTransition
           key={todo.id}
-          timeout={1000}
+          timeout={10000}
           classNames={{ ...todoStyles }}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
