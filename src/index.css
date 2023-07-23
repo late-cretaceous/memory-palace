@@ -2,7 +2,7 @@
   --global-left-padding: 1.5%;
   --global-todo-height: 6rem;
   --global-todo-preview-height: 3rem;
-  --global-transition-time: 1000ms;
+  --global-transition-time: 500ms;
 }
 
 html {

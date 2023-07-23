@@ -94,7 +94,7 @@ const Todo = (props) => {
     : constants.ADDER_HEIGHT_PX;
 
   const listEnteredHeight =
-    listOpen === "opening" ? `${listAnimationHeight}px` : "auto";
+    listOpen === "opened" ? "auto" : `${listAnimationHeight}px`;
 
   const listTransition = {
     entering: { height: `${listAnimationHeight}px`, overflow: "hidden" },
@@ -108,13 +108,13 @@ const Todo = (props) => {
   }
 
   const listExitHandler = node => {
-    node.style.height = listAnimationHeight;
+    node.style.height = `${listAnimationHeight}px`;
   }
 
   const todoList = (
     <Transition
       in={listOpenConditions}
-      timeout={10000}
+      timeout={500}
       unmountOnExit
       onEntered={listEnteredHandler}
       onExit={listExitHandler}
