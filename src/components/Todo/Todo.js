@@ -9,11 +9,13 @@ import constants from "../constants.js";
 
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
-  const [listOpen, setListOpen] = useState(false);
+  const [listOpen, setListOpen] = useState(todo.isBigTodo() ? "opened" : null);
 
   const adderOpen = todo.index + 1 === props.adderIndex;
   const transitionTime = 200;
   const isPhantom = props.todo.id === "phantom";
+
+  console.log(`${todo.id}: ${listOpen}`);
 
   const addChildHandler = (e, index) => {
     e.stopPropagation();
@@ -61,16 +63,22 @@ const Todo = (props) => {
     setTodos(new TodoKit(todo));
   };
 
-  const resizedChildHandler = (adjustment) => {};
-
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
+
+  const listToggleHandler = () => {
+    if (!listOpen) {
+      setListOpen("opening");
+    } else {
+      setListOpen(null);
+    }
+  };
 
   const todoHead = !isPhantom && todo.parent && (
     <TodoHead
       todo={todo}
       onClose={props.onClose}
-      onListToggle={() => setListOpen(!listOpen)}
+      onListToggle={listToggleHandler}
       listOpen={listOpen}
       dragHandleProps={dragHandleProps}
       color={props.color}
@@ -79,31 +87,37 @@ const Todo = (props) => {
     />
   );
 
-  const listOpenConditions = !isPhantom && (listOpen || !todo.parent);
+  const listOpenConditions = !isPhantom && (Boolean(listOpen) || !todo.parent);
 
-  const listHeight = todo.isBigTodo()
-    ? "auto"
-    : todo.list.length
+  const listAnimationHeight = todo.list.length
     ? todo.list.length * constants.TODO_HEIGHT_PX
     : constants.ADDER_HEIGHT_PX;
 
+  const listEnteredHeight =
+    listOpen === "opening" ? `${listAnimationHeight}px` : "auto";
+
   const listTransition = {
-    entering: { height: `${listHeight}px`, overflow: "hidden" },
-    entered: { height: `${listHeight}px` },
+    entering: { height: `${listAnimationHeight}px`, overflow: "hidden" },
+    entered: { height: listEnteredHeight },
     exiting: { height: 0, overflow: "hidden" },
     exited: { height: 0, overflow: "hidden" },
   };
 
-  const enterFunc = (node) => {
-    node.style.height = "auto";
-  };
+  const listEnteredHandler = ()=> {
+    setListOpen("opened");
+  }
+
+  const listExitHandler = node => {
+    node.style.height = listAnimationHeight;
+  }
 
   const todoList = (
     <Transition
       in={listOpenConditions}
-      timeout={500}
+      timeout={10000}
       unmountOnExit
-      onEntered={enterFunc}
+      onEntered={listEnteredHandler}
+      onExit={listExitHandler}
     >
       {(state) => (
         <TodoList
@@ -112,7 +126,6 @@ const Todo = (props) => {
           onAdd={addChildHandler}
           onMove={todoMoveHandler}
           onRemove={todoRemoveHandler}
-          onResizedChild={resizedChildHandler}
           color={props.color}
           spectrumRange={props.spectrumRange}
           lightRange={props.lightRange}

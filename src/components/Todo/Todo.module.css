@@ -3,7 +3,6 @@
 .todo {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .appear {

@@ -60,7 +60,6 @@ const TodoList = ({ todos, ...props }) => {
                   adderIndex={edgeOver}
                   index={index}
                   onAdd={clickAddHandler}
-                  onResize={props.onResizedChild}
                 />
               </div>
             )}
@@ -78,7 +77,6 @@ const TodoList = ({ todos, ...props }) => {
         parent={props.parent}
         color={props.color}
         onAdd={clickAddHandler}
-        onResize={props.onResizeChild}
       />
     </CSSTransition>
   );

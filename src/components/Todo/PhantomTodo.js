@@ -11,7 +11,6 @@ const PhantomTodo = (props) => {
       todo={new TodoKit({ ...props.parent, id: "phantom", })}
       color={props.color}
       onAdd={adderClickedHandler}
-      onResize={props.onResize}
     />
   );
 };
