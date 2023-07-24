@@ -3,11 +3,11 @@ import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-const TodoList = ({ todos, ...props }) => {
+const TodoList = forwardRef(({ todos, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
 
   const clickAddHandler = (e, index) => {
@@ -82,7 +82,7 @@ const TodoList = ({ todos, ...props }) => {
   );
 
   return (
-    <div className={styles.flexcol} style={props.style}>
+    <div className={styles.flexcol} style={props.style} ref={ref}>
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
           <ul className={`${styles.flexcol} ${styles.list}`}>
@@ -94,7 +94,7 @@ const TodoList = ({ todos, ...props }) => {
       </DragDropContext>
     </div>
   );
-};
+});
 
 const spectrumLog = (spectrum, hueStep, satStep, lightStep) => {
   const shades = Array.from(spectrum, (shade) => shade.toString());

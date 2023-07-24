@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import TodoKit from "../../utilities/storage";
 import TodoHead from "./TodoHead";
 import TodoList from "./TodoList";
@@ -10,9 +10,9 @@ import constants from "../constants.js";
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(todo.isBigTodo() ? "opened" : null);
+  const listRef = useRef(null);
 
   const adderOpen = todo.index + 1 === props.adderIndex;
-  const transitionTime = 200;
   const isPhantom = props.todo.id === "phantom";
 
   console.log(`${todo.id}: ${listOpen}`);
@@ -103,13 +103,15 @@ const Todo = (props) => {
     exited: { height: 0, overflow: "hidden" },
   };
 
-  const listEnteredHandler = ()=> {
+  const listEnteredHandler = () => {
     setListOpen("opened");
-  }
+  };
 
-  const listExitHandler = node => {
+  const listExitHandler = (node) => {
+    console.log(`List height from offset: ${listRef.current.offsetHeight}`);
+
     node.style.height = `${listAnimationHeight}px`;
-  }
+  };
 
   const todoList = (
     <Transition
@@ -133,6 +135,7 @@ const Todo = (props) => {
             ...listTransition[state],
             transition: `all ${500}ms ease-in-out`,
           }}
+          ref={listRef}
         />
       )}
     </Transition>
@@ -147,16 +150,11 @@ const Todo = (props) => {
   const todoAdderInlineStyles = {
     backgroundColor: props.color.adjustedHCL(0, 0, 5).toString(),
     color: props.color.negative().adjustedHCL(0, 0, 5).toString(),
-    transition: `all ${transitionTime}ms ease-out`,
+    transition: `all 200ms ease-out`,
   };
 
   const todoAdder = !isPhantom ? (
-    <Transition
-      in={adderOpen}
-      timeout={transitionTime}
-      mountOnEnter
-      unmountOnExit
-    >
+    <Transition in={adderOpen} timeout={200} mountOnEnter unmountOnExit>
       {(state) => (
         <TodoAdder
           index={todo.index}
