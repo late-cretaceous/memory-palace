@@ -9,11 +9,8 @@ import constants from "../constants.js";
 
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
-  const [listPhase, setListPhase] = useState(
-    todo.isBigTodo() ? "opened" : "closed"
-  );
+  const [listOpen, setListOpen] = useState(todo.isBigTodo() ? true : false);
 
-  const listIsOpen = listPhase === "closed" ? false : true;
   const listRef = useRef(null);
   const adderOpen = todo.index + 1 === props.adderIndex;
   const isPhantom = props.todo.id === "phantom";
@@ -68,11 +65,7 @@ const Todo = (props) => {
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
 
   const listToggleHandler = () => {
-    if (!listIsOpen) {
-      setListPhase("opening");
-    } else {
-      setListPhase("closed");
-    }
+    setListOpen((prev) => !prev);
   };
 
   const todoHead = !isPhantom && todo.parent && (
@@ -80,7 +73,7 @@ const Todo = (props) => {
       todo={todo}
       onClose={props.onClose}
       onListToggle={listToggleHandler}
-      listOpen={listIsOpen}
+      listOpen={listOpen}
       dragHandleProps={dragHandleProps}
       color={props.color}
       mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
@@ -88,27 +81,23 @@ const Todo = (props) => {
     />
   );
 
-  const listOpenConditions = !isPhantom && (listIsOpen || !todo.parent);
+  const listOpenConditions = !isPhantom && (listOpen || !todo.parent);
 
-  const listAnimationHeight = todo.list.length
+  const listEnteringHeight = todo.list.length
     ? todo.list.length * constants.TODO_HEIGHT_PX
     : constants.ADDER_HEIGHT_PX;
 
-  const listEnteredHeight = {
-    opening: listAnimationHeight,
-    opened: "auto",
-    closed: listRef.current ? listRef.current.offsetHeight : null,
-  }[listPhase];
+  const listEnteredHeight = listOpen
+    ? "auto"
+    : listRef.current
+    ? `${listRef.current.offsetHeight}px`
+    : null;
 
   const listTransition = {
-    entering: { height: `${listAnimationHeight}px`, overflow: "hidden" },
+    entering: { height: `${listEnteringHeight}px`, overflow: "hidden" },
     entered: { height: listEnteredHeight },
     exiting: { height: 0, overflow: "hidden" },
     exited: { height: 0, overflow: "hidden" },
-  };
-
-  const listEnteredHandler = () => {
-    setListPhase("opened");
   };
 
   const todoList = (
@@ -116,7 +105,6 @@ const Todo = (props) => {
       in={listOpenConditions}
       timeout={500}
       unmountOnExit
-      onEntered={listEnteredHandler}
     >
       {(state) => (
         <TodoList
