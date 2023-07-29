@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import TodoKit from "../../utilities/storage";
 import TodoHead from "./TodoHead";
 import TodoList from "./TodoList";
@@ -9,13 +9,14 @@ import constants from "../constants.js";
 
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
-  const [listOpen, setListOpen] = useState(todo.isBigTodo() ? "opened" : null);
-  const listRef = useRef(null);
+  const [listPhase, setListPhase] = useState(
+    todo.isBigTodo() ? "opened" : "closed"
+  );
 
+  const listIsOpen = listPhase === "closed" ? false : true;
+  const listRef = useRef(null);
   const adderOpen = todo.index + 1 === props.adderIndex;
   const isPhantom = props.todo.id === "phantom";
-
-  console.log(`${todo.id}: ${listOpen}`);
 
   const addChildHandler = (e, index) => {
     e.stopPropagation();
@@ -67,10 +68,10 @@ const Todo = (props) => {
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
 
   const listToggleHandler = () => {
-    if (!listOpen) {
-      setListOpen("opening");
+    if (!listIsOpen) {
+      setListPhase("opening");
     } else {
-      setListOpen(null);
+      setListPhase("closed");
     }
   };
 
@@ -79,7 +80,7 @@ const Todo = (props) => {
       todo={todo}
       onClose={props.onClose}
       onListToggle={listToggleHandler}
-      listOpen={listOpen}
+      listOpen={listIsOpen}
       dragHandleProps={dragHandleProps}
       color={props.color}
       mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
@@ -87,14 +88,17 @@ const Todo = (props) => {
     />
   );
 
-  const listOpenConditions = !isPhantom && (Boolean(listOpen) || !todo.parent);
+  const listOpenConditions = !isPhantom && (listIsOpen || !todo.parent);
 
   const listAnimationHeight = todo.list.length
     ? todo.list.length * constants.TODO_HEIGHT_PX
     : constants.ADDER_HEIGHT_PX;
 
-  const listEnteredHeight =
-    listOpen === "opened" ? "auto" : `${listAnimationHeight}px`;
+  const listEnteredHeight = {
+    opening: listAnimationHeight,
+    opened: "auto",
+    closed: listRef.current ? listRef.current.offsetHeight : null,
+  }[listPhase];
 
   const listTransition = {
     entering: { height: `${listAnimationHeight}px`, overflow: "hidden" },
@@ -104,13 +108,7 @@ const Todo = (props) => {
   };
 
   const listEnteredHandler = () => {
-    setListOpen("opened");
-  };
-
-  const listExitHandler = (node) => {
-    console.log(`List height from offset: ${listRef.current.offsetHeight}`);
-
-    node.style.height = `${listAnimationHeight}px`;
+    setListPhase("opened");
   };
 
   const todoList = (
@@ -119,7 +117,6 @@ const Todo = (props) => {
       timeout={500}
       unmountOnExit
       onEntered={listEnteredHandler}
-      onExit={listExitHandler}
     >
       {(state) => (
         <TodoList
