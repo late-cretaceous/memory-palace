@@ -12,6 +12,7 @@ const TodoHead = (props) => {
     isParent ? todo.youngestDescendant().message : todo.message
   );
   const [hover, setHover] = useState(false);
+  const [edgeBoxTimeout, setEdgeBoxTimeout] = useState(null);
 
   useEffect(() => {
     setLabel(isParent || listOpen ? todo.message : todo.lineage.join("."));
@@ -40,6 +41,33 @@ const TodoHead = (props) => {
 
   const hoverHandler = () => {
     setHover((prevHover) => !prevHover);
+  };
+
+  const onEdgeBoxEnter = (e, index) => {
+    const edgeTimeoutId = setTimeout(() => {
+      props.mouseEdgeEnterHandler(e, index);
+      setEdgeBoxTimeout(null);
+    }, 100);
+
+    setEdgeBoxTimeout(edgeTimeoutId);
+  };
+
+  const onEdgeBoxLeave = (e) => {
+    if (edgeBoxTimeout) {
+      clearTimeout(edgeBoxTimeout);
+      setEdgeBoxTimeout(null);
+      return;
+    }
+
+    const mouseTo = e.relatedTarget.dataset
+      ? e.relatedTarget.dataset.name
+      : null;
+
+    if (mouseTo !== "add" && mouseTo !== "edgebox") {
+      props.mouseEdgeLeaveHandler();
+    }
+    
+    setEdgeBoxTimeout(null);
   };
 
   useEffect(() => {
@@ -72,9 +100,9 @@ const TodoHead = (props) => {
       <div
         className={styles["edge-hitbox"]}
         onMouseEnter={(e) => {
-          props.mouseEdgeEnterHandler(e, todo.index);
+          onEdgeBoxEnter(e, todo.index);
         }}
-        onMouseLeave={props.mouseEdgeLeaveHandler}
+        onMouseLeave={onEdgeBoxLeave}
         data-name="edgebox"
       ></div>
       <div className={styles.todoface} {...props.dragHandleProps}>
@@ -120,9 +148,9 @@ const TodoHead = (props) => {
         <div
           className={styles["edge-hitbox"]}
           onMouseEnter={(e) => {
-            props.mouseEdgeEnterHandler(e, todo.index + 1);
+            onEdgeBoxEnter(e, todo.index + 1);
           }}
-          onMouseLeave={props.mouseEdgeLeaveHandler}
+          onMouseLeave={onEdgeBoxLeave}
         ></div>
       )}
     </div>

@@ -15,7 +15,7 @@
 }
 
 .todohead.preview {
-  height: 3rem;
+  height: var(--global-todo-preview-height);
 }
 
 .todoface {

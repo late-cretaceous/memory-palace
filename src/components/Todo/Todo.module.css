@@ -7,40 +7,35 @@
 
 .appear {
   height: 0;
+  overflow: hidden;
 }
 
 .appearActive {
   height: var(--global-todo-height);
   transition: all var(--global-transition-time);
-}
-
-.appear {
-  height: 0;
-  visibility: hidden;
-}
-
-.appearActive {
-  height: var(--global-todo-height);
-  transition: all var(--global-transition-time);
-  visibility: hidden;
+  overflow: hidden;
 }
 
 .enter {
   height: 0;
+  overflow: hidden;
 }
 
 .enterActive {
   height: var(--global-todo-height);
   transition: all var(--global-transition-time);
+  overflow: hidden;
 }
 
 .exit {
   height: var(--global-todo-height);
+  overflow: hidden;
 }
 
 .exitActive {
   height: 0;
   transition: all var(--global-transition-time);
+  overflow: hidden;
 }
 
 enter.phantom {

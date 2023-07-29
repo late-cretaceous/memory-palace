@@ -3,11 +3,11 @@ import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-const TodoList = ({ todos, ...props }) => {
+const TodoList = forwardRef(({ todos, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
 
   const clickAddHandler = (e, index) => {
@@ -32,44 +32,47 @@ const TodoList = ({ todos, ...props }) => {
   };
 
   const mouseEdgeLeaveHandler = (e) => {
-    const mouseTo = e.relatedTarget.dataset
-      ? e.relatedTarget.dataset.name
-      : null;
-
-    if (mouseTo !== "add" && mouseTo !== "edgebox") {
-      setEdgeOver(null);
-    }
+    setEdgeOver(null);
   };
 
   const todoComponentList = todos.length ? (
     todos.map((todo, index) => {
       todo.pullChildren();
       return (
-        <CSSTransition key={todo.id} timeout={1000} classNames={{ ...todoStyles }}>
+        <CSSTransition
+          key={todo.id}
+          timeout={1000}
+          classNames={{ ...todoStyles }}
+        >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (
-              <Todo
-                todo={todo}
-                parent={props.parent}
-                ref={provided.innerRef}
-                provided={provided}
-                onClose={props.onRemove}
-                color={spectrum[index]}
-                spectrumRange={props.spectrumRange / todos.length}
-                lightRange={props.lightRange / todos.length}
-                mouseEdgeEnterHandler={mouseEdgeEnterHandler}
-                mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
-                adderIndex={edgeOver}
-                index={index}
-                onAdd={clickAddHandler}
-              />
+              <div ref={provided.innerRef}>
+                <Todo
+                  todo={todo}
+                  parent={props.parent}
+                  provided={provided}
+                  onClose={props.onRemove}
+                  color={spectrum[index]}
+                  spectrumRange={props.spectrumRange / todos.length}
+                  lightRange={props.lightRange / todos.length}
+                  mouseEdgeEnterHandler={mouseEdgeEnterHandler}
+                  mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
+                  adderIndex={edgeOver}
+                  index={index}
+                  onAdd={clickAddHandler}
+                />
+              </div>
             )}
           </Draggable>
         </CSSTransition>
       );
     })
   ) : (
-    <CSSTransition key={'phantom'} timeout={1000} classNames={{ ...todoStyles }}>
+    <CSSTransition
+      key={"phantom"}
+      timeout={1000}
+      classNames={{ ...todoStyles }}
+    >
       <PhantomTodo
         parent={props.parent}
         color={props.color}
@@ -79,17 +82,19 @@ const TodoList = ({ todos, ...props }) => {
   );
 
   return (
-    <div className={styles.flexcol}>
+    <div className={styles.flexcol} style={props.style} ref={ref}>
       <DragDropContext onDragEnd={props.onMove}>
         <Drop id="todoDropArea">
           <ul className={`${styles.flexcol} ${styles.list}`}>
-            <TransitionGroup component={null}>{todoComponentList}</TransitionGroup>
+            <TransitionGroup component={null}>
+              {todoComponentList}
+            </TransitionGroup>
           </ul>
         </Drop>
       </DragDropContext>
     </div>
   );
-};
+});
 
 const spectrumLog = (spectrum, hueStep, satStep, lightStep) => {
   const shades = Array.from(spectrum, (shade) => shade.toString());
