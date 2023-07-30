@@ -67,7 +67,7 @@ const TodoHead = (props) => {
     >
       <Edgebox
         mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
-        mouseEdgeEdgeHandler={props.mouseEdgeLeaveHandler}
+        mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
         todoIndex={todo.index}
         top={true}
       />
@@ -113,7 +113,7 @@ const TodoHead = (props) => {
       {!listOpen && (
         <Edgebox
           mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
-          mouseEdgeEdgeHandler={props.mouseEdgeLeaveHandler}
+          mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
           todoIndex={todo.index}
           top={false}
         />
