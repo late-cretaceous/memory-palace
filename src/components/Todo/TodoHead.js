@@ -35,10 +35,6 @@ const TodoHead = (props) => {
     todo.message = e.target.value;
   };
 
-  const stopBubbleHandler = (e) => {
-    e.stopPropagation();
-  };
-
   const hoverHandler = () => {
     setHover((prevHover) => !prevHover);
   };
@@ -66,7 +62,6 @@ const TodoHead = (props) => {
         color: props.color.negative().toString(),
       }}
       id={todo.id}
-      onClick={stopBubbleHandler}
       onMouseEnter={hoverHandler}
       onMouseLeave={hoverHandler}
     >
