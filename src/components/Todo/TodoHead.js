@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./TodoHead.module.css";
 import TodoBottom from "./TodoBottom";
 import Edgebox from "./Edgebox";
+import { CSSTransition } from "react-transition-group";
 
 const TodoHead = (props) => {
   const todo = props.todo;
@@ -95,15 +96,19 @@ const TodoHead = (props) => {
             <span id={todo.id}>{"\u2715"}</span>
           </button>
         </div>
-        {!listOpen && (
+        <CSSTransition
+          in={!listOpen}
+          timeout={500}
+          unmountOnExit
+          classNames={{ ...styles }}
+        >
           <textarea
-            className={`${styles.visible}`}
             placeholder="Type a to-do"
             onChange={typeBodyHandler}
             value={body}
             autoFocus
           ></textarea>
-        )}
+        </CSSTransition>
         <TodoBottom
           hover={hover}
           listOpen={listOpen}
