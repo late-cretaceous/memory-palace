@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./TodoHead.module.css";
 import TodoBottom from "./TodoBottom";
+import Edgebox from "./Edgebox";
 
 const TodoHead = (props) => {
   const todo = props.todo;
@@ -12,7 +13,6 @@ const TodoHead = (props) => {
     isParent ? todo.youngestDescendant().message : todo.message
   );
   const [hover, setHover] = useState(false);
-  const [edgeBoxTimeout, setEdgeBoxTimeout] = useState(null);
 
   useEffect(() => {
     setLabel(isParent || listOpen ? todo.message : todo.lineage.join("."));
@@ -43,33 +43,6 @@ const TodoHead = (props) => {
     setHover((prevHover) => !prevHover);
   };
 
-  const onEdgeBoxEnter = (e, index) => {
-    const edgeTimeoutId = setTimeout(() => {
-      props.mouseEdgeEnterHandler(e, index);
-      setEdgeBoxTimeout(null);
-    }, 100);
-
-    setEdgeBoxTimeout(edgeTimeoutId);
-  };
-
-  const onEdgeBoxLeave = (e) => {
-    if (edgeBoxTimeout) {
-      clearTimeout(edgeBoxTimeout);
-      setEdgeBoxTimeout(null);
-      return;
-    }
-
-    const mouseTo = e.relatedTarget.dataset
-      ? e.relatedTarget.dataset.name
-      : null;
-
-    if (mouseTo !== "add" && mouseTo !== "edgebox") {
-      props.mouseEdgeLeaveHandler();
-    }
-    
-    setEdgeBoxTimeout(null);
-  };
-
   useEffect(() => {
     const storeMessage = setTimeout(() => {
       todo.store();
@@ -97,14 +70,12 @@ const TodoHead = (props) => {
       onMouseEnter={hoverHandler}
       onMouseLeave={hoverHandler}
     >
-      <div
-        className={styles["edge-hitbox"]}
-        onMouseEnter={(e) => {
-          onEdgeBoxEnter(e, todo.index);
-        }}
-        onMouseLeave={onEdgeBoxLeave}
-        data-name="edgebox"
-      ></div>
+      <Edgebox
+        mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
+        mouseEdgeEdgeHandler={props.mouseEdgeLeaveHandler}
+        todoIndex={todo.index}
+        top={true}
+      />
       <div className={styles.todoface} {...props.dragHandleProps}>
         <div
           className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
@@ -145,13 +116,12 @@ const TodoHead = (props) => {
         />
       </div>
       {!listOpen && (
-        <div
-          className={styles["edge-hitbox"]}
-          onMouseEnter={(e) => {
-            onEdgeBoxEnter(e, todo.index + 1);
-          }}
-          onMouseLeave={onEdgeBoxLeave}
-        ></div>
+        <Edgebox
+          mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
+          mouseEdgeEdgeHandler={props.mouseEdgeLeaveHandler}
+          todoIndex={todo.index}
+          top={false}
+        />
       )}
     </div>
   );
