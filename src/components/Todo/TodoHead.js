@@ -36,10 +36,6 @@ const TodoHead = (props) => {
     todo.message = e.target.value;
   };
 
-  const hoverHandler = () => {
-    setHover((prevHover) => !prevHover);
-  };
-
   useEffect(() => {
     const storeMessage = setTimeout(() => {
       todo.store();
@@ -63,8 +59,8 @@ const TodoHead = (props) => {
         color: props.color.negative().toString(),
       }}
       id={todo.id}
-      onMouseEnter={hoverHandler}
-      onMouseLeave={hoverHandler}
+      onMouseEnter={() => {setHover(true)}}
+      onMouseLeave={() => {setHover(false)}}
     >
       <Edgebox
         mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
