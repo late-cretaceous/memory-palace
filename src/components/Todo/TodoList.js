@@ -53,8 +53,8 @@ const TodoList = forwardRef(({ todos, ...props }, ref) => {
                   provided={provided}
                   onClose={props.onRemove}
                   color={spectrum[index]}
-                  spectrumRange={props.spectrumRange / todos.length}
-                  lightRange={props.lightRange / todos.length}
+                  spectrumRange={props.spectrumRange * 2 / todos.length}
+                  lightRange={props.lightRange * 2 / todos.length }
                   mouseEdgeEnterHandler={mouseEdgeEnterHandler}
                   mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
                   adderIndex={edgeOver}

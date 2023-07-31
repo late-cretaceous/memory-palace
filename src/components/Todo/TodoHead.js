@@ -59,8 +59,12 @@ const TodoHead = (props) => {
         color: props.color.negative().toString(),
       }}
       id={todo.id}
-      onMouseEnter={() => {setHover(true)}}
-      onMouseLeave={() => {setHover(false)}}
+      onMouseEnter={() => {
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        setHover(false);
+      }}
     >
       <Edgebox
         mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
@@ -68,7 +72,11 @@ const TodoHead = (props) => {
         todoIndex={todo.index}
         top={true}
       />
-      <div className={styles.todoface} {...props.dragHandleProps}>
+      <div
+        className={styles.todoface}
+        {...props.dragHandleProps}
+        style={{ paddingLeft: `${1 + (todo.lineage.length - 1) * 2}rem` }}
+      >
         <div
           className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
         >
