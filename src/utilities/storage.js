@@ -23,6 +23,10 @@ const TodoKit = class {
     return todo instanceof TodoKit;
   }
 
+  isBigTodo() {
+    return this.id === "bigTodo";
+  }
+
   hasTodo(todo) {
     return Boolean(this.lookup(todo.id));
   }

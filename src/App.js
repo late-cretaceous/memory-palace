@@ -40,6 +40,7 @@ function App() {
         color={color}
         spectrumRange={60}
         lightRange={color.randomSignWithinBounds(20, "light")}
+        onResize={() => null}
       />
     </>
   );

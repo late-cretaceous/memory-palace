@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./TodoHead.module.css";
 import TodoBottom from "./TodoBottom";
+import Edgebox from "./Edgebox";
+import { CSSTransition } from "react-transition-group";
 
 const TodoHead = (props) => {
   const todo = props.todo;
@@ -34,14 +36,6 @@ const TodoHead = (props) => {
     todo.message = e.target.value;
   };
 
-  const stopBubbleHandler = (e) => {
-    e.stopPropagation();
-  };
-
-  const hoverHandler = () => {
-    setHover((prevHover) => !prevHover);
-  };
-
   useEffect(() => {
     const storeMessage = setTimeout(() => {
       todo.store();
@@ -65,19 +59,24 @@ const TodoHead = (props) => {
         color: props.color.negative().toString(),
       }}
       id={todo.id}
-      onClick={stopBubbleHandler}
-      onMouseEnter={hoverHandler}
-      onMouseLeave={hoverHandler}
+      onMouseEnter={() => {
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        setHover(false);
+      }}
     >
+      <Edgebox
+        mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
+        mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
+        todoIndex={todo.index}
+        top={true}
+      />
       <div
-        className={styles["edge-hitbox"]}
-        onMouseEnter={(e) => {
-          props.mouseEdgeEnterHandler(e, todo.index);
-        }}
-        onMouseLeave={props.mouseEdgeLeaveHandler}
-        data-name="edgebox"
-      ></div>
-      <div className={styles.todoface} {...props.dragHandleProps}>
+        className={styles.todoface}
+        {...props.dragHandleProps}
+        style={{ paddingLeft: `${1 + (todo.lineage.length - 1) * 2}rem` }}
+      >
         <div
           className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
         >
@@ -101,15 +100,19 @@ const TodoHead = (props) => {
             <span id={todo.id}>{"\u2715"}</span>
           </button>
         </div>
-        {!listOpen && (
+        <CSSTransition
+          in={!listOpen}
+          timeout={500}
+          unmountOnExit
+          classNames={{ ...styles }}
+        >
           <textarea
-            className={`${styles.visible}`}
             placeholder="Type a to-do"
             onChange={typeBodyHandler}
             value={body}
             autoFocus
           ></textarea>
-        )}
+        </CSSTransition>
         <TodoBottom
           hover={hover}
           listOpen={listOpen}
@@ -117,13 +120,12 @@ const TodoHead = (props) => {
         />
       </div>
       {!listOpen && (
-        <div
-          className={styles["edge-hitbox"]}
-          onMouseEnter={(e) => {
-            props.mouseEdgeEnterHandler(e, todo.index + 1);
-          }}
-          onMouseLeave={props.mouseEdgeLeaveHandler}
-        ></div>
+        <Edgebox
+          mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
+          mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
+          todoIndex={todo.index}
+          top={false}
+        />
       )}
     </div>
   );

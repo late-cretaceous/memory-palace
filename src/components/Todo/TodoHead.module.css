@@ -15,7 +15,7 @@
 }
 
 .todohead.preview {
-  height: 3rem;
+  height: var(--global-todo-preview-height);
 }
 
 .todoface {
@@ -79,7 +79,6 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
   font: inherit;
   font-weight:bold;
   outline: none;
-  transition: all 0.5s ease-out 0s;
   color: inherit;
   padding: 0px;
   flex-grow: 1;
@@ -124,4 +123,22 @@ For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
 
 .edge-hitbox {
   height: 5px;
+}
+
+.enter {
+  opacity: 0;
+}
+
+.enterActive {
+  opacity: 1;
+  transition: opacity var(--global-transition-time);
+}
+
+.exit {
+  opacity: 1;
+}
+
+.exitActive {
+  opacity: 0;
+  transition: opacity var(--global-transition-time);
 }
