@@ -1,0 +1,17 @@
+.textArea {
+  width: auto;
+  height: auto;
+  display: inline-block;
+}
+
+.textAreaTEMPORARY {
+  background-color:transparent;
+  border: none;
+  resize: none;
+  font: inherit;
+  font-weight:bold;
+  outline: none;
+  color: inherit;
+  padding: 0px;
+  flex-grow: 1;
+}
