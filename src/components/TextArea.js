@@ -17,12 +17,7 @@ const TextArea = (props) => {
     }, 17);
   }
 
-  const textAreaWidth = (text) => {
-    const trailingSpaces = text.match(/\s+$/);
-    const trailingSpacesLength = trailingSpaces
-      ? trailingSpaces[0].length * spaceWidth
-      : 0;
-
+  const pureTextAreaWidth = (text) => {
     const tempElement = document.createElement("span");
     tempElement.style.visibility = "hidden";
     tempElement.style.position = "absolute";
@@ -31,21 +26,24 @@ const TextArea = (props) => {
     tempElement.textContent = text;
 
     containerRef.current.appendChild(tempElement);
-    const width =
-      tempElement.getBoundingClientRect().width +
-      trailingSpacesLength +
-      spaceWidth;
+    const width = tempElement.getBoundingClientRect().width;
     containerRef.current.removeChild(tempElement);
 
     return width;
   };
 
+  const textComponentWidth = (text, trail) => {
+    const trailArea = trail > spaceWidth ? trail : spaceWidth;
+
+    return pureTextAreaWidth(text) + trailArea;
+  };
+
   useEffect(() => {
-    setSpaceWidth(textAreaWidth("_ _") - textAreaWidth("__"));
+    setSpaceWidth(pureTextAreaWidth("_ _") - pureTextAreaWidth("__"));
   }, []);
 
   useLayoutEffect(() => {
-    setTextWidth(textAreaWidth(typedText));
+    setTextWidth(textComponentWidth(typedText, props.trail));
     setDisplayedText(typedText);
 
     if (cursorPosition !== null) {
@@ -64,8 +62,9 @@ const TextArea = (props) => {
   };
 
   return (
-    <div ref={containerRef} className={styles.textArea}>
+    <div ref={containerRef}>
       <textarea
+        className={styles.textArea}
         onInput={typeTextHandler}
         value={displayedText}
         style={{ width: `${textWidth}px` }}

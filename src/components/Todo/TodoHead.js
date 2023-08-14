@@ -96,9 +96,7 @@ const TodoHead = (props) => {
             value={body}
           ></textarea>
         </CSSTransition>
-        <div>
-          <TextArea todo={todo}/>
-        </div>
+        <TextArea trail={20} />
         <TodoBottom
           hover={hover}
           listOpen={listOpen}

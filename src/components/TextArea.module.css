@@ -1,7 +1,5 @@
 .textArea {
-  width: auto;
-  height: auto;
-  display: inline-block;
+  max-width: 100%;
 }
 
 .textAreaTEMPORARY {
