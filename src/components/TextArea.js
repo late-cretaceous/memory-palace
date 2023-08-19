@@ -1,7 +1,7 @@
 import styles from "./TextArea.module.css";
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
 
-const TextArea = (props) => {
+const TextArea = ({ trail = 0, containerHover = false }) => {
   const [typedText, setTypedText] = useState("Test Div Test Drive");
   const [displayedText, setDisplayedText] = useState(typedText);
   const [textWidth, setTextWidth] = useState(0);
@@ -48,7 +48,7 @@ const TextArea = (props) => {
   }, []);
 
   useLayoutEffect(() => {
-    setTextWidth(textComponentWidth(typedText, props.trail));
+    setTextWidth(textComponentWidth(typedText, trail));
     setDisplayedText(typedText);
 
     if (cursorPosition !== null) {
@@ -69,7 +69,9 @@ const TextArea = (props) => {
   return (
     <div ref={containerRef}>
       <textarea
-        className={`${styles.textArea} ${!isTyping && styles.buttoned}`}
+        className={`${styles.textArea} ${
+          isTyping ? styles.highlighted : containerHover ? styles.buttoned : ""
+        } `}
         onInput={typeTextHandler}
         value={displayedText}
         style={{
