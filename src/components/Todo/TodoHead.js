@@ -91,12 +91,13 @@ const TodoHead = (props) => {
           classNames={{ ...styles }}
         >
           <textarea
+            className={styles.textArea}
             placeholder="Type a to-do"
             onChange={typeBodyHandler}
             value={body}
           ></textarea>
         </CSSTransition>
-        <TextArea trail={20} />
+        <TextArea trail={0} />
         <TodoBottom
           hover={hover}
           listOpen={listOpen}

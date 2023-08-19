@@ -2,7 +2,8 @@
   max-width: 100%;
 }
 
-.textAreaTEMPORARY {
+.textArea {
+  max-width: 100%;
   background-color:transparent;
   border: none;
   resize: none;
@@ -10,6 +11,10 @@
   font-weight:bold;
   outline: none;
   color: inherit;
-  padding: 0px;
   flex-grow: 1;
+}
+
+.buttoned {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
 }

@@ -8,6 +8,8 @@ const TextArea = (props) => {
   const [textAreaFreeze, setTextAreaFreeze] = useState(false);
   const [spaceWidth, setSpaceWidth] = useState(0);
   const [cursorPosition, setCursorPosition] = useState(null);
+  const [isTyping, setIsTyping] = useState(false);
+  console.log(isTyping);
 
   const containerRef = useRef(null);
 
@@ -22,17 +24,20 @@ const TextArea = (props) => {
     tempElement.style.visibility = "hidden";
     tempElement.style.position = "absolute";
     tempElement.style.whiteSpace = "pre";
-    tempElement.classList.add(styles.textAreaTEMPORARY);
+    tempElement.classList.add(styles.textArea);
     tempElement.textContent = text;
 
     containerRef.current.appendChild(tempElement);
-    const width = tempElement.getBoundingClientRect().width;
+    const width = parseFloat(getComputedStyle(tempElement).width);
     containerRef.current.removeChild(tempElement);
+
+    console.log(width);
 
     return width;
   };
 
   const textComponentWidth = (text, trail) => {
+    console.log(spaceWidth);
     const trailArea = trail > spaceWidth ? trail : spaceWidth;
 
     return pureTextAreaWidth(text) + trailArea;
@@ -64,11 +69,17 @@ const TextArea = (props) => {
   return (
     <div ref={containerRef}>
       <textarea
-        className={styles.textArea}
+        className={`${styles.textArea} ${!isTyping && styles.buttoned}`}
         onInput={typeTextHandler}
         value={displayedText}
-        style={{ width: `${textWidth}px` }}
+        style={{
+          width: `${textWidth}px`,
+          padding: `5px ${spaceWidth * 2}px 5px ${spaceWidth * 3}px`,
+        }}
         readOnly={textAreaFreeze}
+        onFocus={() => setIsTyping(true)}
+        onBlur={() => setIsTyping(false)}
+        rows={1}
       />
     </div>
   );

@@ -72,7 +72,7 @@
 
 /* Note: apparently there is no native way to make textarea expand like a div to accommodate its content
 For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
-.todohead textarea {
+.textArea {
   background-color:transparent;
   border: none;
   resize: none;
