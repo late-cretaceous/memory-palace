@@ -9,7 +9,7 @@ const TextArea = ({ trail = 0, containerHover = false }) => {
   const [spaceWidth, setSpaceWidth] = useState(0);
   const [cursorPosition, setCursorPosition] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
-  console.log(isTyping);
+  const [containerWidth, setContainerWidth] = useState(0);
 
   const containerRef = useRef(null);
 
@@ -18,6 +18,26 @@ const TextArea = ({ trail = 0, containerHover = false }) => {
       setTextAreaFreeze(false);
     }, 17);
   }
+
+  useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        setContainerWidth(entry.contentRect.width);
+      });
+    });
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    const cleanUpRef = containerRef.current;
+    return () => {
+      if (cleanUpRef) {
+        observer.unobserve(cleanUpRef);
+      }
+      observer.disconnect();
+    };
+  }, []);
 
   const pureTextAreaWidth = (text) => {
     const tempElement = document.createElement("span");
@@ -31,13 +51,10 @@ const TextArea = ({ trail = 0, containerHover = false }) => {
     const width = parseFloat(getComputedStyle(tempElement).width);
     containerRef.current.removeChild(tempElement);
 
-    console.log(width);
-
     return width;
   };
 
   const textComponentWidth = (text, trail) => {
-    console.log(spaceWidth);
     const trailArea = trail > spaceWidth ? trail : spaceWidth;
 
     return pureTextAreaWidth(text) + trailArea;
@@ -68,21 +85,29 @@ const TextArea = ({ trail = 0, containerHover = false }) => {
 
   return (
     <div ref={containerRef}>
-      <textarea
-        className={`${styles.textArea} ${
+      <div
+        className={`${styles.textHighlight} ${
           isTyping ? styles.highlighted : containerHover ? styles.buttoned : ""
         } `}
-        onInput={typeTextHandler}
-        value={displayedText}
         style={{
           width: `${textWidth}px`,
-          padding: `5px ${spaceWidth * 2}px 5px ${spaceWidth * 3}px`,
+          padding: `0.25rem ${spaceWidth * 2}px 0 ${spaceWidth * 3}px`,
         }}
-        readOnly={textAreaFreeze}
-        onFocus={() => setIsTyping(true)}
-        onBlur={() => setIsTyping(false)}
-        rows={1}
-      />
+      >
+        <textarea
+          className={styles.textArea}
+          onInput={typeTextHandler}
+          value={displayedText}
+          style={{
+            width: `${textWidth}px`,
+            maxWidth: `${textWidth >= containerWidth ? "100%" : "none"}`
+          }}
+          readOnly={textAreaFreeze}
+          onFocus={() => setIsTyping(true)}
+          onBlur={() => setIsTyping(false)}
+          rows={1}
+        />
+      </div>
     </div>
   );
 };

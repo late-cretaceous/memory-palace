@@ -1,9 +1,4 @@
 .textArea {
-  max-width: 100%;
-}
-
-.textArea {
-  max-width: 100%;
   background-color:transparent;
   border: none;
   resize: none;
@@ -12,7 +7,14 @@
   outline: none;
   color: inherit;
   flex-grow: 1;
+  padding: 0;
+  display: box;
+}
+
+.textHighlight {
   border-radius: 1rem;
+  transition: all 0.075s ease-out;
+  max-width: 98%;
 }
 
 .buttoned {
