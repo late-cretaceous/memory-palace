@@ -105,7 +105,7 @@ const TextArea = ({ trail = 0, containerHover = false }) => {
           readOnly={textAreaFreeze}
           onFocus={() => setIsTyping(true)}
           onBlur={() => setIsTyping(false)}
-          rows={1}
+          rows={textWidth < containerWidth ? 1 : 2}
         />
       </div>
     </div>
