@@ -20,13 +20,13 @@ const TodoHead = (props) => {
   }, [isParent, listOpen]);
 
   //this will need to be updated so there is one on the second span to type into the youngest descendent
-  const typeBodyHandler = (e) => {
-    setBody(e.target.value);
+  const typeBodyHandler = (textInput) => {
+    setBody(textInput);
 
     if (isParent) {
-      todo.youngestDescendant().message = e.target.value;
+      todo.youngestDescendant().message = textInput;
     } else {
-      todo.message = e.target.value;
+      todo.message = textInput;
     }
   };
 
@@ -90,14 +90,13 @@ const TodoHead = (props) => {
           unmountOnExit
           classNames={{ ...styles }}
         >
-          <textarea
-            className={styles.textArea}
-            placeholder="Type a to-do"
-            onChange={typeBodyHandler}
-            value={body}
-          ></textarea>
+          <TextArea
+            text={body}
+            containerHover={hover}
+            inputHandler={typeBodyHandler}
+            placeholder={"Type a to-do"}
+          />
         </CSSTransition>
-        <TextArea containerHover={hover}/>
         <TodoBottom
           hover={hover}
           listOpen={listOpen}

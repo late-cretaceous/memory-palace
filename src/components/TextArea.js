@@ -1,8 +1,14 @@
 import styles from "./TextArea.module.css";
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
 
-const TextArea = ({ trail = 0, containerHover = false }) => {
-  const [typedText, setTypedText] = useState("Test Div Test Drive");
+const TextArea = ({
+  trail = 0,
+  containerHover = false,
+  inputHandler,
+  text,
+  placeholder
+}) => {
+  const [typedText, setTypedText] = useState(placeholder);
   const [displayedText, setDisplayedText] = useState(typedText);
   const [textWidth, setTextWidth] = useState(0);
   const [textAreaFreeze, setTextAreaFreeze] = useState(false);
@@ -18,6 +24,27 @@ const TextArea = ({ trail = 0, containerHover = false }) => {
       setTextAreaFreeze(false);
     }, 17);
   }
+
+  useEffect(() => {
+    setSpaceWidth(pureTextAreaWidth("_ _") - pureTextAreaWidth("__"));
+  }, []);
+
+  useEffect(() => {
+    setTypedText(text);
+  }, [text]);
+
+  useLayoutEffect(() => {
+    setTextWidth(textComponentWidth(typedText, trail));
+    setDisplayedText(typedText);
+
+    if (cursorPosition !== null) {
+      const textarea = containerRef.current.querySelector("textarea");
+      window.requestAnimationFrame(() => {
+        textarea.selectionStart = cursorPosition;
+        textarea.selectionEnd = cursorPosition;
+      });
+    }
+  }, [typedText, spaceWidth]);
 
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
@@ -40,12 +67,13 @@ const TextArea = ({ trail = 0, containerHover = false }) => {
   }, []);
 
   const pureTextAreaWidth = (text) => {
+    const textOrPlaceholder = text ? text : placeholder;
     const tempElement = document.createElement("span");
     tempElement.style.visibility = "hidden";
     tempElement.style.position = "absolute";
     tempElement.style.whiteSpace = "pre";
     tempElement.classList.add(styles.textArea);
-    tempElement.textContent = text;
+    tempElement.textContent = textOrPlaceholder;
 
     containerRef.current.appendChild(tempElement);
     const width = parseFloat(getComputedStyle(tempElement).width);
@@ -60,25 +88,8 @@ const TextArea = ({ trail = 0, containerHover = false }) => {
     return pureTextAreaWidth(text) + trailArea;
   };
 
-  useEffect(() => {
-    setSpaceWidth(pureTextAreaWidth("_ _") - pureTextAreaWidth("__"));
-  }, []);
-
-  useLayoutEffect(() => {
-    setTextWidth(textComponentWidth(typedText, trail));
-    setDisplayedText(typedText);
-
-    if (cursorPosition !== null) {
-      const textarea = containerRef.current.querySelector("textarea");
-      window.requestAnimationFrame(() => {
-        textarea.selectionStart = cursorPosition;
-        textarea.selectionEnd = cursorPosition;
-      });
-    }
-  }, [typedText, spaceWidth]);
-
   const typeTextHandler = (e) => {
-    setTypedText(e.target.value);
+    inputHandler(e.target.value);
     setCursorPosition(e.target.selectionStart);
     setTextAreaFreeze(true);
   };
@@ -100,12 +111,13 @@ const TextArea = ({ trail = 0, containerHover = false }) => {
           value={displayedText}
           style={{
             width: `${textWidth}px`,
-            maxWidth: `${textWidth >= containerWidth ? "100%" : "none"}`
+            maxWidth: `${textWidth >= containerWidth ? "100%" : "none"}`,
           }}
           readOnly={textAreaFreeze}
           onFocus={() => setIsTyping(true)}
           onBlur={() => setIsTyping(false)}
           rows={textWidth < containerWidth ? 1 : 2}
+          placeholder={placeholder}
         />
       </div>
     </div>
