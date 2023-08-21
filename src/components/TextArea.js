@@ -6,7 +6,7 @@ const TextArea = ({
   containerHover = false,
   inputHandler,
   text,
-  placeholder
+  placeholder,
 }) => {
   const [typedText, setTypedText] = useState(placeholder);
   const [displayedText, setDisplayedText] = useState(typedText);
@@ -33,16 +33,20 @@ const TextArea = ({
     setTypedText(text);
   }, [text]);
 
+  const moveCursor = (position) => {
+    const textarea = containerRef.current.querySelector("textarea");
+    window.requestAnimationFrame(() => {
+      textarea.selectionStart = position;
+      textarea.selectionEnd = position;
+    });
+  };
+
   useLayoutEffect(() => {
     setTextWidth(textComponentWidth(typedText, trail));
     setDisplayedText(typedText);
 
     if (cursorPosition !== null) {
-      const textarea = containerRef.current.querySelector("textarea");
-      window.requestAnimationFrame(() => {
-        textarea.selectionStart = cursorPosition;
-        textarea.selectionEnd = cursorPosition;
-      });
+      moveCursor(cursorPosition);
     }
   }, [typedText, spaceWidth]);
 
@@ -94,6 +98,11 @@ const TextArea = ({
     setTextAreaFreeze(true);
   };
 
+  const clickToTypeHandler = (e) => {
+    setIsTyping(true);
+    moveCursor(e.target.value.length);
+  };
+
   return (
     <div ref={containerRef}>
       <div
@@ -114,7 +123,7 @@ const TextArea = ({
             maxWidth: `${textWidth >= containerWidth ? "100%" : "none"}`,
           }}
           readOnly={textAreaFreeze}
-          onFocus={() => setIsTyping(true)}
+          onFocus={clickToTypeHandler}
           onBlur={() => setIsTyping(false)}
           rows={textWidth < containerWidth ? 1 : 2}
           placeholder={placeholder}

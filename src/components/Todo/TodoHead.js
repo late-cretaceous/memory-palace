@@ -10,24 +10,14 @@ const TodoHead = (props) => {
   const isParent = todo.isParent();
   const listOpen = props.listOpen;
 
-  const [body, setBody] = useState(
-    isParent ? todo.youngestDescendant().message : todo.message
-  );
+  const [body, setBody] = useState(todo.message);
   const [hover, setHover] = useState(false);
-
-  useEffect(() => {
-    setBody(isParent ? todo.youngestDescendant().message : todo.message);
-  }, [isParent, listOpen]);
 
   //this will need to be updated so there is one on the second span to type into the youngest descendent
   const typeBodyHandler = (textInput) => {
     setBody(textInput);
 
-    if (isParent) {
-      todo.youngestDescendant().message = textInput;
-    } else {
-      todo.message = textInput;
-    }
+    todo.message = textInput;
   };
 
   useEffect(() => {
@@ -74,7 +64,7 @@ const TodoHead = (props) => {
         <div
           className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
         >
-          <h5 className={`${styles.label}`}>{todo.lineage.join(".")}</h5>
+          <h5 className={`${styles.label}`}>{listOpen ? body : todo.lineage.join(".")}</h5>
           <button
             type="button"
             className={`${hover ? styles.opaque : styles.transparent}`}

@@ -13,7 +13,7 @@
 
 .textHighlight {
   border-radius: 1rem;
-  transition: width 0.075s ease-out;
+  transition: width 0.1s ease-out;
   max-width: 98%;
 }
 
