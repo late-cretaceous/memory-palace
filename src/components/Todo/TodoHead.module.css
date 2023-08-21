@@ -70,20 +70,6 @@
   font-family: Helvetica;
 }
 
-/* Note: apparently there is no native way to make textarea expand like a div to accommodate its content
-For a hack, try 'The Cleanest Trick for Autogrowing Textareas' on CSS tricks */
-.todohead textarea {
-  background-color:transparent;
-  border: none;
-  resize: none;
-  font: inherit;
-  font-weight:bold;
-  outline: none;
-  color: inherit;
-  padding: 0px;
-  flex-grow: 1;
-}
-
 .todohead textarea::placeholder {
   color: inherit;
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./TodoHead.module.css";
 import TodoBottom from "./TodoBottom";
 import Edgebox from "./Edgebox";
+import TextArea from "../TextArea";
 import { CSSTransition } from "react-transition-group";
 
 const TodoHead = (props) => {
@@ -9,31 +10,14 @@ const TodoHead = (props) => {
   const isParent = todo.isParent();
   const listOpen = props.listOpen;
 
-  const [label, setLabel] = useState(todo.lineage.join("."));
-  const [body, setBody] = useState(
-    isParent ? todo.youngestDescendant().message : todo.message
-  );
+  const [body, setBody] = useState(todo.message);
   const [hover, setHover] = useState(false);
 
-  useEffect(() => {
-    setLabel(isParent || listOpen ? todo.message : todo.lineage.join("."));
-    setBody(isParent ? todo.youngestDescendant().message : todo.message);
-  }, [isParent, listOpen]);
+  //this will need to be updated so there is one on the second span to type into the youngest descendent
+  const typeBodyHandler = (textInput) => {
+    setBody(textInput);
 
-  const typeBodyHandler = (e) => {
-    setBody(e.target.value);
-
-    if (isParent) {
-      todo.youngestDescendant().message = e.target.value;
-    } else {
-      todo.message = e.target.value;
-    }
-  };
-
-  const typeLabelHandler = (e) => {
-    setLabel(e.target.value);
-
-    todo.message = e.target.value;
+    todo.message = textInput;
   };
 
   useEffect(() => {
@@ -45,7 +29,7 @@ const TodoHead = (props) => {
     return () => {
       clearTimeout(storeMessage);
     };
-  }, [body, label]);
+  }, [body]);
 
   const todoHeadStyles = `${styles.todohead} ${
     listOpen ? styles.preview : styles.full
@@ -80,17 +64,7 @@ const TodoHead = (props) => {
         <div
           className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
         >
-          <h5 className={`${styles.label}`}>
-            {isParent ? (
-              <textarea
-                placeholder="Type a list title"
-                onChange={typeLabelHandler}
-                value={label}
-              ></textarea>
-            ) : (
-              label
-            )}
-          </h5>
+          <h5 className={`${styles.label}`}>{listOpen ? body : todo.lineage.join(".")}</h5>
           <button
             type="button"
             className={`${hover ? styles.opaque : styles.transparent}`}
@@ -106,12 +80,12 @@ const TodoHead = (props) => {
           unmountOnExit
           classNames={{ ...styles }}
         >
-          <textarea
-            placeholder="Type a to-do"
-            onChange={typeBodyHandler}
-            value={body}
-            autoFocus
-          ></textarea>
+          <TextArea
+            text={body}
+            containerHover={hover}
+            inputHandler={typeBodyHandler}
+            placeholder={"Type a to-do"}
+          />
         </CSSTransition>
         <TodoBottom
           hover={hover}
