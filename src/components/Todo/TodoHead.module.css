@@ -128,3 +128,7 @@
   opacity: 0;
   transition: opacity var(--global-transition-time);
 }
+
+.todo-bottom {
+  margin-top: auto;
+}

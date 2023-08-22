@@ -90,7 +90,9 @@ const TodoHead = (props) => {
         <TodoBottom
           hover={hover}
           listOpen={listOpen}
+          isParent={isParent}
           onListToggle={props.onListToggle}
+          todo={todo}
         />
       </div>
       {!listOpen && (
