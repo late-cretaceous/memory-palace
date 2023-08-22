@@ -1,73 +1,23 @@
 import React, { useState, useEffect } from "react";
 import styles from "./TodoHead.module.css";
 import TodoBottom from "./TodoBottom";
+import Edgebox from "./Edgebox";
+import TextArea from "../TextArea";
+import { CSSTransition } from "react-transition-group";
 
 const TodoHead = (props) => {
   const todo = props.todo;
   const isParent = todo.isParent();
   const listOpen = props.listOpen;
 
-  const [label, setLabel] = useState(todo.lineage.join("."));
-  const [body, setBody] = useState(
-    isParent ? todo.youngestDescendant().message : todo.message
-  );
+  const [body, setBody] = useState(todo.message);
   const [hover, setHover] = useState(false);
-  const [edgeBoxTimeout, setEdgeBoxTimeout] = useState(null);
 
-  useEffect(() => {
-    setLabel(isParent || listOpen ? todo.message : todo.lineage.join("."));
-    setBody(isParent ? todo.youngestDescendant().message : todo.message);
-  }, [isParent, listOpen]);
+  //this will need to be updated so there is one on the second span to type into the youngest descendent
+  const typeBodyHandler = (textInput) => {
+    setBody(textInput);
 
-  const typeBodyHandler = (e) => {
-    setBody(e.target.value);
-
-    if (isParent) {
-      todo.youngestDescendant().message = e.target.value;
-    } else {
-      todo.message = e.target.value;
-    }
-  };
-
-  const typeLabelHandler = (e) => {
-    setLabel(e.target.value);
-
-    todo.message = e.target.value;
-  };
-
-  const stopBubbleHandler = (e) => {
-    e.stopPropagation();
-  };
-
-  const hoverHandler = () => {
-    setHover((prevHover) => !prevHover);
-  };
-
-  const onEdgeBoxEnter = (e, index) => {
-    const edgeTimeoutId = setTimeout(() => {
-      props.mouseEdgeEnterHandler(e, index);
-      setEdgeBoxTimeout(null);
-    }, 100);
-
-    setEdgeBoxTimeout(edgeTimeoutId);
-  };
-
-  const onEdgeBoxLeave = (e) => {
-    if (edgeBoxTimeout) {
-      clearTimeout(edgeBoxTimeout);
-      setEdgeBoxTimeout(null);
-      return;
-    }
-
-    const mouseTo = e.relatedTarget.dataset
-      ? e.relatedTarget.dataset.name
-      : null;
-
-    if (mouseTo !== "add" && mouseTo !== "edgebox") {
-      props.mouseEdgeLeaveHandler();
-    }
-    
-    setEdgeBoxTimeout(null);
+    todo.message = textInput;
   };
 
   useEffect(() => {
@@ -79,7 +29,7 @@ const TodoHead = (props) => {
     return () => {
       clearTimeout(storeMessage);
     };
-  }, [body, label]);
+  }, [body]);
 
   const todoHeadStyles = `${styles.todohead} ${
     listOpen ? styles.preview : styles.full
@@ -93,33 +43,28 @@ const TodoHead = (props) => {
         color: props.color.negative().toString(),
       }}
       id={todo.id}
-      onClick={stopBubbleHandler}
-      onMouseEnter={hoverHandler}
-      onMouseLeave={hoverHandler}
+      onMouseEnter={() => {
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        setHover(false);
+      }}
     >
+      <Edgebox
+        mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
+        mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
+        todoIndex={todo.index}
+        top={true}
+      />
       <div
-        className={styles["edge-hitbox"]}
-        onMouseEnter={(e) => {
-          onEdgeBoxEnter(e, todo.index);
-        }}
-        onMouseLeave={onEdgeBoxLeave}
-        data-name="edgebox"
-      ></div>
-      <div className={styles.todoface} {...props.dragHandleProps}>
+        className={styles.todoface}
+        {...props.dragHandleProps}
+        style={{ paddingLeft: `${1 + (todo.lineage.length - 1) * 2}rem` }}
+      >
         <div
           className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
         >
-          <h5 className={`${styles.label}`}>
-            {isParent ? (
-              <textarea
-                placeholder="Type a list title"
-                onChange={typeLabelHandler}
-                value={label}
-              ></textarea>
-            ) : (
-              label
-            )}
-          </h5>
+          <h5 className={`${styles.label}`}>{listOpen ? body : todo.lineage.join(".")}</h5>
           <button
             type="button"
             className={`${hover ? styles.opaque : styles.transparent}`}
@@ -129,15 +74,19 @@ const TodoHead = (props) => {
             <span id={todo.id}>{"\u2715"}</span>
           </button>
         </div>
-        {!listOpen && (
-          <textarea
-            className={`${styles.visible}`}
-            placeholder="Type a to-do"
-            onChange={typeBodyHandler}
-            value={body}
-            autoFocus
-          ></textarea>
-        )}
+        <CSSTransition
+          in={!listOpen}
+          timeout={500}
+          unmountOnExit
+          classNames={{ ...styles }}
+        >
+          <TextArea
+            text={body}
+            containerHover={hover}
+            inputHandler={typeBodyHandler}
+            placeholder={"Type a to-do"}
+          />
+        </CSSTransition>
         <TodoBottom
           hover={hover}
           listOpen={listOpen}
@@ -145,13 +94,12 @@ const TodoHead = (props) => {
         />
       </div>
       {!listOpen && (
-        <div
-          className={styles["edge-hitbox"]}
-          onMouseEnter={(e) => {
-            onEdgeBoxEnter(e, todo.index + 1);
-          }}
-          onMouseLeave={onEdgeBoxLeave}
-        ></div>
+        <Edgebox
+          mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
+          mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
+          todoIndex={todo.index}
+          top={false}
+        />
       )}
     </div>
   );

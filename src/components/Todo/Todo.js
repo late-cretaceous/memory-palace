@@ -100,6 +100,8 @@ const Todo = (props) => {
     exited: { height: 0, overflow: "hidden" },
   };
 
+  const listColor = todo.parent ?  props.color.adjustedHCL(20, 0, 2) : props.color;
+
   const todoList = (
     <Transition
       in={listOpenConditions}
@@ -113,7 +115,7 @@ const Todo = (props) => {
           onAdd={addChildHandler}
           onMove={todoMoveHandler}
           onRemove={todoRemoveHandler}
-          color={props.color}
+          color={listColor}
           spectrumRange={props.spectrumRange}
           lightRange={props.lightRange}
           style={{

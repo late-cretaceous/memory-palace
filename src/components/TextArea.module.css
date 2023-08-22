@@ -1,0 +1,30 @@
+.textArea {
+  background-color:transparent;
+  border: none;
+  resize: none;
+  font: inherit;
+  font-weight:bold;
+  outline: none;
+  color: inherit;
+  flex-grow: 1;
+  padding: 0;
+  display: box;
+}
+
+.textHighlight {
+  border-radius: 1rem;
+  transition: width 0.1s ease-out;
+  max-width: 98%;
+}
+
+.buttoned {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.buttoned * {
+  cursor: pointer;
+}
+
+.highlighted {
+  background-color: rgba(255, 255, 255, 0.25);
+}

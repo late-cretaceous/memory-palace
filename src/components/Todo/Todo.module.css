@@ -5,17 +5,6 @@
   flex-direction: column;
 }
 
-.appear {
-  height: 0;
-  overflow: hidden;
-}
-
-.appearActive {
-  height: var(--global-todo-height);
-  transition: all var(--global-transition-time);
-  overflow: hidden;
-}
-
 .enter {
   height: 0;
   overflow: hidden;
@@ -38,7 +27,7 @@
   overflow: hidden;
 }
 
-enter.phantom {
+.enter.phantom {
   height: 0;
   transition: all var(--global-transition-time);
   overflow: hidden;
