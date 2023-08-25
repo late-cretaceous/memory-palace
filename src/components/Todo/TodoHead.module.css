@@ -38,7 +38,7 @@
   justify-content: space-between;
 }
 
-.todohead button {
+.button {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;

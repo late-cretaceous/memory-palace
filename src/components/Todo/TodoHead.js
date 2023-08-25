@@ -67,7 +67,7 @@ const TodoHead = (props) => {
           <h5 className={`${styles.label}`}>{listOpen ? body : todo.lineage.join(".")}</h5>
           <button
             type="button"
-            className={`${hover ? styles.opaque : styles.transparent}`}
+            className={`${styles.button} ${hover ? styles.opaque : styles.transparent}`}
             onClick={props.onClose}
             id={todo.id}
           >
@@ -90,9 +90,9 @@ const TodoHead = (props) => {
         <TodoBottom
           hover={hover}
           listOpen={listOpen}
-          isParent={isParent}
           onListToggle={props.onListToggle}
           todo={todo}
+          color={props.color.negative().toString()}
         />
       </div>
       {!listOpen && (

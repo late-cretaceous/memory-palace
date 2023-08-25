@@ -1,4 +1,5 @@
 import styles from "./TodoHead.module.css";
+import { ReactComponent as Arrow } from "../../assets/triangle.svg";
 
 const TodoBottom = (props) => {
   const classes = `${styles["todohead-row"]} ${styles["todo-bottom"]} ${
@@ -7,12 +8,19 @@ const TodoBottom = (props) => {
 
   return (
     <div className={classes}>
-      <span style={{whiteSpace: "pre"}}>{props.todo.list.length ? "+" : " "}</span>
       <button
-        className={props.listOpen ? styles.arrowopen : ""}
+        className={`${styles.button} ${props.listOpen ? styles.arrowopen : ""}`}
         onClick={props.onListToggle}
       >
-        <span>{"\u25B6"}</span>
+        <span>
+          <Arrow
+            style={{
+              fill: props.todo.isParent() ? props.color : "none",
+              stroke: props.color,
+              strokeWidth: "1.5px",
+            }}
+          />
+        </span>
       </button>
     </div>
   );
