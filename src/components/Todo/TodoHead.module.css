@@ -3,8 +3,8 @@
 .todohead {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   justify-content: space-between;
+  flex-grow: 1;
   transition: all var(--global-transition-time) ease-out 0s;
   opacity: 1;
   overflow: hidden;
@@ -23,6 +23,7 @@
   flex-direction: column;
   flex-grow: 1;
   padding: 0 var(--global-left-padding);
+  margin-top: 2px;
 }
 
 .todohead:hover{
