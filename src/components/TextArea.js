@@ -27,6 +27,8 @@ const TextArea = ({
 
   useEffect(() => {
     setSpaceWidth(pureTextAreaWidth("_ _") - pureTextAreaWidth("__"));
+
+    containerRef.current.querySelector("textarea").focus();
   }, []);
 
   useEffect(() => {

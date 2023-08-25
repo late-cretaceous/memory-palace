@@ -13,7 +13,6 @@ const TodoHead = (props) => {
   const [body, setBody] = useState(todo.message);
   const [hover, setHover] = useState(false);
 
-  //this will need to be updated so there is one on the second span to type into the youngest descendent
   const typeBodyHandler = (textInput) => {
     setBody(textInput);
 
