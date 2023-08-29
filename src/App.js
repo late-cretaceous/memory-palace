@@ -3,6 +3,10 @@ import Todo from "./components/Todo/Todo";
 import TodoKit from "./utilities/storage";
 import HSL from "./utilities/colors";
 
+import { useDispatch } from 'react-redux';
+import { useEffect } from "react";
+import { toggle } from "./redux/labelSlice";
+
 function App() {
   const storageEmpty = !localStorage.getItem("bigTodo");
 
@@ -30,6 +34,23 @@ function App() {
   for (const todo of bigTodo.listHierarchy()) {
     console.log(`${todo.lineage.join('.')} ${todo.message}`);
   }
+
+  //scaffold show/hide labels using reducer
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === '.' && event.metaKey) {
+        dispatch(toggle());
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [dispatch]);
 
   return (
     <>

@@ -5,6 +5,8 @@ import Edgebox from "./Edgebox";
 import TextArea from "../TextArea";
 import { CSSTransition } from "react-transition-group";
 
+import { useSelector } from "react-redux";
+
 const TodoHead = (props) => {
   const todo = props.todo;
   const isParent = todo.isParent();
@@ -12,6 +14,8 @@ const TodoHead = (props) => {
 
   const [body, setBody] = useState(todo.message);
   const [hover, setHover] = useState(false);
+
+  const labelsVisible = useSelector((state) => state.labels.visible);
 
   const typeBodyHandler = (textInput) => {
     setBody(textInput);
@@ -33,6 +37,12 @@ const TodoHead = (props) => {
   const todoHeadStyles = `${styles.todohead} ${
     listOpen ? styles.preview : styles.full
   }`;
+
+  const labelDisplay = listOpen
+    ? body
+    : labelsVisible
+    ? todo.lineage.join(".")
+    : "";
 
   return (
     <div
@@ -63,10 +73,12 @@ const TodoHead = (props) => {
         <div
           className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
         >
-          <h5 className={`${styles.label}`}>{listOpen ? body : todo.lineage.join(".")}</h5>
+          <h5 className={`${styles.label}`}>{labelDisplay}</h5>
           <button
             type="button"
-            className={`${styles.button} ${hover ? styles.opaque : styles.transparent}`}
+            className={`${styles.button} ${
+              hover ? styles.opaque : styles.transparent
+            }`}
             onClick={props.onClose}
             id={todo.id}
           >
