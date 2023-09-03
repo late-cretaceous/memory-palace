@@ -4,6 +4,7 @@ import TodoBottom from "./TodoBottom";
 import Edgebox from "./Edgebox";
 import TextArea from "../TextArea";
 import { CSSTransition } from "react-transition-group";
+import { ReactComponent as CloseIcon } from "../../assets/close.svg";
 
 import { useSelector } from "react-redux";
 
@@ -44,12 +45,14 @@ const TodoHead = (props) => {
     ? todo.lineage.join(".")
     : "";
 
+  const fontColor = props.color.negative().toString();
+
   return (
     <div
       className={todoHeadStyles}
       style={{
         backgroundColor: props.color.toString(),
-        color: props.color.negative().toString(),
+        color: fontColor,
       }}
       id={todo.id}
       onMouseEnter={() => {
@@ -82,7 +85,7 @@ const TodoHead = (props) => {
             onClick={props.onClose}
             id={todo.id}
           >
-            <span id={todo.id}>{"\u2715"}</span>
+            <CloseIcon id={todo.id} fill={fontColor} />
           </button>
         </div>
         <CSSTransition
@@ -103,7 +106,7 @@ const TodoHead = (props) => {
           listOpen={listOpen}
           onListToggle={props.onListToggle}
           todo={todo}
-          color={props.color.negative().toString()}
+          color={fontColor}
         />
       </div>
       {!listOpen && (

@@ -48,6 +48,7 @@
   user-select: none;
   border: none;
   transition: all 0.1s ease-out 0s;
+  padding: 0px;
 }
 
 .todohead button:hover {
@@ -55,14 +56,9 @@
 }
 
 .todohead-row__cancel button {
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid;
-  border-radius: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 0 0 1px;
 }
 
 .todohead-row__cancel button span {
