@@ -100,7 +100,7 @@ const Todo = (props) => {
     exited: { height: 0, overflow: "hidden" },
   };
 
-  const listColor = todo.parent ?  props.color.adjustedHCL(20, 0, 2) : props.color;
+  const listColor = todo.parent ?  props.color.adjustedHSL(20, 0, 2) : props.color;
 
   const todoList = (
     <Transition
@@ -135,8 +135,8 @@ const Todo = (props) => {
   };
 
   const todoAdderInlineStyles = {
-    backgroundColor: props.color.adjustedHCL(0, 0, 5).toString(),
-    color: props.color.negative().adjustedHCL(0, 0, 5).toString(),
+    backgroundColor: props.color.adjustedHSL(0, 0, 5).toString(),
+    color: props.color.negative().adjustedHSL(0, 0, 5).toString(),
     transition: `all 200ms ease-out`,
   };
 

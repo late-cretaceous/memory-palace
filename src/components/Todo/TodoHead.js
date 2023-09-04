@@ -4,7 +4,7 @@ import TodoBottom from "./TodoBottom";
 import Edgebox from "./Edgebox";
 import TextArea from "../TextArea";
 import { CSSTransition } from "react-transition-group";
-import { ReactComponent as CloseIcon } from "../../assets/close.svg";
+import CloseIcon from "../../assets/CloseIcon.js";
 
 import { useSelector } from "react-redux";
 

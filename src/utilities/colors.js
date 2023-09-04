@@ -36,7 +36,7 @@ class HSL {
     return new HSL(this.hue + 180, this.sat + 50, this.light + 50);
   }
 
-  adjustedHCL(hue, sat, light) {
+  adjustedHSL(hue, sat, light) {
     return new HSL(this.hue + hue, this.sat + sat, this.light + light);
   }
 

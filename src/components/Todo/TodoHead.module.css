@@ -51,21 +51,18 @@
   padding: 0px;
 }
 
+.todohead-row__cancel .opaque  {
+  opacity: 40%;
+ }
+ 
 .todohead button:hover {
-  opacity: 50%;
+  opacity: 80%;
 }
 
 .todohead-row__cancel button {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.todohead-row__cancel button span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Helvetica;
 }
 
 .todohead textarea::placeholder {
