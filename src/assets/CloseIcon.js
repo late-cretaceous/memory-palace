@@ -17,7 +17,7 @@ const CloseIcon = ({ id, fill }) => (
       />
     </mask>
 
-    <circle cx="480" cy="-480" r="400" fill={fill} mask={`url(#${id}-mask)`} />
+    <circle id={id} cx="480" cy="-480" r="400" fill={fill} mask={`url(#${id}-mask)`} />
   </svg>
 );
 
