@@ -127,3 +127,7 @@
 .todo-bottom {
   margin-top: auto;
 }
+
+.invisible {
+  visibility: hidden;
+}

@@ -1,19 +1,30 @@
 import styles from "./TodoList.module.css";
 import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
-import PhantomTodo from "./PhantomTodo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { useState, forwardRef } from "react";
+import PhantomTodo from "./PhantomTodo";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const TodoList = forwardRef(({ todos, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
+  const [hasStarter, setHasStarter] = useState(false);
+
+  const changeStarterTodoHandler = () => {
+    setHasStarter(false);
+  }
+
+  if (!todos.length) {
+    props.onAdd(null, 0);
+    setHasStarter(true);
+    return
+  }
 
   const clickAddHandler = (e, index) => {
-    console.log(index);
+    e.stopPropagation();
     setEdgeOver(null);
-    props.onAdd(e, index);
+    props.onAdd(e, index);  
   };
 
   const spectrum = props.color.shades(
@@ -60,6 +71,8 @@ const TodoList = forwardRef(({ todos, ...props }, ref) => {
                   adderIndex={edgeOver}
                   index={index}
                   onAdd={clickAddHandler}
+                  onStarterChange={changeStarterTodoHandler}
+                  isStarter={hasStarter}
                 />
               </div>
             )}

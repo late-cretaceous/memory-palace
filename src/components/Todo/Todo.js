@@ -16,7 +16,6 @@ const Todo = (props) => {
   const isPhantom = props.todo.id === "phantom";
 
   const addChildHandler = (e, index) => {
-    e.stopPropagation();
     const lineage = todo.lineage.concat(todo.newNumber());
 
     const childTodo = new TodoKit({
@@ -78,6 +77,8 @@ const Todo = (props) => {
       color={props.color}
       mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
       mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
+      isStarter={props.isStarter}
+      onStarterChange={props.onStarterChange}
     />
   );
 
@@ -165,7 +166,7 @@ const Todo = (props) => {
       onAdd={adderClickedHandler}
       mouseName={"phantom"}
     >
-      Phantom
+      +Todo
     </TodoAdder>
   );
 

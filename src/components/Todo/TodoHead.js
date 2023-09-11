@@ -19,6 +19,10 @@ const TodoHead = (props) => {
   const labelsVisible = useSelector((state) => state.labels.visible);
 
   const typeBodyHandler = (textInput) => {
+    if (props.isStarter) {
+      props.onStarterChange();
+    }
+
     setBody(textInput);
 
     todo.message = textInput;
@@ -81,7 +85,7 @@ const TodoHead = (props) => {
             type="button"
             className={`${styles.button} ${
               hover ? styles.opaque : styles.transparent
-            }`}
+            } ${props.isStarter && styles.invisible}`}
             onClick={props.onClose}
             id={todo.id}
           >
@@ -107,6 +111,7 @@ const TodoHead = (props) => {
           onListToggle={props.onListToggle}
           todo={todo}
           color={fontColor}
+          isStarter={props.isStarter}
         />
       </div>
       {!listOpen && (

@@ -8,20 +8,24 @@ const TodoBottom = (props) => {
 
   return (
     <div className={classes}>
-      <button
-        className={`${styles.button} ${props.listOpen ? styles.arrowopen : ""}`}
-        onClick={props.onListToggle}
-      >
-        <span>
-          <Arrow
-            style={{
-              fill: props.todo.isParent() ? props.color : "none",
-              stroke: props.color,
-              strokeWidth: "1.5px",
-            }}
-          />
-        </span>
-      </button>
+      {!props.isStarter && (
+        <button
+          className={`${styles.button} ${
+            props.listOpen ? styles.arrowopen : ""
+          }`}
+          onClick={props.onListToggle}
+        >
+          <span>
+            <Arrow
+              style={{
+                fill: props.todo.isParent() ? props.color : "none",
+                stroke: props.color,
+                strokeWidth: "1.5px",
+              }}
+            />
+          </span>
+        </button>
+      )}
     </div>
   );
 };
