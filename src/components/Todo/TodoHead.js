@@ -19,10 +19,6 @@ const TodoHead = (props) => {
   const labelsVisible = useSelector((state) => state.labels.visible);
 
   const typeBodyHandler = (textInput) => {
-    if (props.isStarter) {
-      props.onStarterChange();
-    }
-
     setBody(textInput);
 
     todo.message = textInput;
