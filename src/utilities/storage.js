@@ -136,6 +136,14 @@ const TodoKit = class {
     this.reIndex();
   }
 
+  clearEmpties() {
+    this.list.forEach(child => {
+      if (!child.message.length && !child.list.length) {
+        this.remove(child.id);
+      }
+    })
+  }
+
   removeDescendantsFromStorage() {
     this.listDescendants().forEach((descendant) =>
       localStorage.removeItem(descendant.id)

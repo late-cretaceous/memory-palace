@@ -64,6 +64,8 @@ const Todo = (props) => {
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
 
   const listToggleHandler = () => {
+    todo.clearEmpties();
+    
     setListOpen((prev) => !prev);
   };
 
