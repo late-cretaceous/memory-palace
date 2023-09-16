@@ -85,7 +85,7 @@ const TodoHead = (props) => {
             type="button"
             className={`${styles.button} ${
               hover ? styles.opaque : styles.transparent
-            } ${props.isStarter && styles.invisible}`}
+            }`}
             onClick={props.onClose}
             id={todo.id}
           >

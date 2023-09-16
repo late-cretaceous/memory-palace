@@ -9,15 +9,15 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const TodoList = forwardRef(({ todos, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
-  const [hasStarter, setHasStarter] = useState(false);
+  const [hadStarter, setHadStarter] = useState(false);
 
   const changeStarterTodoHandler = () => {
-    setHasStarter(false);
+    setHadStarter(false);
   }
 
-  if (!todos.length) {
+  if (!todos.length && !hadStarter) {
     props.onAdd(null, 0);
-    setHasStarter(true);
+    setHadStarter(true);
     return
   }
 
@@ -72,7 +72,7 @@ const TodoList = forwardRef(({ todos, ...props }, ref) => {
                   index={index}
                   onAdd={clickAddHandler}
                   onStarterChange={changeStarterTodoHandler}
-                  isStarter={hasStarter}
+                  isStarter={hadStarter}
                 />
               </div>
             )}
