@@ -9,7 +9,7 @@ const Header = (props) => {
         color: props.color.negative().toString(),
       }}
     >
-      <h1>memory palace</h1>
+      <h1>neato note</h1>
     </header>
   );
 };
