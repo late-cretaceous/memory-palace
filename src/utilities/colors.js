@@ -40,6 +40,20 @@ class HSL {
     return new HSL(this.hue + hue, this.sat + sat, this.light + light);
   }
 
+  boundedAdd(addend, property) {
+    const rawAdjustment = this[property] + addend;
+
+    return rawAdjustment < 0 ? 0 : rawAdjustment > 99 ? 99 : rawAdjustment;
+  }
+
+  adjustedHSLBounded(hue, sat, light) {
+    return new HSL(
+      this.hue + hue,
+      this.boundedAdd(sat, "sat"),
+      this.boundedAdd(light, "light")
+    );
+  }
+
   shades(other, steps) {
     const ranges = new HSL([], [], []);
 
