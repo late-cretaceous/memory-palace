@@ -57,7 +57,10 @@ function App() {
   console.log(bColor);
 
   return (
-    <div style={{ backgroundColor: bColor, height: "100vh" }}>
+    <div
+      style={{ backgroundColor: bColor }}
+      className={'background'}
+    >
       <Header color={color} />
       <Todo
         todo={bigTodo}
