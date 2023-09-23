@@ -16,6 +16,11 @@ const TodoKit = class {
 
   static pull(id) {
     const object = JSON.parse(localStorage.getItem(id));
+    
+    //scaffold to logged pulled todos so you can find what's going on with the crashes
+    console.log(`Pulled object ID: ${id}`);
+    console.dir(object);
+
     return new TodoKit(object);
   }
 
