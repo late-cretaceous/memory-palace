@@ -16,7 +16,7 @@ const TodoKit = class {
 
   static pull(id) {
     const object = JSON.parse(localStorage.getItem(id));
-    
+
     //scaffold to logged pulled todos so you can find what's going on with the crashes
     console.log(`Pulled object ID: ${id}`);
     console.dir(object);
@@ -94,7 +94,7 @@ const TodoKit = class {
 
   listHierarchy() {
     if (!this.list.length) {
-      return []
+      return [];
     }
 
     const descendants = [];
@@ -104,7 +104,7 @@ const TodoKit = class {
       descendants.push(...child.listHierarchy());
     }
 
-    return descendants
+    return descendants;
   }
 
   move(fromIndex, toIndex) {
@@ -141,12 +141,10 @@ const TodoKit = class {
     this.reIndex();
   }
 
-  clearEmpties() {
-    this.list.forEach(child => {
-      if (!child.message.length && !child.list.length) {
-        this.remove(child.id);
-      }
-    })
+  empties() {
+    return this.list.filter(
+      (child) => !child.message.length && !child.list.length
+    );
   }
 
   removeDescendantsFromStorage() {
