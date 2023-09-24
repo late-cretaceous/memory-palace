@@ -4,7 +4,7 @@ import TodoBottom from "./TodoBottom";
 import Edgebox from "./Edgebox";
 import TextArea from "../TextArea";
 import { CSSTransition } from "react-transition-group";
-import CloseIcon from "../../assets/CloseIcon.js";
+import TodoTop from "./TodoTop";
 
 import { useSelector } from "react-redux";
 
@@ -73,21 +73,13 @@ const TodoHead = (props) => {
         {...props.dragHandleProps}
         style={{ paddingLeft: `${1 + (todo.lineage.length - 1) * 2}rem` }}
       >
-        <div
-          className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
-        >
-          <h5 className={`${styles.label}`}>{labelDisplay}</h5>
-          <button
-            type="button"
-            className={`${styles.button} ${
-              hover ? styles.opaque : styles.transparent
-            }`}
-            onClick={props.onClose}
-            id={todo.id}
-          >
-            <CloseIcon id={todo.id} fill={fontColor} />
-          </button>
-        </div>
+        <TodoTop
+          hover={hover}
+          labelDisplay={labelDisplay}
+          onClose={props.onClose}
+          id={todo.id}
+          fontColor={fontColor}
+        />
         <CSSTransition
           in={!listOpen}
           timeout={500}
