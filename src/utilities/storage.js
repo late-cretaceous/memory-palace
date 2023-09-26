@@ -20,6 +20,7 @@ const TodoKit = class {
     //scaffold to logged pulled todos so you can find what's going on with the crashes
     console.log(`Pulled object ID: ${id}`);
     console.dir(object);
+    if (!object) return;
 
     return new TodoKit(object);
   }
