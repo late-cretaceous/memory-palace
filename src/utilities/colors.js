@@ -80,11 +80,11 @@ class HSL {
   }
 }
 
-function divideRange(start, end, numDivisions) {
-  const divisionSize = (end - start) / numDivisions;
+function divideRange(start, end, sections) {
+  const divisionSize = (end - start) / (sections - 1);
 
   return Array.from(
-    { length: numDivisions + 1 },
+    { length: sections },
     (_, i) => start + i * divisionSize
   );
 }

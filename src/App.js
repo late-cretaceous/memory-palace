@@ -48,7 +48,9 @@ function App() {
   }, [dispatch]);
 
   console.log(color);
-  const bColor = color.adjustedHSLBounded(30, -15, 25);
+  const spectrumRange = 60;
+  const lightRange = color.randomSignWithinBounds(20, "light");
+  const bColor = color.adjustedHSLBounded(spectrumRange / 2, -10, lightRange / 2);
   console.log(bColor);
 
   return (
@@ -61,8 +63,8 @@ function App() {
         todo={bigTodo}
         parent={null}
         color={color}
-        spectrumRange={60}
-        lightRange={color.randomSignWithinBounds(20, "light")}
+        spectrumRange={spectrumRange}
+        lightRange={lightRange}
         onResize={() => null}
       />
     </div>
