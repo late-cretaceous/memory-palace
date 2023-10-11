@@ -27,13 +27,14 @@ const TodoList = forwardRef(({ todos, ...props }, ref) => {
     props.onAdd(e, index);  
   };
 
+  const lengthPlusOneForBackground = todos.length + 1;
   const spectrum = props.color.shades(
     {
       hue: props.color.hue + props.spectrumRange,
       sat: props.color.sat,
       light: props.color.light + props.lightRange,
     },
-    todos.length
+    lengthPlusOneForBackground
   );
 
   console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));

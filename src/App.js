@@ -49,11 +49,7 @@ function App() {
 
   const spectrumRange = 60;
   const lightRange = color.randomSignWithinBounds(20, "light");
-  const bColor = color.adjustedHSLBounded(
-    spectrumRange,
-    -15,
-    lightRange + lightRange * 0.2
-  );
+  const bColor = color.adjustedHSLBounded(spectrumRange, 0, lightRange);
   console.log(`Background color: ${bColor}`);
 
   return (
