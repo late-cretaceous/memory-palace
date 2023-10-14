@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const labelSlice = createSlice({
-  name: "counter",
+  name: "label",
   initialState: { visible: false },
   reducers: {
     toggle: (state) => {
@@ -9,6 +9,8 @@ const labelSlice = createSlice({
     },
   },
 });
+
+console.log(labelSlice);
 
 export const { toggle } = labelSlice.actions;
 export default labelSlice.reducer;
