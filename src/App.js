@@ -47,17 +47,13 @@ function App() {
     };
   }, [dispatch]);
 
-  console.log(color);
   const spectrumRange = 60;
   const lightRange = color.randomSignWithinBounds(20, "light");
-  const bColor = color.adjustedHSLBounded(spectrumRange / 2, -10, lightRange / 2);
-  console.log(bColor);
+  const bColor = color.adjustedHSLBounded(spectrumRange, 0, lightRange);
+  console.log(`Background color: ${bColor}`);
 
   return (
-    <div
-      style={{ backgroundColor: bColor }}
-      className={'background'}
-    >
+    <div style={{ backgroundColor: bColor }} className={"background"}>
       <Header color={color} />
       <Todo
         todo={bigTodo}
