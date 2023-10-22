@@ -1,10 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import labelReducer from './labelSlice';
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import labelSlice from "./labelSlice";
+import persistentSlice from "./persistentSlice";
 
 const store = configureStore({
-  reducer: {
-    labels: labelReducer
-  }
+  reducer: combineReducers({ persistentSlice, labelSlice }),
 });
 
 export default store;

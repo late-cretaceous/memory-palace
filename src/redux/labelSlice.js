@@ -10,7 +10,5 @@ const labelSlice = createSlice({
   },
 });
 
-console.log(labelSlice);
-
 export const { toggle } = labelSlice.actions;
 export default labelSlice.reducer;

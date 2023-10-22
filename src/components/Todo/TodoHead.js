@@ -16,7 +16,7 @@ const TodoHead = (props) => {
   const [body, setBody] = useState(todo.message);
   const [hover, setHover] = useState(false);
 
-  const labelsVisible = useSelector((state) => state.labels.visible);
+  const labelsVisible = useSelector((state) => state.labelSlice.visible);
 
   const typeBodyHandler = (textInput) => {
     setBody(textInput);
