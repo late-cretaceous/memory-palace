@@ -6,10 +6,16 @@ import TodoAdder from "./TodoAdder";
 import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 import constants from "../constants.js";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo } from "../../redux/persistentSlice";
 
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(todo.isBigTodo() ? true : false);
+
+  const dispatch = useDispatch();
+  console.log("persistentSlice:")
+  console.log(useSelector((state) => state.persistentSlice));
 
   const listRef = useRef(null);
   const adderOpen = todo.index + 1 === props.adderIndex;
@@ -28,12 +34,7 @@ const Todo = (props) => {
       listLoaded: true,
     });
 
-    todo.add(childTodo);
-
-    todo.store();
-    childTodo.store();
-
-    setTodos(new TodoKit(todo));
+    dispatch(addTodo(childTodo));
   };
 
   const adderClickedHandler = (e, index) => {
@@ -150,7 +151,7 @@ const Todo = (props) => {
     <Transition in={adderOpen} timeout={200} mountOnEnter unmountOnExit>
       {(state) => (
         <TodoAdder
-          index={todo.index}
+          todo={todo}
           style={todoAdderInlineStyles}
           className={adderTransitionClass[state]}
           mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}

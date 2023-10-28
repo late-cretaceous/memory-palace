@@ -4,39 +4,31 @@ import TodoKit from "./utilities/storage";
 import HSL from "./utilities/colors";
 
 import { useDispatch } from "react-redux";
+import { addTodo } from "./redux/persistentSlice";
 import { useEffect } from "react";
-import { toggle } from "./redux/labelSlice";
 
 function App() {
-  const storageEmpty = !localStorage.getItem("bigTodo");
+  const bigTodo = new TodoKit({
+    id: "bigTodo",
+    lineage: [],
+    index: null,
+    parent: null,
+    message: "",
+    list: [],
+    listLoaded: true,
+  });
 
-  const bigTodo = storageEmpty
-    ? new TodoKit({
-        id: "bigTodo",
-        lineage: [],
-        index: null,
-        parent: null,
-        message: "",
-        list: [],
-        listLoaded: true,
-      })
-    : TodoKit.pull("bigTodo");
+  const dispatch = useDispatch();
 
-  if (storageEmpty) {
-    bigTodo.store();
-  } else {
-    bigTodo.pullDescendants();
-  }
+  dispatch(addTodo(bigTodo));
 
   const color = HSL.random();
 
   //scaffold show/hide labels using reducer
-  const dispatch = useDispatch();
-
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "." && event.metaKey) {
-        dispatch(toggle());
+        dispatch({ type: "label/toggle" });
       }
     };
 

@@ -6,25 +6,31 @@ import { useState, forwardRef } from "react";
 import PhantomTodo from "./PhantomTodo";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useSelector } from "react-redux";
+import makeSelectTodoList from "../../redux/selectors";
 
 const TodoList = forwardRef(({ todos, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
   const [hadStarter, setHadStarter] = useState(false);
 
+const todoList = useSelector(makeSelectTodoList(props.parent.id));
+console.log("TodoList selected slice:")
+console.log(todoList);
+
   const changeStarterTodoHandler = () => {
     setHadStarter(false);
-  }
+  };
 
   if (!todos.length && !hadStarter) {
     props.onAdd(null, 0);
     setHadStarter(true);
-    return
+    return;
   }
 
   const clickAddHandler = (e, index) => {
     e.stopPropagation();
     setEdgeOver(null);
-    props.onAdd(e, index);  
+    props.onAdd(e, index);
   };
 
   const lengthPlusOneForBackground = todos.length + 1;
@@ -65,8 +71,8 @@ const TodoList = forwardRef(({ todos, ...props }, ref) => {
                   provided={provided}
                   onClose={props.onRemove}
                   color={spectrum[index]}
-                  spectrumRange={props.spectrumRange * 2 / todos.length}
-                  lightRange={props.lightRange * 2 / todos.length }
+                  spectrumRange={(props.spectrumRange * 2) / todos.length}
+                  lightRange={(props.lightRange * 2) / todos.length}
                   mouseEdgeEnterHandler={mouseEdgeEnterHandler}
                   mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
                   adderIndex={edgeOver}
