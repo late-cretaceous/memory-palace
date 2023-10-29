@@ -45,11 +45,16 @@ const TodoKit = class {
     return this.list.findIndex((todo) => todo.id === id);
   }
 
+  add(todo) {
+    this.list.splice(todo.index, 0, todo);
+    this.reIndex();
+  }
+
   generateChild() {
     return new TodoKit({
       id: Date.now().toString(),
       lineage: this.lineage.concat(this.newNumber()),
-      index: this.index,
+      index: this.index + 1,
       parent: this,
       message: "",
       list: [],
@@ -57,9 +62,8 @@ const TodoKit = class {
     });
   }
 
-  add(todo) {
-    this.list.splice(todo.index, 0, todo);
-    this.reIndex();
+  generateAndAddChild() {
+    this.add(this.generateChild());
   }
 
   pullChildren() {
