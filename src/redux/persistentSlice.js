@@ -1,21 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadTodos } from "../utilities/reduxStorage";
 
-export const addTodo = (todo) => ({
-  type: 'persistentTodos/addTodo',
-  payload: todo,
-});
-
-export const updateTodo = (id, updates) => ({
-  type: 'persistentTodos/updateTodo',
-  payload: { id, updates },
-});
-
-export const removeTodo = (id) => ({
-  type: 'persistentTodos/removeTodo',
-  payload: id,
-});
-
 const persistentSlice = createSlice({
   name: "persistentTodos",
   initialState: {},
@@ -39,5 +24,7 @@ const persistentSlice = createSlice({
     },
   },
 });
+
+export const { addTodo, removeTodo, updateTodo } = persistentSlice.actions;
 
 export default persistentSlice.reducer;
