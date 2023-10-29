@@ -45,6 +45,18 @@ const TodoKit = class {
     return this.list.findIndex((todo) => todo.id === id);
   }
 
+  generateChild() {
+    return new TodoKit({
+      id: Date.now().toString(),
+      lineage: this.lineage.concat(this.newNumber()),
+      index: this.index,
+      parent: this,
+      message: "",
+      list: [],
+      listLoaded: true,
+    });
+  }
+
   add(todo) {
     this.list.splice(todo.index, 0, todo);
     this.reIndex();

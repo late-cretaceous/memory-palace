@@ -22,19 +22,7 @@ const Todo = (props) => {
   const isPhantom = props.todo.id === "phantom";
 
   const addChildHandler = (e, index) => {
-    const lineage = todo.lineage.concat(todo.newNumber());
-
-    const childTodo = new TodoKit({
-      id: Date.now().toString(),
-      lineage: lineage,
-      index: index,
-      parent: todo,
-      message: "",
-      list: [],
-      listLoaded: true,
-    });
-
-    dispatch(addTodo(childTodo));
+    dispatch(addTodo(todo.generateChild()));
   };
 
   const adderClickedHandler = (e, index) => {
