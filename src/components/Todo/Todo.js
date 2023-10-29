@@ -22,7 +22,8 @@ const Todo = (props) => {
   const isPhantom = props.todo.id === "phantom";
 
   const addChildHandler = (e, index) => {
-    dispatch(addTodo(todo.generateChild()));
+    console.log(index);
+    dispatch(addTodo(todo.generateAndAddChild(index)));
   };
 
   const adderClickedHandler = (e, index) => {

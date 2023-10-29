@@ -50,11 +50,11 @@ const TodoKit = class {
     this.reIndex();
   }
 
-  generateChild() {
+  generateChild(index = 0) {
     return new TodoKit({
       id: Date.now().toString(),
       lineage: this.lineage.concat(this.newNumber()),
-      index: this.index + 1,
+      index: index,
       parent: this,
       message: "",
       list: [],
@@ -62,8 +62,10 @@ const TodoKit = class {
     });
   }
 
-  generateAndAddChild() {
-    this.add(this.generateChild());
+  generateAndAddChild(index = 0) {
+    const newTodo = this.generateChild(index);
+    this.add(newTodo);
+    return newTodo;
   }
 
   pullChildren() {
