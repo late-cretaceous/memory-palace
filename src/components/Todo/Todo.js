@@ -8,6 +8,7 @@ import { Transition } from "react-transition-group";
 import constants from "../constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../../redux/persistentSlice";
+import { logChildrenInOrder } from "../../utilities/loggers";
 
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
@@ -18,23 +19,7 @@ const Todo = (props) => {
   //scaffold for console logs
   console.log("persistentSlice:");
   const slice = useSelector((state) => state.persistentSlice);
-  const sliceArray = [];
-  for (let key in slice) {
-    if (slice.hasOwnProperty(key)) {
-      sliceArray.push(slice[key]);
-    }
-  }
-  sliceArray.sort(function (a, b) {
-    return a.index - b.index;
-  });
-  for (let i = 0; i < sliceArray.length; i++) {
-    console.log(
-      `${sliceArray[i].index}: ${sliceArray[i].id.substring(
-        sliceArray[i].id.length - 4
-      )}`
-    );
-    console.dir(sliceArray[i]);
-  }
+  logChildrenInOrder(slice);
   //scaffold end
 
   const listRef = useRef(null);
