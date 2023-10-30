@@ -14,8 +14,28 @@ const Todo = (props) => {
   const [listOpen, setListOpen] = useState(todo.isBigTodo() ? true : false);
 
   const dispatch = useDispatch();
-  console.log("persistentSlice:")
-  console.log(useSelector((state) => state.persistentSlice));
+
+  //scaffold for console logs
+  console.log("persistentSlice:");
+  const slice = useSelector((state) => state.persistentSlice);
+  const sliceArray = [];
+  for (let key in slice) {
+    if (slice.hasOwnProperty(key)) {
+      sliceArray.push(slice[key]);
+    }
+  }
+  sliceArray.sort(function (a, b) {
+    return a.index - b.index;
+  });
+  for (let i = 0; i < sliceArray.length; i++) {
+    console.log(
+      `${sliceArray[i].index}: ${sliceArray[i].id.substring(
+        sliceArray[i].id.length - 4
+      )}`
+    );
+    console.dir(sliceArray[i]);
+  }
+  //scaffold end
 
   const listRef = useRef(null);
   const adderOpen = todo.index + 1 === props.adderIndex;
@@ -23,7 +43,7 @@ const Todo = (props) => {
 
   const addChildHandler = (e, index) => {
     console.log(index);
-    dispatch(addTodo(todo.generateAndAddChild(index)));
+    dispatch(addTodo(todo.generateChild(index)));
   };
 
   const adderClickedHandler = (e, index) => {
@@ -54,11 +74,11 @@ const Todo = (props) => {
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
 
   const listToggleHandler = () => {
-    todo.empties().forEach(empty => {
+    todo.empties().forEach((empty) => {
       todo.remove(empty.id);
       localStorage.removeItem(empty.id);
-    })
-    
+    });
+
     setListOpen((prev) => !prev);
   };
 
@@ -96,14 +116,12 @@ const Todo = (props) => {
     exited: { height: 0, overflow: "hidden" },
   };
 
-  const listColor = todo.parent ?  props.color.adjustedHSL(20, 0, 2) : props.color;
+  const listColor = todo.parent
+    ? props.color.adjustedHSL(20, 0, 2)
+    : props.color;
 
   const todoList = (
-    <Transition
-      in={listOpenConditions}
-      timeout={500}
-      unmountOnExit
-    >
+    <Transition in={listOpenConditions} timeout={500} unmountOnExit>
       {(state) => (
         <TodoList
           todos={todo.list}

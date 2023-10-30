@@ -1,8 +1,6 @@
 import styles from "./Todo.module.css";
 
 const TodoAdder = (props) => {
-  console.log(`Props:`);
-  console.dir(props);
   const classes = `${styles[props.className]} ${styles.todo} ${styles.adder}`;
 
   return (
