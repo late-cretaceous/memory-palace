@@ -9,9 +9,7 @@ const persistentSlice = createSlice({
       const todo = action.payload;
       state[todo.id] = todo;
       if(todo.parent) {
-        const list = state[todo.parent.id].list;
-        list.splice(todo.index, 0, todo);
-        list.forEach((todo, index) => (todo.index = index));
+        todo.parent.add(todo);
       }
     },
     removeTodo: (state, action) => {

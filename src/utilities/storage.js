@@ -60,13 +60,7 @@ const TodoKit = class {
       list: [],
       listLoaded: true,
     });
-  }
-
-  generateAndAddChild(index = 0) {
-    const newTodo = this.generateChild(index);
-    this.add(newTodo);
-    return newTodo;
-  }
+  } 
 
   pullChildren() {
     if (this.listLoaded) return;
