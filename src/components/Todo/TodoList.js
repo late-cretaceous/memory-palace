@@ -27,12 +27,6 @@ console.log(todoList);
     return;
   }
 
-  const clickAddHandler = (e, index) => {
-    e.stopPropagation();
-    setEdgeOver(null);
-    props.onAdd(e, index);
-  };
-
   const lengthPlusOneForBackground = todos.length + 1;
   const spectrum = props.color.shades(
     {
@@ -77,7 +71,6 @@ console.log(todoList);
                   mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
                   adderIndex={edgeOver}
                   index={index}
-                  onAdd={clickAddHandler}
                   onStarterChange={changeStarterTodoHandler}
                   isStarter={hadStarter}
                 />
@@ -96,7 +89,6 @@ console.log(todoList);
       <PhantomTodo
         parent={props.parent}
         color={props.color}
-        onAdd={clickAddHandler}
       />
     </CSSTransition>
   );
