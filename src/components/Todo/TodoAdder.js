@@ -1,12 +1,16 @@
 import styles from "./Todo.module.css";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../../redux/persistentSlice";
 
-const TodoAdder = (props) => {
+const TodoAdder = ({todo, ...props}) => {
+  const dispatch = useDispatch();
+  const addChildHandler = (e, index) => dispatch(addTodo(todo.generateChild(index)));
   const classes = `${styles[props.className]} ${styles.todo} ${styles.adder}`;
 
   return (
     <div
       className={classes}
-      onClick={(e) => {props.onAdd(e, props.todo.index + 1)}}
+      onClick={(e) => {addChildHandler(e, todo.index + 1)}}
       style={props.style}
       onMouseLeave={props.mouseEdgeLeaveHandler}
       data-name={props.mouseName}

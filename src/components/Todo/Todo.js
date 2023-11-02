@@ -31,10 +31,6 @@ const Todo = (props) => {
     dispatch(addTodo(todo.generateChild(index)));
   };
 
-  const adderClickedHandler = (e, index) => {
-    props.onAdd(e, index);
-  };
-
   const todoRemoveHandler = (e) => {
     const todoCopy = new TodoKit(todo);
 
@@ -147,7 +143,6 @@ const Todo = (props) => {
           style={todoAdderInlineStyles}
           className={adderTransitionClass[state]}
           mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
-          onAdd={adderClickedHandler}
           mouseName={"add"}
         >
           +Todo
@@ -161,7 +156,6 @@ const Todo = (props) => {
       mouseEdgeLeaveHandler={() => {
         return;
       }}
-      onAdd={adderClickedHandler}
       mouseName={"phantom"}
     >
       +Todo
