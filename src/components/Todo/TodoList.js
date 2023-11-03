@@ -6,23 +6,26 @@ import { useState, forwardRef } from "react";
 import PhantomTodo from "./PhantomTodo";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { useSelector } from "react-redux";
 import makeSelectTodoList from "../../redux/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo } from "../../redux/persistentSlice";
 
-const TodoList = forwardRef(({ todos, ...props }, ref) => {
+const TodoList = forwardRef(({ todos, parent, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
   const [hadStarter, setHadStarter] = useState(false);
 
-const todoList = useSelector(makeSelectTodoList(props.parent.id));
-console.log("TodoList selected slice:")
-console.log(todoList);
+  const dispatch = useDispatch();
+
+  const todoList = useSelector(makeSelectTodoList(parent.id));
+  console.log("TodoList selected slice:");
+  console.log(todoList);
 
   const changeStarterTodoHandler = () => {
     setHadStarter(false);
   };
 
   if (!todos.length && !hadStarter) {
-    props.onAdd(null, 0);
+    dispatch(addTodo(parent.generateChild(0)));
     setHadStarter(true);
     return;
   }
@@ -61,7 +64,7 @@ console.log(todoList);
               <div ref={provided.innerRef}>
                 <Todo
                   todo={todo}
-                  parent={props.parent}
+                  parent={parent}
                   provided={provided}
                   onClose={props.onRemove}
                   color={spectrum[index]}
@@ -86,10 +89,7 @@ console.log(todoList);
       timeout={1000}
       classNames={{ ...todoStyles }}
     >
-      <PhantomTodo
-        parent={props.parent}
-        color={props.color}
-      />
+      <PhantomTodo parent={parent} color={props.color} />
     </CSSTransition>
   );
 

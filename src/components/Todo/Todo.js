@@ -6,15 +6,12 @@ import TodoAdder from "./TodoAdder";
 import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 import constants from "../constants.js";
-import { useDispatch, useSelector } from "react-redux";
-import { addTodo } from "../../redux/persistentSlice";
+import { useSelector } from "react-redux";
 import { logChildrenInOrder } from "../../utilities/loggers";
 
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(todo.isBigTodo() ? true : false);
-
-  const dispatch = useDispatch();
 
   //scaffold for console logs
   console.log("persistentSlice:");
@@ -25,11 +22,6 @@ const Todo = (props) => {
   const listRef = useRef(null);
   const adderOpen = todo.index + 1 === props.adderIndex;
   const isPhantom = props.todo.id === "phantom";
-
-  const addChildHandler = (e, index) => {
-    console.log(index);
-    dispatch(addTodo(todo.generateChild(index)));
-  };
 
   const todoRemoveHandler = (e) => {
     const todoCopy = new TodoKit(todo);
@@ -107,7 +99,6 @@ const Todo = (props) => {
         <TodoList
           todos={todo.list}
           parent={todo}
-          onAdd={addChildHandler}
           onMove={todoMoveHandler}
           onRemove={todoRemoveHandler}
           color={listColor}
