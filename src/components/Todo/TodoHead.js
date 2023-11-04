@@ -76,7 +76,6 @@ const TodoHead = (props) => {
         <TodoTop
           hover={hover}
           labelDisplay={labelDisplay}
-          onClose={props.onClose}
           id={todo.id}
           fontColor={fontColor}
         />

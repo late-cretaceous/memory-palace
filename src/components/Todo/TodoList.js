@@ -74,7 +74,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
                   todo={todo}
                   parent={parent}
                   provided={provided}
-                  onClose={props.onRemove}
                   color={spectrum[index]}
                   spectrumRange={(props.spectrumRange * 2) / todos.length}
                   lightRange={(props.lightRange * 2) / todos.length}

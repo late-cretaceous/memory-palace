@@ -15,17 +15,6 @@ const Todo = (props) => {
   const adderOpen = todo.index + 1 === props.adderIndex;
   const isPhantom = props.todo.id === "phantom";
 
-  const todoRemoveHandler = (e) => {
-    const todoCopy = new TodoKit(todo);
-
-    todoCopy.remove(e.target.id);
-
-    todoCopy.store();
-    localStorage.removeItem(e.target.id);
-
-    setTodos(todoCopy);
-  };
-
   const todoMoveHandler = (e) => {
     if (!e.destination) return;
 
@@ -50,7 +39,6 @@ const Todo = (props) => {
   const todoHead = !isPhantom && todo.parent && (
     <TodoHead
       todo={todo}
-      onClose={props.onClose}
       onListToggle={listToggleHandler}
       listOpen={listOpen}
       dragHandleProps={dragHandleProps}
@@ -91,7 +79,6 @@ const Todo = (props) => {
         <TodoList
           parent={todo}
           onMove={todoMoveHandler}
-          onRemove={todoRemoveHandler}
           color={listColor}
           spectrumRange={props.spectrumRange}
           lightRange={props.lightRange}

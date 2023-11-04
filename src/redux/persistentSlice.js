@@ -13,7 +13,17 @@ const persistentSlice = createSlice({
       }
     },
     removeTodo: (state, action) => {
-      delete state[action.payload.id];
+      const id = action.payload;
+      const removee = state[id];
+      const descendants = removee.listHierarchy();
+      descendants.forEach((descendant) => {
+        delete state[descendant.id];
+      });
+
+      const parent = state[removee.parent.id];
+      parent.remove(id);
+
+      delete state[id];
     },
     updateTodo: (state, action) => {
       const { id, updates } = action.payload;
