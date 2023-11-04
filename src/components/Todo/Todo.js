@@ -89,7 +89,6 @@ const Todo = (props) => {
     <Transition in={listOpenConditions} timeout={500} unmountOnExit>
       {(state) => (
         <TodoList
-          todos={todo.list}
           parent={todo}
           onMove={todoMoveHandler}
           onRemove={todoRemoveHandler}

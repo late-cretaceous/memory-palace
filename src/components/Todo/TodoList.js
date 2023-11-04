@@ -11,13 +11,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../../redux/persistentSlice";
 import { logChildrenInOrder } from "../../utilities/loggers";
 
-const TodoList = forwardRef(({ todos, parent, ...props }, ref) => {
+const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
   const [hadStarter, setHadStarter] = useState(false);
 
   const dispatch = useDispatch();
 
-  const todoList = useSelector(makeSelectTodoList(parent.id));
+  const todos = useSelector(makeSelectTodoList(parent.id));
 
   //scaffold for console logs
   const persistentSlice = useSelector((state) => state.persistentSlice);
@@ -25,7 +25,7 @@ const TodoList = forwardRef(({ todos, parent, ...props }, ref) => {
   logChildrenInOrder(persistentSlice);
 
   console.log(`${parent.id} list slice:`);
-  logChildrenInOrder(todoList);
+  logChildrenInOrder(todos);
   //scaffold end
   
   const changeStarterTodoHandler = () => {
