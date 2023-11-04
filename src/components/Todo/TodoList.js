@@ -9,6 +9,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import makeSelectTodoList from "../../redux/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../../redux/persistentSlice";
+import { logChildrenInOrder } from "../../utilities/loggers";
 
 const TodoList = forwardRef(({ todos, parent, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
@@ -17,9 +18,16 @@ const TodoList = forwardRef(({ todos, parent, ...props }, ref) => {
   const dispatch = useDispatch();
 
   const todoList = useSelector(makeSelectTodoList(parent.id));
-  console.log("TodoList selected slice:");
-  console.log(todoList);
 
+  //scaffold for console logs
+  const persistentSlice = useSelector((state) => state.persistentSlice);
+  console.log("Persistent slice:");
+  logChildrenInOrder(persistentSlice);
+
+  console.log(`${parent.id} list slice:`);
+  logChildrenInOrder(todoList);
+  //scaffold end
+  
   const changeStarterTodoHandler = () => {
     setHadStarter(false);
   };

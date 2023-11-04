@@ -6,18 +6,10 @@ import TodoAdder from "./TodoAdder";
 import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 import constants from "../constants.js";
-import { useSelector } from "react-redux";
-import { logChildrenInOrder } from "../../utilities/loggers";
 
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
   const [listOpen, setListOpen] = useState(todo.isBigTodo() ? true : false);
-
-  //scaffold for console logs
-  console.log("persistentSlice:");
-  const slice = useSelector((state) => state.persistentSlice);
-  logChildrenInOrder(slice);
-  //scaffold end
 
   const listRef = useRef(null);
   const adderOpen = todo.index + 1 === props.adderIndex;

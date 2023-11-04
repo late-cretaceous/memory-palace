@@ -4,13 +4,14 @@ import { addTodo } from "../../redux/persistentSlice";
 
 const TodoAdder = ({todo, ...props}) => {
   const dispatch = useDispatch();
-  const addChildHandler = (e, index) => dispatch(addTodo(todo.generateChild(index)));
+  const newSibling = todo.parent.generateChild(todo.index + 1);
+  const addChildHandler = () => dispatch(addTodo(newSibling));
   const classes = `${styles[props.className]} ${styles.todo} ${styles.adder}`;
 
   return (
     <div
       className={classes}
-      onClick={(e) => {addChildHandler(e, todo.index + 1)}}
+      onClick={addChildHandler}
       style={props.style}
       onMouseLeave={props.mouseEdgeLeaveHandler}
       data-name={props.mouseName}
