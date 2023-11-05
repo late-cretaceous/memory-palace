@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
-import TodoKit from "../../utilities/storage";
 import TodoHead from "./TodoHead";
 import TodoList from "./TodoList";
 import TodoAdder from "./TodoAdder";
 import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 import constants from "../constants.js";
+import { useSelector } from "react-redux/es/hooks/useSelector.js";
 
 const Todo = (props) => {
   const [todo, setTodos] = useState(props.todo);
@@ -15,14 +15,9 @@ const Todo = (props) => {
   const adderOpen = todo.index + 1 === props.adderIndex;
   const isPhantom = props.todo.id === "phantom";
 
-  const todoMoveHandler = (e) => {
-    if (!e.destination) return;
-
-    todo.move(e.source.index, e.destination.index);
-    todo.reorderStorage();
-
-    setTodos(new TodoKit(todo));
-  };
+  //scaffold to log rerendered todo
+  const selectedTodo = useSelector(state =>  state[todo.id]);
+  console.log(`${todo.id} rerendered\nindex: ${todo.index}`);
 
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
@@ -78,7 +73,6 @@ const Todo = (props) => {
       {(state) => (
         <TodoList
           parent={todo}
-          onMove={todoMoveHandler}
           color={listColor}
           spectrumRange={props.spectrumRange}
           lightRange={props.lightRange}

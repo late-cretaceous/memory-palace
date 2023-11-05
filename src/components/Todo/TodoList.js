@@ -8,7 +8,7 @@ import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import makeSelectTodoList from "../../redux/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo } from "../../redux/persistentSlice";
+import { addTodo, moveTodo } from "../../redux/persistentSlice";
 import { logChildrenInOrder } from "../../utilities/loggers";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
@@ -36,6 +36,10 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     dispatch(addTodo(parent.generateChild(0)));
     setHadStarter(true);
     return;
+  }
+
+  const moveTodoHandler = (e) => {
+    dispatch(moveTodo(e));
   }
 
   const lengthPlusOneForBackground = todos.length + 1;
@@ -102,7 +106,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   return (
     <div className={styles.flexcol} style={props.style} ref={ref}>
-      <DragDropContext onDragEnd={props.onMove}>
+      <DragDropContext onDragEnd={moveTodoHandler}>
         <Drop id="todoDropArea">
           <ul className={`${styles.flexcol} ${styles.list}`}>
             <TransitionGroup component={null}>

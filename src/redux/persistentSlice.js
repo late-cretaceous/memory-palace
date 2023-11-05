@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadTodos } from "../utilities/reduxStorage";
+import TodoKit from "../utilities/storage";
 
 const persistentSlice = createSlice({
   name: "persistentTodos",
@@ -8,7 +9,7 @@ const persistentSlice = createSlice({
     addTodo: (state, action) => {
       const todo = action.payload;
       state[todo.id] = todo;
-      if(todo.parent) {
+      if (todo.parent) {
         todo.parent.add(todo);
       }
     },
@@ -25,6 +26,16 @@ const persistentSlice = createSlice({
 
       delete state[id];
     },
+    moveTodo: (state, action) => {
+      const e = action.payload;
+
+      if (!e.destination) return;
+    
+      const parent = state[e.draggableId].parent;
+      parent.move(e.source.index, e.destination.index);
+
+      return {...state}
+    },    
     updateTodo: (state, action) => {
       const { id, updates } = action.payload;
       const todo = state[id];
@@ -35,6 +46,7 @@ const persistentSlice = createSlice({
   },
 });
 
-export const { addTodo, removeTodo, updateTodo } = persistentSlice.actions;
+export const { addTodo, removeTodo, moveTodo, updateTodo } =
+  persistentSlice.actions;
 
 export default persistentSlice.reducer;
