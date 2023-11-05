@@ -1,46 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./TodoHead.module.css";
 import TodoBottom from "./TodoBottom";
 import Edgebox from "./Edgebox";
 import TextArea from "../TextArea";
 import { CSSTransition } from "react-transition-group";
 import TodoTop from "./TodoTop";
-
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { editTodo } from "../../redux/persistentSlice";
 
 const TodoHead = (props) => {
-  const todo = props.todo;
-  const isParent = todo.isParent();
+  const todo = useSelector((state) => state.persistentSlice[props.todo.id]);
+  console.log(`${todo.id} head rerendered`);
   const listOpen = props.listOpen;
 
-  const [body, setBody] = useState(todo.message);
   const [hover, setHover] = useState(false);
 
-  const labelsVisible = useSelector((state) => state.labelSlice.visible);
-
+  const dispatch = useDispatch();
   const typeBodyHandler = (textInput) => {
-    setBody(textInput);
-
-    todo.message = textInput;
+    dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
   };
 
-  useEffect(() => {
-    const storeMessage = setTimeout(() => {
-      todo.store();
-      if (isParent) todo.youngestDescendant().store();
-    }, 750);
-
-    return () => {
-      clearTimeout(storeMessage);
-    };
-  }, [body]);
+  const labelsVisible = useSelector((state) => state.labelSlice.visible);
 
   const todoHeadStyles = `${styles.todohead} ${
     listOpen ? styles.preview : styles.full
   }`;
 
   const labelDisplay = listOpen
-    ? body
+    ? todo.message.length
     : labelsVisible
     ? todo.lineage.join(".")
     : "";
@@ -86,7 +73,7 @@ const TodoHead = (props) => {
           classNames={{ ...styles }}
         >
           <TextArea
-            text={body}
+            text={todo.message}
             containerHover={hover}
             inputHandler={typeBodyHandler}
             placeholder={"Type a to-do"}

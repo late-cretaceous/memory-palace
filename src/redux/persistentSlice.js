@@ -30,23 +30,21 @@ const persistentSlice = createSlice({
       const e = action.payload;
 
       if (!e.destination) return;
-    
+
       const parent = state[e.draggableId].parent;
       parent.move(e.source.index, e.destination.index);
 
-      return {...state}
-    },    
-    updateTodo: (state, action) => {
-      const { id, updates } = action.payload;
-      const todo = state[id];
-      if (todo) {
-        Object.assign(todo, updates);
-      }
+      return { ...state };
+    },
+    editTodo: (state, action) => {
+      const { id, edit } = action.payload;
+
+      state[id] = new TodoKit({ ...state[id], ...edit });
     },
   },
 });
 
-export const { addTodo, removeTodo, moveTodo, updateTodo } =
+export const { addTodo, removeTodo, moveTodo, editTodo } =
   persistentSlice.actions;
 
 export default persistentSlice.reducer;
