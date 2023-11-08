@@ -5,18 +5,14 @@ import TodoAdder from "./TodoAdder";
 import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 import constants from "../constants.js";
-import { useSelector } from "react-redux/es/hooks/useSelector.js";
 
-const Todo = (props) => {
-  const [todo, setTodos] = useState(props.todo);
+const Todo = ({todo, ...props}) => {
   const [listOpen, setListOpen] = useState(todo.isBigTodo() ? true : false);
 
   const listRef = useRef(null);
   const adderOpen = todo.index + 1 === props.adderIndex;
-  const isPhantom = props.todo.id === "phantom";
+  const isPhantom = todo.id === "phantom";
 
-  //scaffold to log rerendered todo
-  const selectedTodo = useSelector(state =>  state[todo.id]);
   console.log(`${todo.id} rerendered\nindex: ${todo.index}`);
 
   const draggableProps = props.provided && { ...props.provided.draggableProps };

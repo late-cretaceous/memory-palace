@@ -6,7 +6,6 @@ import { useState, forwardRef } from "react";
 import PhantomTodo from "./PhantomTodo";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import makeSelectTodoList from "../../redux/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, moveTodo } from "../../redux/persistentSlice";
 import { logChildrenInOrder } from "../../utilities/loggers";
@@ -17,7 +16,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const dispatch = useDispatch();
 
-  const todos = useSelector(makeSelectTodoList(parent.id));
+  const todos = useSelector((state) => state.persistentSlice[parent.id].list);
 
   //scaffold for console logs
   const persistentSlice = useSelector((state) => state.persistentSlice);

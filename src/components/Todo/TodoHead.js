@@ -9,18 +9,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 
 const TodoHead = (props) => {
-  const todo = useSelector((state) => state.persistentSlice[props.todo.id]);
-  console.log(`${todo.id} head rerendered`);
-  const listOpen = props.listOpen;
-
   const [hover, setHover] = useState(false);
-
+  const labelsVisible = useSelector((state) => state.labelSlice.visible);
   const dispatch = useDispatch();
+  const todo = useSelector((state) => state.persistentSlice[props.todo.id]);
+  if (!todo) console.log("No todo!");
+  if (!todo) return;
+
+  console.log(`${todo.id} head rerendered`);
+
+  const listOpen = props.listOpen;
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
   };
-
-  const labelsVisible = useSelector((state) => state.labelSlice.visible);
 
   const todoHeadStyles = `${styles.todohead} ${
     listOpen ? styles.preview : styles.full
