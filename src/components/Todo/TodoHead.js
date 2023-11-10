@@ -12,9 +12,10 @@ const TodoHead = (props) => {
   const [hover, setHover] = useState(false);
   const labelsVisible = useSelector((state) => state.labelSlice.visible);
   const dispatch = useDispatch();
-  const todo = useSelector((state) => state.persistentSlice[props.todo.id]);
-  if (!todo) console.log("No todo!");
-  if (!todo) return;
+  let todo = useSelector((state) => state.persistentSlice[props.todo.id]);
+  if (!todo) {
+    todo = props.todo;
+  };
 
   console.log(`${todo.id} head rerendered`);
 
