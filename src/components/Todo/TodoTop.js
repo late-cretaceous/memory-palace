@@ -1,12 +1,12 @@
 import styles from "./TodoHead.module.css";
 import CloseIcon from "../../assets/CloseIcon";
 import { useDispatch } from "react-redux";
-import { removeTodo } from "../../redux/persistentSlice";
+import { removeTodo } from "../../utilities/reduxUtils";
 
-const TodoTop = ({ id, ...props }) => {
+const TodoTop = ({ todo, ...props }) => {
   const dispatch = useDispatch();
   const removeSelfHandler = () => {
-    dispatch(removeTodo(id));
+    dispatch(removeTodo(todo));
   };
 
   return (
@@ -20,7 +20,7 @@ const TodoTop = ({ id, ...props }) => {
           props.hover ? styles.opaque : styles.transparent
         }`}
         onClick={removeSelfHandler}
-        id={id}
+        id={todo.id}
       >
         <CloseIcon fill={props.fontColor} />
       </button>

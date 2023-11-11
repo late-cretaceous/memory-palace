@@ -65,7 +65,7 @@ const TodoHead = (props) => {
         <TodoTop
           hover={hover}
           labelDisplay={labelDisplay}
-          id={todo.id}
+          todo={todo}
           fontColor={fontColor}
         />
         <CSSTransition

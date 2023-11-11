@@ -4,7 +4,7 @@ import TodoKit from "./utilities/storage";
 import HSL from "./utilities/colors";
 
 import { useDispatch } from "react-redux";
-import { addTodo } from "./redux/persistentSlice";
+import { addPersistentTodo } from "./redux/persistentSlice";
 import { useEffect } from "react";
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
 
   const dispatch = useDispatch();
 
-  dispatch(addTodo(bigTodo));
+  dispatch(addPersistentTodo(bigTodo));
 
   const color = HSL.random();
 
