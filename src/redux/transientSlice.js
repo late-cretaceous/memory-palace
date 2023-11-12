@@ -35,6 +35,5 @@ const transientSlice = createSlice({
   },
 });
 
-export { createTransientTodo };
 export const { addTransientTodo, removeTransientTodo } = transientSlice.actions;
 export default transientSlice.reducer;

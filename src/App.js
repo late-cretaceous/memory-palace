@@ -5,6 +5,7 @@ import HSL from "./utilities/colors";
 
 import { useDispatch } from "react-redux";
 import { addPersistentTodo } from "./redux/persistentSlice";
+import { addTransientTodo } from "./redux/transientSlice";
 import { useEffect } from "react";
 
 function App() {
@@ -19,8 +20,8 @@ function App() {
   });
 
   const dispatch = useDispatch();
-
   dispatch(addPersistentTodo(bigTodo));
+  dispatch(addTransientTodo({id: bigTodo.id, listOpen: true}));
 
   const color = HSL.random();
 

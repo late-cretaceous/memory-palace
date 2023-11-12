@@ -8,6 +8,7 @@ import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
 import { addPersistentTodo, moveTodo } from "../../redux/persistentSlice";
+import { addTransientTodo } from "../../redux/transientSlice";
 import { logChildrenInOrder } from "../../utilities/loggers";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
@@ -32,7 +33,10 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   };
 
   if (!todos.length && !hadStarter) {
-    dispatch(addPersistentTodo(parent.generateChild(0)));
+    const newTodo = parent.generateChild();
+    dispatch(addPersistentTodo(newTodo));
+    dispatch(addTransientTodo({ id: newTodo.id}));
+
     setHadStarter(true);
     return;
   }
