@@ -5,6 +5,7 @@ const createTransientTodo = (initialValues) => {
     id: initialValues.id,
     listOpen: false,
     hover: false,
+    isStarer: false,
   };
 
   return Object.assign(defaultValues, initialValues);
