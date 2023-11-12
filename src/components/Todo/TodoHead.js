@@ -17,8 +17,6 @@ const TodoHead = (props) => {
     todo = props.todo;
   };
 
-  console.log(`${todo.id} head rerendered`);
-
   const listOpen = props.listOpen;
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));

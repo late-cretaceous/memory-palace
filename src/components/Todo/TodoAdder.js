@@ -1,11 +1,15 @@
 import styles from "./Todo.module.css";
 import { useDispatch } from "react-redux";
 import { addPersistentTodo } from "../../redux/persistentSlice";
+import { addTransientTodo } from "../../redux/transientSlice";
 
-const TodoAdder = ({todo, ...props}) => {
+const TodoAdder = ({ todo, ...props }) => {
   const dispatch = useDispatch();
   const newSibling = todo.parent.generateChild(todo.index + 1);
-  const addChildHandler = () => dispatch(addPersistentTodo(newSibling));
+  const addChildHandler = () => {
+    dispatch(addPersistentTodo(newSibling));
+    dispatch(addTransientTodo({ id: todo.id }));
+  };
   const classes = `${styles[props.className]} ${styles.todo} ${styles.adder}`;
 
   return (
