@@ -5,6 +5,7 @@ const TodoBottom = (props) => {
   const classes = `${styles["todohead-row"]} ${styles["todo-bottom"]} ${
     props.hover ? styles.opaque : styles.transparent
   }`;
+  console.log(props);
 
   return (
     <div className={classes}>

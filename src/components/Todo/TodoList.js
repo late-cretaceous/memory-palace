@@ -39,6 +39,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
     setHadStarter(true);
     return;
+  } else if (todos.length > 1 && hadStarter) {
+    changeStarterTodoHandler();
   }
 
   const moveTodoHandler = (e) => {

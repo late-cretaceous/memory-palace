@@ -20,6 +20,10 @@ const TodoHead = (props) => {
   const listOpen = props.listOpen;
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
+
+    if(props.isStarter) {
+      props.onStarterChange();
+    }
   };
 
   const todoHeadStyles = `${styles.todohead} ${
