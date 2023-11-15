@@ -8,7 +8,7 @@ const TodoAdder = ({ todo, ...props }) => {
   const newSibling = todo.parent.generateChild(todo.index + 1);
   const addChildHandler = () => {
     dispatch(addPersistentTodo(newSibling));
-    dispatch(addTransientTodo({ id: todo.id }));
+    dispatch(addTransientTodo({ id: newSibling.id }));
   };
   const classes = `${styles[props.className]} ${styles.todo} ${styles.adder}`;
 

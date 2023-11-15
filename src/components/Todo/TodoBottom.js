@@ -1,7 +1,11 @@
 import styles from "./TodoHead.module.css";
 import { ReactComponent as Arrow } from "../../assets/triangle.svg";
+import { useDispatch } from "react-redux";
+import { toggleListOpen } from "../../redux/transientSlice";
 
 const TodoBottom = (props) => {
+  const dispatch = useDispatch();
+  const arrowClickHandler = () => { dispatch(toggleListOpen(props.todo.id))};
   const classes = `${styles["todohead-row"]} ${styles["todo-bottom"]} ${
     props.hover ? styles.opaque : styles.transparent
   }`;
@@ -14,7 +18,7 @@ const TodoBottom = (props) => {
           className={`${styles.button} ${
             props.listOpen ? styles.arrowopen : ""
           }`}
-          onClick={props.onListToggle}
+          onClick={arrowClickHandler}
         >
           <span>
             <Arrow
