@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 const Todo = ({todo, ...props}) => {
   const [listOpen, setListOpen] = useState(todo.isBigTodo() ? true : false);
-  const open = useSelector(state => state.transientSlice[todo.id]);
+  const open = useSelector(state => state.transientSlice[todo.id]?.listOpen);
   console.log(open);
 
   const listRef = useRef(null);

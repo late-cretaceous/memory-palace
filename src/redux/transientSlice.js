@@ -24,11 +24,9 @@ const transientSlice = createSlice({
 
       const id = action.payload.id;
 
-      action.descendants.forEach((descendant) => delete state[descendant]);
+      action.payload.descendants.forEach((descendant) => delete state[descendant]);
 
       delete state[id];
-
-      return { ...state };
     },
     toggleListOpen: (state, action) => {
       console.log(action);

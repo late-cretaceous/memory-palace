@@ -2,10 +2,17 @@ import styles from "./TodoHead.module.css";
 import { ReactComponent as Arrow } from "../../assets/triangle.svg";
 import { useDispatch } from "react-redux";
 import { toggleListOpen } from "../../redux/transientSlice";
+import { removeTodo } from "../../utilities/reduxUtils";
 
 const TodoBottom = (props) => {
   const dispatch = useDispatch();
-  const arrowClickHandler = () => { dispatch(toggleListOpen(props.todo.id))};
+  const arrowClickHandler = () => {
+    dispatch(toggleListOpen(props.todo.id));
+
+    props.todo.empties().forEach((empty) => {
+      dispatch(removeTodo(empty));
+    });
+  };
   const classes = `${styles["todohead-row"]} ${styles["todo-bottom"]} ${
     props.hover ? styles.opaque : styles.transparent
   }`;
