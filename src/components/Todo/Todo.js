@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import TodoHead from "./TodoHead";
 import TodoList from "./TodoList";
 import TodoAdder from "./TodoAdder";
@@ -8,7 +8,6 @@ import constants from "../constants.js";
 import { useSelector } from "react-redux";
 
 const Todo = ({todo, ...props}) => {
-  const [oldOpen, setOldOpen] = useState(todo.isBigTodo() ? true : false);
   const listOpen = useSelector(state => state.transientSlice[todo.id]?.listOpen);
   console.log(listOpen);
 
@@ -19,19 +18,9 @@ const Todo = ({todo, ...props}) => {
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
 
-  const listToggleHandler = () => {
-    todo.empties().forEach((empty) => {
-      todo.remove(empty.id);
-      localStorage.removeItem(empty.id);
-    });
-
-    setOldOpen((prev) => !prev);
-  };
-
   const todoHead = !isPhantom && todo.parent && (
     <TodoHead
       todo={todo}
-      onListToggle={listToggleHandler}
       listOpen={listOpen}
       dragHandleProps={dragHandleProps}
       color={props.color}

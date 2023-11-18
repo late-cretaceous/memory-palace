@@ -86,7 +86,6 @@ const TodoHead = (props) => {
         <TodoBottom
           hover={hover}
           listOpen={listOpen}
-          onListToggle={props.onListToggle}
           todo={todo}
           color={fontColor}
           isStarter={props.isStarter}
