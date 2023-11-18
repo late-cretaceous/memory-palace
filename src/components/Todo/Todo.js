@@ -8,9 +8,9 @@ import constants from "../constants.js";
 import { useSelector } from "react-redux";
 
 const Todo = ({todo, ...props}) => {
-  const [listOpen, setListOpen] = useState(todo.isBigTodo() ? true : false);
-  const open = useSelector(state => state.transientSlice[todo.id]?.listOpen);
-  console.log(open);
+  const [oldOpen, setOldOpen] = useState(todo.isBigTodo() ? true : false);
+  const listOpen = useSelector(state => state.transientSlice[todo.id]?.listOpen);
+  console.log(listOpen);
 
   const listRef = useRef(null);
   const adderOpen = todo.index + 1 === props.adderIndex;
@@ -25,7 +25,7 @@ const Todo = ({todo, ...props}) => {
       localStorage.removeItem(empty.id);
     });
 
-    setListOpen((prev) => !prev);
+    setOldOpen((prev) => !prev);
   };
 
   const todoHead = !isPhantom && todo.parent && (

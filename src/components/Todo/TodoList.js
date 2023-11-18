@@ -32,7 +32,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     setHadStarter(false);
   };
 
-  if (!todos.length && !hadStarter) {
+  if (!todos.length) {
     const newTodo = parent.generateChild();
     dispatch(addPersistentTodo(newTodo));
     dispatch(addTransientTodo({ id: newTodo.id}));
