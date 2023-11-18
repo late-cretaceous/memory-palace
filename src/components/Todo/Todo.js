@@ -21,7 +21,6 @@ const Todo = ({todo, ...props}) => {
   const todoHead = !isPhantom && todo.parent && (
     <TodoHead
       todo={todo}
-      listOpen={listOpen}
       dragHandleProps={dragHandleProps}
       color={props.color}
       mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}

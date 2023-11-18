@@ -15,13 +15,15 @@ const TodoHead = (props) => {
   let todo = useSelector((state) => state.persistentSlice[props.todo.id]);
   if (!todo) {
     todo = props.todo;
-  };
+  }
 
-  const listOpen = props.listOpen;
+  const listOpen = useSelector(
+    (state) => state.transientSlice[props.todo.id]?.listOpen
+  );
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
 
-    if(props.isStarter) {
+    if (props.isStarter) {
       props.onStarterChange();
     }
   };
