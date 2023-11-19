@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import styles from "./TodoHead.module.css";
 import TodoBottom from "./TodoBottom";
 import Edgebox from "./Edgebox";
@@ -7,9 +6,9 @@ import { CSSTransition } from "react-transition-group";
 import TodoTop from "./TodoTop";
 import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
+import { toggleHover } from "../../redux/transientSlice";
 
 const TodoHead = (props) => {
-  const [hover, setHover] = useState(false);
   const labelsVisible = useSelector((state) => state.labelSlice.visible);
   const dispatch = useDispatch();
   let todo = useSelector((state) => state.persistentSlice[props.todo.id]);
@@ -17,15 +16,19 @@ const TodoHead = (props) => {
     todo = props.todo;
   }
 
-  const listOpen = useSelector(
-    (state) => state.transientSlice[props.todo.id]?.listOpen
-  );
+  const { listOpen, hover } =
+    useSelector((state) => state.transientSlice[props.todo.id]) ?? {};
+
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
 
     if (props.isStarter) {
       props.onStarterChange();
     }
+  };
+
+  const hoverHandler = (action) => {
+    dispatch(toggleHover(action));
   };
 
   const todoHeadStyles = `${styles.todohead} ${
@@ -49,10 +52,10 @@ const TodoHead = (props) => {
       }}
       id={todo.id}
       onMouseEnter={() => {
-        setHover(true);
+        hoverHandler({ id: todo.id, hovering: true });
       }}
       onMouseLeave={() => {
-        setHover(false);
+        hoverHandler({ id: todo.id, hovering: false });
       }}
     >
       <Edgebox

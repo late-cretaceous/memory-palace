@@ -19,22 +19,28 @@ const transientSlice = createSlice({
       state[action.payload.id] = createTransientTodo(action.payload);
     },
     removeTransientTodo: (state, action) => {
-      console.log("Remove transient todo:");
-      console.dir(action);
-
       const id = action.payload.id;
 
-      action.payload.descendants.forEach((descendant) => delete state[descendant]);
+      action.payload.descendants.forEach(
+        (descendant) => delete state[descendant]
+      );
 
       delete state[id];
     },
     toggleListOpen: (state, action) => {
-      console.log(action);
-      console.log(state[action.payload]);
       state[action.payload].listOpen = !state[action.payload].listOpen;
-    }
+    },
+    toggleHover: (state, action) => {
+      const { id, hovering } = action.payload;
+      state[id].hover = hovering;
+    },
   },
 });
 
-export const { addTransientTodo, removeTransientTodo, toggleListOpen } = transientSlice.actions;
+export const {
+  addTransientTodo,
+  removeTransientTodo,
+  toggleListOpen,
+  toggleHover,
+} = transientSlice.actions;
 export default transientSlice.reducer;
