@@ -3,7 +3,6 @@ import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { useState, forwardRef } from "react";
-import PhantomTodo from "./PhantomTodo";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +26,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   console.log(`${parent.id} list slice:`);
   logChildrenInOrder(todos);
   //scaffold end
-  
+
   const changeStarterTodoHandler = () => {
     setHadStarter(false);
   };
@@ -35,7 +34,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   if (!todos.length) {
     const newTodo = parent.generateChild();
     dispatch(addPersistentTodo(newTodo));
-    dispatch(addTransientTodo({ id: newTodo.id}));
+    dispatch(addTransientTodo({ id: newTodo.id }));
 
     setHadStarter(true);
     return;
@@ -45,7 +44,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
-  }
+  };
 
   const lengthPlusOneForBackground = todos.length + 1;
   const spectrum = props.color.shades(
@@ -67,47 +66,37 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     setEdgeOver(null);
   };
 
-  const todoComponentList = todos.length ? (
-    todos.map((todo, index) => {
-      todo.pullChildren();
-      return (
-        <CSSTransition
-          key={todo.id}
-          timeout={1000}
-          classNames={{ ...todoStyles }}
-        >
-          <Draggable key={todo.id} draggableId={todo.id} index={index}>
-            {(provided) => (
-              <div ref={provided.innerRef}>
-                <Todo
-                  todo={todo}
-                  parent={parent}
-                  provided={provided}
-                  color={spectrum[index]}
-                  spectrumRange={(props.spectrumRange * 2) / todos.length}
-                  lightRange={(props.lightRange * 2) / todos.length}
-                  mouseEdgeEnterHandler={mouseEdgeEnterHandler}
-                  mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
-                  adderIndex={edgeOver}
-                  index={index}
-                  onStarterChange={changeStarterTodoHandler}
-                  isStarter={hadStarter}
-                />
-              </div>
-            )}
-          </Draggable>
-        </CSSTransition>
-      );
-    })
-  ) : (
-    <CSSTransition
-      key={"phantom"}
-      timeout={1000}
-      classNames={{ ...todoStyles }}
-    >
-      <PhantomTodo parent={parent} color={props.color} />
-    </CSSTransition>
-  );
+  const todoComponentList = todos.map((todo, index) => {
+    todo.pullChildren();
+    return (
+      <CSSTransition
+        key={todo.id}
+        timeout={1000}
+        classNames={{ ...todoStyles }}
+      >
+        <Draggable key={todo.id} draggableId={todo.id} index={index}>
+          {(provided) => (
+            <div ref={provided.innerRef}>
+              <Todo
+                todo={todo}
+                parent={parent}
+                provided={provided}
+                color={spectrum[index]}
+                spectrumRange={(props.spectrumRange * 2) / todos.length}
+                lightRange={(props.lightRange * 2) / todos.length}
+                mouseEdgeEnterHandler={mouseEdgeEnterHandler}
+                mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
+                adderIndex={edgeOver}
+                index={index}
+                onStarterChange={changeStarterTodoHandler}
+                isStarter={hadStarter}
+              />
+            </div>
+          )}
+        </Draggable>
+      </CSSTransition>
+    );
+  });
 
   return (
     <div className={styles.flexcol} style={props.style} ref={ref}>

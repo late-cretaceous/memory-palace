@@ -7,18 +7,18 @@ import { Transition } from "react-transition-group";
 import constants from "../constants.js";
 import { useSelector } from "react-redux";
 
-const Todo = ({todo, ...props}) => {
-  const listOpen = useSelector(state => state.transientSlice[todo.id]?.listOpen);
-  console.log(listOpen);
+const Todo = ({ todo, ...props }) => {
+  const listOpen = useSelector(
+    (state) => state.transientSlice[todo.id]?.listOpen
+  );
 
   const listRef = useRef(null);
   const adderOpen = todo.index + 1 === props.adderIndex;
-  const isPhantom = todo.id === "phantom";
 
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
 
-  const todoHead = !isPhantom && todo.parent && (
+  const todoHead = todo.parent && (
     <TodoHead
       todo={todo}
       dragHandleProps={dragHandleProps}
@@ -29,8 +29,6 @@ const Todo = ({todo, ...props}) => {
       onStarterChange={props.onStarterChange}
     />
   );
-
-  const listOpenConditions = !isPhantom && (listOpen || !todo.parent);
 
   const listEnteringHeight = todo.list.length
     ? todo.list.length * constants.TODO_HEIGHT_PX
@@ -54,7 +52,7 @@ const Todo = ({todo, ...props}) => {
     : props.color;
 
   const todoList = (
-    <Transition in={listOpenConditions} timeout={500} unmountOnExit>
+    <Transition in={listOpen} timeout={500} unmountOnExit>
       {(state) => (
         <TodoList
           parent={todo}
@@ -83,7 +81,7 @@ const Todo = ({todo, ...props}) => {
     transition: `all 200ms ease-out`,
   };
 
-  const todoAdder = !isPhantom ? (
+  const todoAdder = (
     <Transition in={adderOpen} timeout={200} mountOnEnter unmountOnExit>
       {(state) => (
         <TodoAdder
@@ -97,22 +95,10 @@ const Todo = ({todo, ...props}) => {
         </TodoAdder>
       )}
     </Transition>
-  ) : (
-    <TodoAdder
-      index={-1}
-      style={todoAdderInlineStyles}
-      mouseEdgeLeaveHandler={() => {
-        return;
-      }}
-      mouseName={"phantom"}
-    >
-      +Todo
-    </TodoAdder>
   );
 
   let todoStyles = styles.todo;
   todoStyles += !todo.parent ? ` ${styles.bigTodo}` : "";
-  todoStyles += isPhantom ? ` ${styles.phantom}` : "";
 
   return (
     <div className={todoStyles} {...draggableProps}>
