@@ -3,6 +3,7 @@ import { ReactComponent as Arrow } from "../../assets/triangle.svg";
 import { useDispatch } from "react-redux";
 import { toggleListOpen } from "../../redux/transientSlice";
 import { removeTodo } from "../../utilities/reduxUtils";
+import { useSelector } from "react-redux";
 
 const TodoBottom = (props) => {
   const dispatch = useDispatch();
@@ -13,17 +14,20 @@ const TodoBottom = (props) => {
       dispatch(removeTodo(empty));
     });
   };
+
+  const listOpen = useSelector((state) => state.transientSlice[props.todo.id]?.listOpen);
+
   const classes = `${styles["todohead-row"]} ${styles["todo-bottom"]} ${
     props.hover ? styles.opaque : styles.transparent
   }`;
-  console.log(props);
+
 
   return (
     <div className={classes}>
       {!props.isStarter && (
         <button
           className={`${styles.button} ${
-            props.listOpen ? styles.arrowopen : ""
+            listOpen ? styles.arrowopen : ""
           }`}
           onClick={arrowClickHandler}
         >
