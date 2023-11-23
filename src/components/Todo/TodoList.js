@@ -16,25 +16,18 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const dispatch = useDispatch();
 
-  const todos = useSelector((state) => state.persistentSlice[parent.id].list);
-
-  //scaffold for console logs
-  const persistentSlice = useSelector((state) => state.persistentSlice);
-  console.log("Persistent slice:");
-  logChildrenInOrder(persistentSlice);
-
-  console.log(`${parent.id} list slice:`);
-  logChildrenInOrder(todos);
-  //scaffold end
+  let todos = useSelector((state) => state.persistentSlice[parent.id].list);
 
   const changeStarterTodoHandler = () => {
     setHadStarter(false);
   };
 
+  console.log(todos);
   if (!todos.length) {
+    console.log("No length");
     const newTodo = parent.generateChild();
     dispatch(addPersistentTodo(newTodo));
-    dispatch(addTransientTodo({ id: newTodo.id }));
+    dispatch(addTransientTodo({ id: newTodo.id, isStarter: true }));
 
     setHadStarter(true);
     return;
@@ -42,6 +35,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     changeStarterTodoHandler();
   }
 
+  console.log(todos);
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
   };
@@ -67,7 +61,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   };
 
   const todoComponentList = todos.map((todo, index) => {
-    todo.pullChildren();
     return (
       <CSSTransition
         key={todo.id}

@@ -10,7 +10,7 @@ const persistentSlice = createSlice({
       const todo = action.payload;
       state[todo.id] = todo;
       if (todo.parent) {
-        todo.parent.add(todo);
+        state[todo.parent.id].add(todo);
       }
     },
     removePersistentTodo: (state, action) => {   

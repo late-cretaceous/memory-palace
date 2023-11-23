@@ -47,6 +47,7 @@ const TodoKit = class {
 
   add(todo) {
     this.list.splice(todo.index, 0, todo);
+    this.list = [...this.list];
     this.reIndex();
   }
 
