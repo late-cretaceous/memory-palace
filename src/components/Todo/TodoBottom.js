@@ -15,20 +15,19 @@ const TodoBottom = (props) => {
     });
   };
 
-  const listOpen = useSelector((state) => state.transientSlice[props.todo.id]?.listOpen);
+  const { listOpen, isStarter } = useSelector(
+    (state) => state.transientSlice[props.todo.id] ?? []
+  );
 
   const classes = `${styles["todohead-row"]} ${styles["todo-bottom"]} ${
     props.hover ? styles.opaque : styles.transparent
   }`;
 
-
   return (
     <div className={classes}>
-      {!props.isStarter && (
+      {!isStarter && (
         <button
-          className={`${styles.button} ${
-            listOpen ? styles.arrowopen : ""
-          }`}
+          className={`${styles.button} ${listOpen ? styles.arrowopen : ""}`}
           onClick={arrowClickHandler}
         >
           <span>

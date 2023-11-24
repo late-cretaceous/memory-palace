@@ -6,7 +6,7 @@ import { CSSTransition } from "react-transition-group";
 import TodoTop from "./TodoTop";
 import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
-import { toggleHover } from "../../redux/transientSlice";
+import { toggleHover, toggleStarter } from "../../redux/transientSlice";
 
 const TodoHead = (props) => {
   const labelsVisible = useSelector((state) => state.labelSlice.visible);
@@ -22,9 +22,7 @@ const TodoHead = (props) => {
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
 
-    if (props.isStarter) {
-      props.onStarterChange();
-    }
+    dispatch(toggleStarter({ id: todo.id, value: false }));
   };
 
   const hoverHandler = (action) => {
@@ -93,7 +91,6 @@ const TodoHead = (props) => {
           listOpen={listOpen}
           todo={todo}
           color={fontColor}
-          isStarter={props.isStarter}
         />
       </div>
       {!listOpen && (

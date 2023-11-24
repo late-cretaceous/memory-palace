@@ -16,19 +16,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const todos = useSelector((state) => state.persistentSlice[parent.id].list);
 
-  const changeStarterTodoHandler = () => {
-    setHadStarter(false);
-  };
-
-  /* never happens – Todo now adds one to the list
-  if (!todos.length) {
-    setHadStarter(true);
-    return;
-  } else if (todos.length > 1 && hadStarter) {
-    changeStarterTodoHandler();
-  }
-  */
-
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
   };
@@ -74,8 +61,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
                 mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
                 adderIndex={edgeOver}
                 index={index}
-                onStarterChange={changeStarterTodoHandler}
-                isStarter={hadStarter}
               />
             </div>
           )}

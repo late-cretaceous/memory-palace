@@ -1,12 +1,16 @@
 import styles from "./Todo.module.css";
 import { useDispatch } from "react-redux";
 import { addPersistentTodo } from "../../redux/persistentSlice";
-import { addTransientTodo } from "../../redux/transientSlice";
+import { addTransientTodo, toggleStarter } from "../../redux/transientSlice";
 
 const TodoAdder = ({ todo, ...props }) => {
   const dispatch = useDispatch();
   const newSibling = todo.parent.generateChild(todo.index + 1);
   const addChildHandler = () => {
+    if (todo.parent.list.length === 1) {
+      dispatch(toggleStarter({ id: todo.parent.list[0].id, value: false }));
+    }
+
     dispatch(addPersistentTodo(newSibling));
     dispatch(addTransientTodo({ id: newSibling.id }));
   };

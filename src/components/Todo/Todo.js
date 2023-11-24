@@ -36,8 +36,6 @@ const Todo = ({ todo, ...props }) => {
       color={props.color}
       mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
       mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
-      isStarter={props.isStarter}
-      onStarterChange={props.onStarterChange}
     />
   );
 
