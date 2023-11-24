@@ -6,13 +6,24 @@ import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 import constants from "../constants.js";
 import { useSelector } from "react-redux";
+import { addPersistentTodo } from "../../redux/persistentSlice";
+import { addTransientTodo } from "../../redux/transientSlice";
+import { useDispatch } from "react-redux";
 
 const Todo = ({ todo, ...props }) => {
   const listOpen = useSelector(
     (state) => state.transientSlice[todo.id]?.listOpen
   );
-
+  
+  const dispatch = useDispatch();
   const listRef = useRef(null);
+
+  if (listOpen && !todo.list.length) {
+    const newTodo = todo.generateChild();
+    dispatch(addPersistentTodo(newTodo));
+    dispatch(addTransientTodo({ id: newTodo.id, isStarter: true }));
+  }
+
   const adderOpen = todo.index + 1 === props.adderIndex;
 
   const draggableProps = props.provided && { ...props.provided.draggableProps };

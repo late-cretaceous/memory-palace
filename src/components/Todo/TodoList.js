@@ -6,9 +6,7 @@ import { useState, forwardRef } from "react";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
-import { addPersistentTodo, moveTodo } from "../../redux/persistentSlice";
-import { addTransientTodo } from "../../redux/transientSlice";
-import { logChildrenInOrder } from "../../utilities/loggers";
+import { moveTodo } from "../../redux/persistentSlice";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
@@ -16,26 +14,20 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const dispatch = useDispatch();
 
-  let todos = useSelector((state) => state.persistentSlice[parent.id].list);
+  const todos = useSelector((state) => state.persistentSlice[parent.id].list);
 
   const changeStarterTodoHandler = () => {
     setHadStarter(false);
   };
 
-  console.log(todos);
   if (!todos.length) {
-    console.log("No length");
-    const newTodo = parent.generateChild();
-    dispatch(addPersistentTodo(newTodo));
-    dispatch(addTransientTodo({ id: newTodo.id, isStarter: true }));
-
+    //never happens. todo now does this checks and adds
     setHadStarter(true);
     return;
   } else if (todos.length > 1 && hadStarter) {
     changeStarterTodoHandler();
   }
 
-  console.log(todos);
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
   };
