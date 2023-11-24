@@ -19,7 +19,6 @@ export const saveTodo = (todo) => {
 };
 
 export const removeTodo = (todo) => {
-  console.dir(todo);
   const action = {id: todo.id, descendants: todo.listHierarchy()};
 
   return (dispatch) => {

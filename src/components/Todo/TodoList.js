@@ -20,13 +20,14 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     setHadStarter(false);
   };
 
+  /* never happens – Todo now adds one to the list
   if (!todos.length) {
-    //never happens. todo now does this checks and adds
     setHadStarter(true);
     return;
   } else if (todos.length > 1 && hadStarter) {
     changeStarterTodoHandler();
   }
+  */
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
