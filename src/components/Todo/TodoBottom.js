@@ -9,10 +9,6 @@ const TodoBottom = (props) => {
   const dispatch = useDispatch();
   const arrowClickHandler = () => {
     dispatch(toggleListOpen(props.todo.id));
-
-    props.todo.empties().forEach((empty) => {
-      dispatch(removeTodo(empty));
-    });
   };
 
   const { listOpen, isStarter } = useSelector(

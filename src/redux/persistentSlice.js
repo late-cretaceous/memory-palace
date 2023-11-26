@@ -10,7 +10,7 @@ const persistentSlice = createSlice({
       const todo = action.payload;
       state[todo.id] = todo;
       if (todo.parent) {
-        state[todo.parent].add(todo);
+        state[todo.parent].add(todo.id, state);
       }
     },
     removePersistentTodo: (state, action) => {   
@@ -21,7 +21,7 @@ const persistentSlice = createSlice({
       const id = action.payload.id;
       const removee = state[action.payload.id];
       const parent = state[removee.parent];
-      parent.remove(id);
+      parent.remove(id, state);
     
       delete state[id];
     },
@@ -31,7 +31,7 @@ const persistentSlice = createSlice({
       if (!e.destination) return;
 
       const todo = state[e.draggableId];
-      state[todo.parent].move(e.source.index, e.destination.index);
+      state[todo.parent].move(e.source.index, e.destination.index, state);
 
       return { ...state };
     },

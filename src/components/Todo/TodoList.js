@@ -14,7 +14,9 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const dispatch = useDispatch();
 
-  const todos = useSelector((state) => [...state.persistentSlice[parent.id].list]);
+  const todos = useSelector((state) =>
+    state.persistentSlice[parent.id].list.map((id) => state.persistentSlice[id])
+  );
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));

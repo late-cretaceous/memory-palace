@@ -38,19 +38,19 @@ const TodoKit = class {
   }
 
   indexOf(id) {
-    return this.list.findIndex((todo) => todo.id === id);
+    return this.list.findIndex((item) => item === id);
   }
 
-  add(todo) {
-    this.list.splice(todo.index, 0, todo);
+  add(id, database) {
+    this.list.splice(database[id].index, 0, id);
     this.list = [...this.list];
-    this.reIndex();
+    this.reIndex(database);
   }
 
-  generateChild(index = 0) {
+  generateChild(index = 0, siblings) {
     return new TodoKit({
       id: Date.now().toString(),
-      lineage: this.lineage.concat(this.newNumber()),
+      lineage: this.lineage.concat(this.newNumber(siblings)),
       index: index,
       parent: this.id,
       message: "",
@@ -102,29 +102,31 @@ const TodoKit = class {
     return children.concat(descendants);
   }
 
-  listHierarchy() {
+  listHierarchy(database) {
     if (!this.list.length) {
       return [];
     }
 
     const descendants = [];
 
-    for (const child of this.list) {
-      descendants.push(child);
-      descendants.push(...child.listHierarchy());
+    for (const id of this.list) {
+      descendants.push(database[id]);
+      descendants.push(...database[id].listHierarchy(database));
     }
 
     return descendants;
   }
 
-  move(fromIndex, toIndex) {
-    const [draggedTodo] = this.list.splice(fromIndex, 1);
-    this.list.splice(toIndex, 0, draggedTodo);
-    this.reIndex();
+  move(fromIndex, toIndex, database) {
+    const list = this.list.map(id => database[id]);
+    const [draggedTodo] = list.splice(fromIndex, 1);
+    list.splice(toIndex, 0, draggedTodo);
+    this.reIndex(database);
   }
 
-  reIndex() {
-    this.list.forEach((todo, index) => (todo.index = index));
+  reIndex(database) {
+    const list = this.list.map(id => database[id]);
+    list.forEach((todo, index) => (todo.index = index));
   }
 
   store() {
@@ -142,11 +144,9 @@ const TodoKit = class {
     return this.list[this.indexOf(id)];
   }
 
-  remove(id) {
-    const removee = this.lookup(id);
-
-    this.list = this.list.filter((todo) => todo.id !== removee.id);
-    this.reIndex();
+  remove(id, database) {
+    this.list = this.list.filter(item => item !== id);
+    this.reIndex(database);
   }
 
   empties() {
@@ -173,11 +173,11 @@ const TodoKit = class {
     this.parent.list.splice(index, 1, this);
   }
 
-  newNumber() {
+  newNumber(siblings) {
     if (!this.list.length) return 0;
 
     const todoNumbers = Array.from(
-      this.list,
+      siblings,
       (todo) => todo.lineage[todo.lineage.length - 1]
     ).sort();
 

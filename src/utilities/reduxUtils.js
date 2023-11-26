@@ -18,8 +18,8 @@ export const saveTodo = (todo) => {
   localStorage.setItem(todo.id, JSON.stringify(todo));
 };
 
-export const removeTodo = (todo) => {
-  const action = {id: todo.id, descendants: todo.listHierarchy()};
+export const removeTodo = (id, descendants) => {
+  const action = {id: id, descendants: descendants};
 
   return (dispatch) => {
     dispatch(removeTransientTodo(action));  
