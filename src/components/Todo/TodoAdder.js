@@ -3,12 +3,12 @@ import { useDispatch } from "react-redux";
 import { addPersistentTodo } from "../../redux/persistentSlice";
 import { addTransientTodo, toggleStarter } from "../../redux/transientSlice";
 
-const TodoAdder = ({ todo, ...props }) => {
+const TodoAdder = ({ todo, parent, ...props }) => {
   const dispatch = useDispatch();
-  const newSibling = todo.parent.generateChild(todo.index + 1);
+  const newSibling = parent.generateChild(todo.index + 1);
   const addChildHandler = () => {
-    if (todo.parent.list.length === 1) {
-      dispatch(toggleStarter({ id: todo.parent.list[0].id, value: false }));
+    if (parent.list.length === 1) {
+      dispatch(toggleStarter({ id: parent.list[0].id, value: false }));
     }
 
     dispatch(addPersistentTodo(newSibling));

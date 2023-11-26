@@ -15,6 +15,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const dispatch = useDispatch();
 
   const todos = useSelector((state) => [...state.persistentSlice[parent.id].list]);
+  console.log("Todos pulled into component:");
+  console.dir(todos);
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));

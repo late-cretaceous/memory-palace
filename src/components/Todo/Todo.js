@@ -95,6 +95,7 @@ const Todo = ({ todo, ...props }) => {
       {(state) => (
         <TodoAdder
           todo={todo}
+          parent={props.parent}
           style={todoAdderInlineStyles}
           className={adderTransitionClass[state]}
           mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}

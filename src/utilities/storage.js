@@ -8,10 +8,6 @@ const TodoKit = class {
     this.parent = todo.parent;
     this.list = todo.list;
     this.listLoaded = todo.listLoaded;
-
-    if (TodoKit.isTodo(this.parent) && this.parent.hasTodo(this)) {
-      this.linkToParent();
-    }
   }
 
   static pull(id) {
@@ -56,7 +52,7 @@ const TodoKit = class {
       id: Date.now().toString(),
       lineage: this.lineage.concat(this.newNumber()),
       index: index,
-      parent: this,
+      parent: this.id,
       message: "",
       list: [],
       listLoaded: true,
