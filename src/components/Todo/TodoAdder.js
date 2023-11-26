@@ -11,7 +11,7 @@ const TodoAdder = ({ todo, parent, ...props }) => {
   const newSibling = parent.generateChild(todo.index + 1, siblings);
   const addChildHandler = () => {
     if (parent.list.length === 1) {
-      dispatch(toggleStarter({ id: parent.list[0].id, value: false }));
+      dispatch(toggleStarter({ id: parent.list[0], value: false }));
     }
 
     dispatch(addPersistentTodo(newSibling));
