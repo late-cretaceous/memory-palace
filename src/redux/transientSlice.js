@@ -19,7 +19,7 @@ const transientSlice = createSlice({
       state[action.payload.id] = createTransientTodo(action.payload);
     },
     removeTransientTodo: (state, action) => {
-      const id = action.payload.id;
+      const id = action.payload;
 
       action.payload.descendants.forEach(
         (descendant) => delete state[descendant]

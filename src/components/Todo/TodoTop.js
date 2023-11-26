@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeTodo } from "../../utilities/reduxUtils";
 
 const TodoTop = ({ todo, ...props }) => {
-  const hierarchy = useSelector((state) =>
-    state.persistentSlice[todo.id].listHierarchy(state)
+  const hierarchy = useSelector((state) => {
+    return state.persistentSlice[todo.id]?.listHierarchy(state)
+  }
   );
   const dispatch = useDispatch();
   const removeSelfHandler = () => {
-    dispatch(removeTodo(hierarchy));
+    dispatch(removeTodo(todo.id, hierarchy));
   };
 
   return (
