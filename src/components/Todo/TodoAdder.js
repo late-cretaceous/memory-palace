@@ -2,7 +2,6 @@ import styles from "./Todo.module.css";
 
 const TodoAdder = ({ todo, parent, ...props }) => {
   const classes = `${styles[props.className]} ${styles.todo} ${styles.adder}`;
-  console.log(parent);
 
   return (
     <div

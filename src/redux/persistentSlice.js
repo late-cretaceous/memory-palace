@@ -10,11 +10,7 @@ const persistentSlice = createSlice({
       state[todo.id] = todo;
       if (todo.parent) {
         state[todo.parent] = includeChild(state[todo.parent], todo.id, state);
-        console.log("Todo parent right after being set with conditional: ");
-        console.log(state[todo.parent]);
       }
-      console.log("Todo parent outside of conditional: ");
-      console.log(state[todo.parent]);
     },
     removePersistentTodo: (state, action) => {
       action.payload.descendants.forEach((descendant) => {

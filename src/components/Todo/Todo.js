@@ -11,25 +11,24 @@ import { addTransientTodo, toggleStarter } from "../../redux/transientSlice";
 import { useDispatch } from "react-redux";
 import { generateChild } from "../../utilities/todoUtils";
 
-const Todo = ({ todo, ...props }) => {
+const Todo = ({ id, ...props }) => {
   const listOpen = useSelector(
-    (state) => state.transientSlice[todo.id]?.listOpen
+    (state) => state.transientSlice[id]?.listOpen
   );
 
-  const children = useSelector((state) =>
-    state.persistentSlice[todo.id]?.list.map((id) => state.persistentSlice[id])
+  const todo = useSelector(state => state.persistentSlice[id]);
+
+  const siblings = useSelector((state) =>
+    props.parent?.list.map((id) => state.persistentSlice[id])
   );
 
   const dispatch = useDispatch();
   const listRef = useRef(null);
 
   const addChildHandler = (parent, isStarter = false) => {
-    const newSibling = generateChild(parent, todo.index + 1, children);
+    const newSibling = generateChild(parent, siblings, todo.index + 1);
 
     if (!isStarter) {
-      console.log("Toggling starter from conditional");
-      console.log(parent);
-      console.log(parent.list);
       dispatch(toggleStarter({ id: parent.list[0], value: false }));
     }
 
@@ -37,7 +36,7 @@ const Todo = ({ todo, ...props }) => {
     dispatch(addTransientTodo({ id: newSibling.id, isStarter }));
   };
 
-  if (listOpen && !children.length) {
+  if (listOpen && !todo.list.length) {
     addChildHandler(todo, true);
   }
 

@@ -1,9 +1,9 @@
-export const generateChild = (todo, siblings, index = 0) => {
+export const generateChild = (parent, siblings, index = 0) => {
   return {
     id: Date.now().toString(),
-    lineage: todo.lineage.concat(newNumber(todo, siblings)),
+    lineage: parent.lineage.concat(newNumber(parent, siblings)),
     index: index,
-    parent: todo.id,
+    parent: parent.id,
     message: "",
     list: [],
   };

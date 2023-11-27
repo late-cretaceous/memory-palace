@@ -19,7 +19,6 @@ export const saveTodo = (todo) => {
 };
 
 export const removeTodo = (id, descendants) => {
-  console.log(descendants);
   const action = {id: id, descendants: descendants};
 
   return (dispatch) => {
