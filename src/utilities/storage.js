@@ -7,38 +7,10 @@ const TodoKit = class {
     this.message = todo.message;
     this.parent = todo.parent;
     this.list = todo.list;
-    this.listLoaded = todo.listLoaded;
-  }
-
-  static pull(id) {
-    const object = JSON.parse(localStorage.getItem(id));
-
-    //scaffold to logged pulled todos so you can find what's going on with the crashes
-    console.log(`Pulled object ID: ${id}`);
-    console.dir(object);
-    if (!object) return;
-
-    return new TodoKit(object);
-  }
-
-  static isTodo(todo) {
-    return todo instanceof TodoKit;
-  }
-
-  isBigTodo() {
-    return this.id === "bigTodo";
-  }
-
-  hasTodo(todo) {
-    return Boolean(this.lookup(todo.id));
   }
 
   isParent() {
     return Boolean(this.list.length);
-  }
-
-  indexOf(id) {
-    return this.list.findIndex((item) => item === id);
   }
 
   add(id, database) {
@@ -55,52 +27,8 @@ const TodoKit = class {
       parent: this.id,
       message: "",
       list: [],
-      listLoaded: true,
     });
   } 
-
-  pullChildren() {
-    if (this.listLoaded) return;
-
-    const ids = [...this.list];
-
-    this.list = [];
-
-    for (const id of ids) {
-      const newTodo = TodoKit.pull(id);
-      newTodo.parent = this;
-      this.list.push(newTodo);
-    }
-
-    this.list.sort((a, b) => a.index - b.index);
-
-    this.listLoaded = true;
-  }
-
-  pullDescendants() {
-    this.pullChildren();
-
-    this.list.forEach((child) => child.pullDescendants());
-  }
-
-  //not used. hard-to-follow logic replaced by more hiearchal version below
-  listDescendants() {
-    if (!this.list.length) {
-      return [];
-    }
-
-    const descendants = [];
-
-    const children = this.listLoaded
-      ? this.list
-      : this.list.map((id) => TodoKit.pull(id));
-
-    children.forEach((child) => {
-      descendants.push(...child.listDescendants());
-    });
-
-    return children.concat(descendants);
-  }
 
   listHierarchy(database) {
     if (!this.list.length) {
@@ -128,21 +56,6 @@ const TodoKit = class {
     list.forEach((todo, index) => (todo.index = index));
   }
 
-  store() {
-    const todoFlat = new TodoKit({
-      ...this,
-      parent: this.parent ? this.parent.id : null,
-      list: Array.from(this.list, (item) => item.id),
-      listLoaded: false,
-    });
-
-    localStorage.setItem(todoFlat.id, JSON.stringify(todoFlat));
-  }
-
-  lookup(id) {
-    return this.list[this.indexOf(id)];
-  }
-
   remove(id, database) {
     this.list = this.list.filter(item => item !== id);
     this.reIndex(database);
@@ -152,24 +65,6 @@ const TodoKit = class {
     return this.list.filter(
       (child) => !child.message.length && !child.list.length
     );
-  }
-
-  removeDescendantsFromStorage() {
-    this.listDescendants().forEach((descendant) =>
-      localStorage.removeItem(descendant.id)
-    );
-  }
-
-  reorderStorage() {
-    this.list.forEach((todo) => todo.store());
-  }
-
-  linkToParent() {
-    if (!(this.parent instanceof TodoKit)) return;
-
-    const index = this.parent.indexOf(this.id);
-
-    this.parent.list.splice(index, 1, this);
   }
 
   newNumber(siblings) {
@@ -187,14 +82,6 @@ const TodoKit = class {
         return todoNumbers[i] + 1;
       }
     }
-  }
-
-  youngestDescendant() {
-    if (!this.isParent()) {
-      return this;
-    }
-
-    return this.list[0].youngestDescendant();
   }
 };
 
