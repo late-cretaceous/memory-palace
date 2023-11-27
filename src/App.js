@@ -16,7 +16,6 @@ function App() {
     parent: null,
     message: "",
     list: [],
-    listLoaded: true,
   });
 
   const dispatch = useDispatch();
