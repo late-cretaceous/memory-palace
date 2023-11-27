@@ -118,9 +118,8 @@ const TodoKit = class {
   }
 
   move(fromIndex, toIndex, database) {
-    const list = this.list.map(id => database[id]);
-    const [draggedTodo] = list.splice(fromIndex, 1);
-    list.splice(toIndex, 0, draggedTodo);
+    const [draggedTodo] = this.list.splice(fromIndex, 1);
+    this.list.splice(toIndex, 0, draggedTodo);
     this.reIndex(database);
   }
 
