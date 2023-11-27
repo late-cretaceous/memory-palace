@@ -29,7 +29,7 @@ const TodoBottom = (props) => {
           <span>
             <Arrow
               style={{
-                fill: props.todo.isParent() ? props.color : "none",
+                fill: props.todo.list.length ? props.color : "none",
                 stroke: props.color,
                 strokeWidth: "1.5px",
               }}

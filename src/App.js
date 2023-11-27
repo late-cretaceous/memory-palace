@@ -1,22 +1,20 @@
 import Header from "./components/Header";
 import Todo from "./components/Todo/Todo";
-import TodoKit from "./utilities/storage";
 import HSL from "./utilities/colors";
-
 import { useDispatch } from "react-redux";
 import { addPersistentTodo } from "./redux/persistentSlice";
 import { addTransientTodo } from "./redux/transientSlice";
 import { useEffect } from "react";
 
 function App() {
-  const bigTodo = new TodoKit({
+  const bigTodo = {
     id: "bigTodo",
     lineage: [],
     index: null,
     parent: null,
     message: "",
     list: [],
-  });
+  };
 
   const dispatch = useDispatch();
   dispatch(addPersistentTodo(bigTodo));

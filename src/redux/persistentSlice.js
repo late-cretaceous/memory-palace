@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadTodos } from "../utilities/reduxUtils";
-import TodoKit from "../utilities/storage";
+import { includeChild, moveChild, forgetChild } from "../utilities/todoUtils";
 
 const persistentSlice = createSlice({
   name: "persistentTodos",
@@ -10,19 +9,23 @@ const persistentSlice = createSlice({
       const todo = action.payload;
       state[todo.id] = todo;
       if (todo.parent) {
-        state[todo.parent].add(todo.id, state);
+        state[todo.parent] = includeChild(state[todo.parent], todo.id, state);
+        console.log("Todo parent right after being set with conditional: ");
+        console.log(state[todo.parent]);
       }
+      console.log("Todo parent outside of conditional: ");
+      console.log(state[todo.parent]);
     },
-    removePersistentTodo: (state, action) => {   
+    removePersistentTodo: (state, action) => {
       action.payload.descendants.forEach((descendant) => {
         delete state[descendant.id];
       });
-    
+
       const id = action.payload.id;
       const removee = state[action.payload.id];
       const parent = state[removee.parent];
-      parent.remove(id, state);
-    
+      forgetChild(parent, id, state);
+
       delete state[id];
     },
     moveTodo: (state, action) => {
@@ -31,14 +34,20 @@ const persistentSlice = createSlice({
       if (!e.destination) return;
 
       const todo = state[e.draggableId];
-      state[todo.parent].move(e.source.index, e.destination.index, state);
+      console.log(`Draggable ID from move function. Is it a todo Id? If so you can simplify: ${e.draggableId}`);
+      state.persistentSlice[todo.id] = moveChild(
+        state.persistentSlice[todo.id],
+        e.source.index,
+        e.destination.index,
+        state
+      );
 
       return { ...state };
     },
     editTodo: (state, action) => {
       const { id, edit } = action.payload;
 
-      state[id] = new TodoKit({ ...state[id], ...edit });
+      state[id] = { ...state[id], ...edit };
     },
   },
 });
