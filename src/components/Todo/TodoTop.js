@@ -5,7 +5,7 @@ import { removeTodo } from "../../utilities/reduxUtils";
 
 const TodoTop = ({ todo, ...props }) => {
   const hierarchy = useSelector((state) => {
-    return state.persistentSlice[todo.id]?.listHierarchy(state)
+    return state.persistentSlice[todo.id]?.listHierarchy(state.persistentSlice)
   }
   );
   const dispatch = useDispatch();
