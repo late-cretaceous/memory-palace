@@ -55,6 +55,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
               <Todo
                 todo={todo}
                 parent={parent}
+                siblings={todos}
                 provided={provided}
                 color={spectrum[index]}
                 spectrumRange={(props.spectrumRange * 2) / todos.length}

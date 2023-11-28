@@ -16,19 +16,14 @@ const Todo = ({ todo, ...props }) => {
     (state) => state.transientSlice[todo.id]?.listOpen
   );
 
-  const siblings = useSelector((state) => {
-    const parent = state.persistentSlice[props.parent?.id];
-    return parent?.list.map((id) => state.persistentSlice[id]);
-  });
-
   const dispatch = useDispatch();
   const listRef = useRef(null);
 
   const addChildHandler = (parent, isStarter = false) => {
-    const newSibling = generateChild(parent, siblings, todo.index + 1);
+    const newSibling = generateChild(parent, props.siblings, todo.index + 1);
 
     if (!isStarter) {
-      dispatch(toggleStarter({ id: siblings[0].id, value: false }));
+      dispatch(toggleStarter({ id: props.siblings[0].id, value: false }));
     }
 
     dispatch(addPersistentTodo(newSibling));
