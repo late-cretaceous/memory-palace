@@ -26,19 +26,15 @@ const persistentSlice = createSlice({
     },
     moveTodo: (state, action) => {
       const e = action.payload;
+      const parentId = state[e.draggableId].parent;
 
       if (!e.destination) return;
 
-      const todo = state[e.draggableId];
-      console.log(`Draggable ID from move function. Is it a todo Id? If so you can simplify: ${e.draggableId}`);
-      state.persistentSlice[todo.id] = moveChild(
-        state.persistentSlice[todo.id],
+      state[parentId] = moveChild(
+        state[parentId],
         e.source.index,
-        e.destination.index,
-        state
+        e.destination.index
       );
-
-      return { ...state };
     },
     editTodo: (state, action) => {
       const { id, edit } = action.payload;

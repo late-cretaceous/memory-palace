@@ -9,10 +9,6 @@ export const generateChild = (parent, siblings, index = 0) => {
   };
 };
 
-export const isParent = (todo) => {
-    return Boolean(this.list.length);
-  }
-
 export const includeChild = (todo, id, database) => {
     const newList = [...todo.list];
     newList.splice(database[id].index, 0, id);
@@ -34,11 +30,11 @@ export const includeChild = (todo, id, database) => {
     return descendants;
   }
   
-  export const moveChild = (todo, fromIndex, toIndex, database) => {
-    const newList = [...todo.list];
+  export const moveChild = (parent, fromIndex, toIndex) => {
+    const newList = [...parent.list];
     const [draggedTodo] = newList.splice(fromIndex, 1);
     newList.splice(toIndex, 0, draggedTodo);
-    return { ...todo, list: newList };
+    return { ...parent, list: newList };
   }
 
   //If moveTodo is f'ed it's because reIndex dropped off. It's used in remove as well
