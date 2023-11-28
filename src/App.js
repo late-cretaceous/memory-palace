@@ -46,7 +46,7 @@ function App() {
     <div style={{ backgroundColor: bColor }} className={"background"}>
       <Header color={color} />
       <Todo
-        id={bigTodo.id}
+        todo={bigTodo}
         parent={null}
         color={color}
         spectrumRange={spectrumRange}

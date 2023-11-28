@@ -20,7 +20,7 @@ const persistentSlice = createSlice({
       const id = action.payload.id;
       const removee = state[action.payload.id];
       const parent = state[removee.parent];
-      forgetChild(parent, id, state);
+      state[removee.parent] = forgetChild(parent, id);
 
       delete state[id];
     },

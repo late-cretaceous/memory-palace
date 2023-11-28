@@ -1,5 +1,5 @@
 import styles from "./TodoList.module.css";
-import idstyles from "./Todo.module.css";
+import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { useState, forwardRef } from "react";
@@ -14,15 +14,15 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const dispatch = useDispatch();
 
-  const ids = useSelector((state) =>
-    [...state.persistentSlice[parent.id].list]
+  const todos = useSelector((state) =>
+    state.persistentSlice[parent.id].list.map((id) => state.persistentSlice[id])
   );
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
   };
 
-  const lengthPlusOneForBackground = ids.length + 1;
+  const lengthPlusOneForBackground = todos.length + 1;
   const spectrum = props.color.shades(
     {
       hue: props.color.hue + props.spectrumRange,
@@ -42,23 +42,23 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     setEdgeOver(null);
   };
 
-  const todoComponentList = ids.map((id, index) => {
+  const todoComponentList = todos.map((todo, index) => {
     return (
       <CSSTransition
-        key={id}
+        key={todo.id}
         timeout={1000}
-        classNames={{ ...idstyles }}
+        classNames={{ ...todoStyles }}
       >
-        <Draggable key={id} draggableId={id} index={index}>
+        <Draggable key={todo.id} draggableId={todo.id} index={index}>
           {(provided) => (
             <div ref={provided.innerRef}>
               <Todo
-                id={id}
+                todo={todo}
                 parent={parent}
                 provided={provided}
                 color={spectrum[index]}
-                spectrumRange={(props.spectrumRange * 2) / ids.length}
-                lightRange={(props.lightRange * 2) / ids.length}
+                spectrumRange={(props.spectrumRange * 2) / todos.length}
+                lightRange={(props.lightRange * 2) / todos.length}
                 mouseEdgeEnterHandler={mouseEdgeEnterHandler}
                 mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
                 adderIndex={edgeOver}

@@ -11,16 +11,15 @@ import { addTransientTodo, toggleStarter } from "../../redux/transientSlice";
 import { useDispatch } from "react-redux";
 import { generateChild } from "../../utilities/todoUtils";
 
-const Todo = ({ id, ...props }) => {
+const Todo = ({ todo, ...props }) => {
   const listOpen = useSelector(
-    (state) => state.transientSlice[id]?.listOpen
+    (state) => state.transientSlice[todo.id]?.listOpen
   );
 
-  const todo = useSelector(state => state.persistentSlice[id]);
-
-  const siblings = useSelector((state) =>
-    props.parent?.list.map((id) => state.persistentSlice[id])
-  );
+  const siblings = useSelector((state) => {
+    const parent = state.persistentSlice[props.parent?.id];
+    return parent?.list.map((id) => state.persistentSlice[id]);
+  });
 
   const dispatch = useDispatch();
   const listRef = useRef(null);
@@ -29,7 +28,7 @@ const Todo = ({ id, ...props }) => {
     const newSibling = generateChild(parent, siblings, todo.index + 1);
 
     if (!isStarter) {
-      dispatch(toggleStarter({ id: parent.list[0], value: false }));
+      dispatch(toggleStarter({ id: siblings[0].id, value: false }));
     }
 
     dispatch(addPersistentTodo(newSibling));
@@ -116,7 +115,7 @@ const Todo = ({ id, ...props }) => {
           className={adderTransitionClass[state]}
           mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
           mouseName={"add"}
-          addChildHandler = {addChildHandler}
+          addChildHandler={addChildHandler}
         >
           +Todo
         </TodoAdder>
