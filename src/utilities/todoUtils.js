@@ -9,53 +9,74 @@ export const generateChild = (parent, siblings, index = 0) => {
   };
 };
 
+const pullChildren = (parentId, storage) => {
+  return Array.from(storage[parentId].list, (id) => storage[id]);
+};
+
 export const includeChild = (todo, id, database) => {
-    const newList = [...todo.list];
-    newList.splice(database[id].index, 0, id);
-    return { ...todo, list: newList };
+  const newList = [...todo.list];
+  newList.splice(database[id].index, 0, id);
+  return { ...todo, list: newList };
+};
+
+export const listHierarchy = (todo, database) => {
+  if (!todo.list.length) {
+    return [];
   }
 
-  export const listHierarchy = (todo, database) => {
-    if (!todo.list.length) {
-      return [];
-    }
-  
-    const descendants = [];
-  
-    for (const id of todo.list) {
-      descendants.push(database[id]);
-      descendants.push(...listHierarchy(database[id], database));
-    }
-  
-    return descendants;
-  }
-  
-  export const moveChild = (parent, fromIndex, toIndex) => {
-    const newList = [...parent.list];
-    const [draggedTodo] = newList.splice(fromIndex, 1);
-    newList.splice(toIndex, 0, draggedTodo);
-    return { ...parent, list: newList };
+  const descendants = [];
+
+  for (const id of todo.list) {
+    descendants.push(database[id]);
+    descendants.push(...listHierarchy(database[id], database));
   }
 
-  //If moveTodo is f'ed it's because reIndex dropped off. It's used in remove as well
+  return descendants;
+};
+
+export const moveChild = (parentId, fromIndex, toIndex, storage) => {
+  const parent = storage[parentId];
+  const newList = [...parent.list];
+  const [draggedTodo] = newList.splice(fromIndex, 1);
   
-  export const forgetChild = (todo, id, database) => {
-    return { ...todo, list: todo.list.filter(item => item !== id) };
-  }
-  
-  export const newNumber = (todo, siblings) => {
-    if (!todo.list.length) return 0;
-  
-    const todoNumbers = Array.from(
-      siblings,
-      (todo) => todo.lineage[todo.lineage.length - 1]
-    ).sort();
-  
-    for (let i = 0; i < todoNumbers.length; i++) {
-      if (todoNumbers[i] !== i) {
-        return i;
-      } else if (!todoNumbers[i + 1]) {
-        return todoNumbers[i] + 1;
-      }
+  newList.splice(toIndex, 0, draggedTodo);;
+
+  const changedTodos = [
+    { ...parent, list: newList },
+    ...reIndex(Array.from(newList, (id) => storage[id])),
+  ];
+
+
+  return changedTodos.reduce((acc, curr) => {
+    acc[curr.id] = curr;
+    return acc;
+  }, {});
+};
+
+export const forgetChild = (todo, id, database) => {
+  return { ...todo, list: todo.list.filter((item) => item !== id) };
+};
+
+export const newNumber = (todo, siblings) => {
+  if (!todo.list.length) return 0;
+
+  const todoNumbers = Array.from(
+    siblings,
+    (todo) => todo.lineage[todo.lineage.length - 1]
+  ).sort();
+
+  for (let i = 0; i < todoNumbers.length; i++) {
+    if (todoNumbers[i] !== i) {
+      return i;
+    } else if (!todoNumbers[i + 1]) {
+      return todoNumbers[i] + 1;
     }
   }
+};
+
+const reIndex = (children) => {
+  return Array.from(children, (child, index) => {
+    console.log(`In Array.from, ${child.id}: ${index}`);
+    return { ...child, index };
+  });
+};

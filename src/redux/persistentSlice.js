@@ -30,11 +30,16 @@ const persistentSlice = createSlice({
 
       if (!e.destination) return;
 
-      state[parentId] = moveChild(
-        state[parentId],
+      const updatedChildren = moveChild(
+        parentId,
         e.source.index,
-        e.destination.index
+        e.destination.index,
+        state
       );
+
+      console.log(updatedChildren);
+
+      return {...state, ...updatedChildren};
     },
     editTodo: (state, action) => {
       const { id, edit } = action.payload;

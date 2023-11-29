@@ -48,6 +48,7 @@ function App() {
       <Todo
         todo={bigTodo}
         parent={null}
+        siblings={[]}
         color={color}
         spectrumRange={spectrumRange}
         lightRange={lightRange}

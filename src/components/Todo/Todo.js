@@ -16,6 +16,8 @@ const Todo = ({ todo, ...props }) => {
     (state) => state.transientSlice[todo.id]?.listOpen
   );
 
+  //console.table(props.siblings.sort((a, b) => a.index - b.index));
+
   const dispatch = useDispatch();
   const listRef = useRef(null);
 
