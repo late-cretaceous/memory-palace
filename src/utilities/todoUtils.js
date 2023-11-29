@@ -9,9 +9,6 @@ export const generateChild = (parent, siblings, index = 0) => {
   };
 };
 
-const pullChildren = (parentId, storage) => {
-  return Array.from(storage[parentId].list, (id) => storage[id]);
-};
 
 export const includeChild = (todo, id, database) => {
   const newList = [...todo.list];
@@ -41,16 +38,10 @@ export const moveChild = (parentId, fromIndex, toIndex, storage) => {
   
   newList.splice(toIndex, 0, draggedTodo);;
 
-  const changedTodos = [
-    { ...parent, list: newList },
+  return  {
+    [parent.id]: { ...parent, list: newList },
     ...reIndex(Array.from(newList, (id) => storage[id])),
-  ];
-
-
-  return changedTodos.reduce((acc, curr) => {
-    acc[curr.id] = curr;
-    return acc;
-  }, {});
+  }
 };
 
 export const forgetChild = (todo, id, database) => {
@@ -75,8 +66,8 @@ export const newNumber = (todo, siblings) => {
 };
 
 const reIndex = (children) => {
-  return Array.from(children, (child, index) => {
-    console.log(`In Array.from, ${child.id}: ${index}`);
-    return { ...child, index };
-  });
+  return children.reduce((acc, child, index) => {
+    acc[child.id] = { ...child, index };
+    return acc;
+  }, {});
 };
