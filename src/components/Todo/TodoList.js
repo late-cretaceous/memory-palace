@@ -6,7 +6,12 @@ import { useState, forwardRef } from "react";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
-import { moveTodo } from "../../redux/persistentSlice";
+import { moveTodo, addExistingTodo } from "../../redux/persistentSlice";
+import { fetchTodo } from "../../utilities/databaseUtils";
+import {
+  addTransientTodo,
+  editTransientTodo,
+} from "../../redux/transientSlice";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
@@ -14,9 +19,25 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const dispatch = useDispatch();
 
+  const listPulled = useSelector(
+    (state) => state.transientSlice[parent.id].listPulled
+  );
+
+  if (!listPulled) {
+    parent.list.forEach((id) => {
+      dispatch(addExistingTodo(fetchTodo(id)));
+      dispatch(addTransientTodo({ id }));
+      dispatch(
+        editTransientTodo({ id: parent.id, edit: { listPulled: true } })
+      );
+    });
+  }
+
   const todos = useSelector((state) =>
     state.persistentSlice[parent.id].list.map((id) => state.persistentSlice[id])
   );
+  console.log("todos:");
+  console.table(todos);
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));

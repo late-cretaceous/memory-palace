@@ -2,12 +2,15 @@ import Header from "./components/Header";
 import Todo from "./components/Todo/Todo";
 import HSL from "./utilities/colors";
 import { useDispatch } from "react-redux";
-import { addPersistentTodo } from "./redux/persistentSlice";
+import { addExistingTodo } from "./redux/persistentSlice";
 import { addTransientTodo } from "./redux/transientSlice";
 import { useEffect } from "react";
+import { fetchTodo } from "./utilities/databaseUtils";
 
 function App() {
-  const bigTodo = {
+  const dispatch = useDispatch();
+
+  const bigTodo = fetchTodo("bigTodo") ?? {
     id: "bigTodo",
     lineage: [],
     index: null,
@@ -16,9 +19,8 @@ function App() {
     list: [],
   };
 
-  const dispatch = useDispatch();
-  dispatch(addPersistentTodo(bigTodo));
-  dispatch(addTransientTodo({id: bigTodo.id, listOpen: true}));
+  dispatch(addExistingTodo(bigTodo));
+  dispatch(addTransientTodo({ id: bigTodo.id, listOpen: true }));
 
   const color = HSL.random();
 

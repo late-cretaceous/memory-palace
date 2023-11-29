@@ -85,6 +85,7 @@ const Todo = ({ todo, ...props }) => {
             transition: `all ${500}ms ease-in-out`,
           }}
           ref={listRef}
+          addChildHandler={addChildHandler}
         />
       )}
     </Transition>

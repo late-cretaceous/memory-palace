@@ -12,3 +12,7 @@ export const mergeToStateAndStore = (state, todosObject) => {
 export const removeFromStorage = (id) => {
     localStorage.removeItem(id);
 }
+
+export const fetchTodo = (id) => {
+    return JSON.parse(localStorage.getItem(id));
+}

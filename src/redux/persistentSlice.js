@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { includeChild, moveChild, forgetChild } from "../utilities/todoUtils";
-import { addToStorage, mergeToStateAndStore, removeFromStorage } from "../utilities/databaseUtils";
+import {
+  addToStorage,
+  mergeToStateAndStore,
+  removeFromStorage,
+} from "../utilities/databaseUtils";
 
 const persistentSlice = createSlice({
   name: "persistentSlice",
@@ -51,10 +55,19 @@ const persistentSlice = createSlice({
       state[id] = newTodo;
       addToStorage(newTodo);
     },
+    addExistingTodo: (state, action) => {
+      const todo = action.payload;
+      state[todo.id] = todo;
+    },
   },
 });
 
-export const { addPersistentTodo, removePersistentTodo, moveTodo, editTodo } =
-  persistentSlice.actions;
+export const {
+  addPersistentTodo,
+  removePersistentTodo,
+  moveTodo,
+  editTodo,
+  addExistingTodo,
+} = persistentSlice.actions;
 
 export default persistentSlice.reducer;
