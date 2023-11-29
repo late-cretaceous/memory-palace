@@ -23,7 +23,7 @@ const transientSlice = createSlice({
       const id = action.payload;
 
       action.payload.descendants.forEach(
-        (descendant) => delete state[descendant]
+        (id) => delete state[id]
       );
 
       delete state[id];

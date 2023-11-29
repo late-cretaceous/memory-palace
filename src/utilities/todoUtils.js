@@ -16,21 +16,6 @@ export const includeChild = (parent, id, storage) => {
   return reorderedState({ ...parent, list: newList }, storage);
 };
 
-export const listHierarchy = (todo, database) => {
-  if (!todo.list.length) {
-    return [];
-  }
-
-  const descendants = [];
-
-  for (const id of todo.list) {
-    descendants.push(database[id]);
-    descendants.push(...listHierarchy(database[id], database));
-  }
-
-  return descendants;
-};
-
 export const moveChild = (parentId, fromIndex, toIndex, storage) => {
   const parent = storage[parentId];
   const newList = [...parent.list];

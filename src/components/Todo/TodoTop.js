@@ -1,17 +1,12 @@
 import styles from "./TodoHead.module.css";
 import CloseIcon from "../../assets/CloseIcon";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeTodo } from "../../utilities/reduxUtils";
-import { listHierarchy } from "../../utilities/todoUtils";
 
 const TodoTop = ({ todo, ...props }) => {
-  const hierarchy = useSelector((state) =>
-    listHierarchy(todo, state.persistentSlice)
-  );
-
   const dispatch = useDispatch();
   const removeSelfHandler = () => {
-    dispatch(removeTodo(todo.id, hierarchy));
+    dispatch(removeTodo(todo.id));
   };
 
   return (

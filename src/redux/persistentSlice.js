@@ -21,8 +21,9 @@ const persistentSlice = createSlice({
       }
     },
     removePersistentTodo: (state, action) => {
-      action.payload.descendants.forEach((descendant) => {
-        delete state[descendant.id];
+      action.payload.descendants.forEach((id) => {
+        delete state[id];
+        removeFromStorage(id);
       });
 
       const id = action.payload.id;

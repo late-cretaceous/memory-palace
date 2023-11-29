@@ -33,11 +33,13 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     });
   }
 
-  const todos = useSelector((state) =>
-    state.persistentSlice[parent.id].list.map((id) => state.persistentSlice[id])
-  );
-  console.log("todos:");
-  console.table(todos);
+  const todos = useSelector((state) => {
+    return state.persistentSlice[parent.id]
+      ? state.persistentSlice[parent.id].list.map(
+          (id) => state.persistentSlice[id]
+        )
+      : [];
+  });
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));

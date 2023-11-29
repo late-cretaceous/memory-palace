@@ -1,5 +1,7 @@
 import { removePersistentTodo } from "../redux/persistentSlice";
 import { removeTransientTodo } from "../redux/transientSlice";
+import { listHierarchy } from "./databaseUtils";
+
 export const loadTodos = () => {
   try {
     let state = {};
@@ -18,11 +20,11 @@ export const saveTodo = (todo) => {
   localStorage.setItem(todo.id, JSON.stringify(todo));
 };
 
-export const removeTodo = (id, descendants) => {
-  const action = {id: id, descendants: descendants};
+export const removeTodo = (id) => {
+  const action = { id: id, descendants: listHierarchy(id) };
 
   return (dispatch) => {
-    dispatch(removeTransientTodo(action));  
+    dispatch(removeTransientTodo(action));
     dispatch(removePersistentTodo(action));
-  }
+  };
 };
