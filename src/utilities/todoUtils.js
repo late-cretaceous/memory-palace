@@ -1,7 +1,7 @@
 export const generateChild = (parent, siblings, index = 0) => {
   return {
     id: Date.now().toString(),
-    lineage: parent.lineage.concat(newNumber(parent, siblings)),
+    lineage: parent.lineage.concat(newNumber(siblings)),
     index: index,
     parent: parent.id,
     message: "",
@@ -45,8 +45,8 @@ export const forgetChild = (todo, id, database) => {
   return { ...todo, list: todo.list.filter((item) => item !== id) };
 };
 
-export const newNumber = (todo, siblings) => {
-  if (!todo.list.length) return 0;
+export const newNumber = (siblings) => {
+  if (!siblings.length) return 0;
 
   const todoNumbers = Array.from(
     siblings,

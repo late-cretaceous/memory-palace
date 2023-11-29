@@ -21,7 +21,8 @@ const Todo = ({ todo, ...props }) => {
 
   const addChildHandler = (parent, isStarter = false) => {
     const index = isStarter ? 0 : todo.index + 1;
-    const newSibling = generateChild(parent, props.siblings, index);
+    const siblings = isStarter ? [] : props.siblings;
+    const newSibling = generateChild(parent, siblings, index);
 
     if (!isStarter) {
       dispatch(toggleStarter({ id: props.siblings[0].id, value: false }));
