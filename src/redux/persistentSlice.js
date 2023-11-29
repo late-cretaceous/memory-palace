@@ -37,9 +37,7 @@ const persistentSlice = createSlice({
         state
       );
 
-      console.log(updatedChildren);
-
-      return {...state, ...updatedChildren};
+      Object.assign(state, updatedChildren);
     },
     editTodo: (state, action) => {
       const { id, edit } = action.payload;
