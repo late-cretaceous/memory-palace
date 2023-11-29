@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { includeChild, moveChild, forgetChild } from "../utilities/todoUtils";
 
 const persistentSlice = createSlice({
-  name: "persistentTodos",
+  name: "persistentSlice",
   initialState: {},
   reducers: {
     addPersistentTodo: (state, action) => {
@@ -20,8 +20,8 @@ const persistentSlice = createSlice({
 
       const id = action.payload.id;
       const removee = state[action.payload.id];
-      const parent = state[removee.parent];
-      state[removee.parent] = forgetChild(parent, id);
+      const updatedFamily = forgetChild(state[removee.parent], id, state);
+      Object.assign(state, updatedFamily);
 
       delete state[id];
     },

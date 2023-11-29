@@ -12,7 +12,7 @@ export const generateChild = (parent, siblings, index = 0) => {
 export const includeChild = (parent, id, storage) => {
   const newList = [...parent.list];
   newList.splice(storage[id].index, 0, id);
-  
+
   return reorderedState({ ...parent, list: newList }, storage);
 };
 
@@ -41,8 +41,13 @@ export const moveChild = (parentId, fromIndex, toIndex, storage) => {
   return reorderedState({ ...parent, list: newList }, storage);
 };
 
-export const forgetChild = (todo, id, database) => {
-  return { ...todo, list: todo.list.filter((item) => item !== id) };
+export const forgetChild = (parent, id, storage) => {
+  const newParent = {
+    ...parent,
+    list: parent.list.filter((item) => item !== id),
+  };
+
+  return reorderedState(newParent, storage);
 };
 
 export const newNumber = (siblings) => {
