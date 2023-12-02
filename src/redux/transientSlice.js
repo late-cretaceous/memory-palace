@@ -6,6 +6,7 @@ const createTransientTodo = (initialValues) => {
     listOpen: false,
     hover: false,
     isStarter: false,
+    hadStarter: false,
     listPulled: false,
   };
 

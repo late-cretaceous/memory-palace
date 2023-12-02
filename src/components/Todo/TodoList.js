@@ -15,13 +15,16 @@ import {
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
-  const [hadStarter, setHadStarter] = useState(false);
 
   const dispatch = useDispatch();
 
-  const listPulled = useSelector(
-    (state) => state.transientSlice[parent.id].listPulled
-  );
+  const { listPulled, hadStarter } = useSelector((state) => {
+    const todoSlice = state.transientSlice[parent.id];
+    return {
+      listPulled: todoSlice.listPulled,
+      hadStarter: todoSlice.hadStarter,
+    };
+  });
 
   if (!listPulled) {
     parent.list.forEach((id) => {

@@ -1,19 +1,25 @@
 import styles from "./TodoHead.module.css";
 import { ReactComponent as Arrow } from "../../assets/triangle.svg";
 import { useDispatch } from "react-redux";
-import { toggleListOpen } from "../../redux/transientSlice";
-import { removeTodo } from "../../utilities/reduxUtils";
+import { toggleListOpen, editTransientTodo } from "../../redux/transientSlice";
 import { useSelector } from "react-redux";
 
 const TodoBottom = (props) => {
   const dispatch = useDispatch();
   const arrowClickHandler = () => {
     dispatch(toggleListOpen(props.todo.id));
+    dispatch(
+      editTransientTodo({ id: props.todo.id, edit: { hadStarter: false } })
+    );
   };
 
-  const { listOpen, isStarter } = useSelector(
-    (state) => state.transientSlice[props.todo.id] ?? []
-  );
+  const { listOpen, isStarter } = useSelector((state) => {
+    const todoSlice = state.transientSlice[props.todo.id];
+    return {
+      listOpen: todoSlice?.listOpen,
+      isStarter: todoSlice?.isStarter,
+    };
+  });
 
   const classes = `${styles["todohead-row"]} ${styles["todo-bottom"]} ${
     props.hover ? styles.opaque : styles.transparent

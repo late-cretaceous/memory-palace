@@ -7,7 +7,11 @@ import { Transition } from "react-transition-group";
 import constants from "../constants.js";
 import { useSelector } from "react-redux";
 import { addPersistentTodo } from "../../redux/persistentSlice";
-import { addTransientTodo, toggleStarter } from "../../redux/transientSlice";
+import {
+  addTransientTodo,
+  toggleStarter,
+  editTransientTodo,
+} from "../../redux/transientSlice";
 import { useDispatch } from "react-redux";
 import { generateChild } from "../../utilities/todoUtils";
 
@@ -34,6 +38,7 @@ const Todo = ({ todo, ...props }) => {
 
   if (listOpen && !todo.list.length) {
     addChildHandler(todo, true);
+    dispatch(editTransientTodo({ id: todo.id, edit: { hadStarter: true } }));
   }
 
   const adderOpen = todo.index + 1 === props.adderIndex;
