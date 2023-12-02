@@ -18,13 +18,9 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const dispatch = useDispatch();
 
-  const { listPulled, hadStarter } = useSelector((state) => {
-    const todoSlice = state.transientSlice[parent.id];
-    return {
-      listPulled: todoSlice.listPulled,
-      hadStarter: todoSlice.hadStarter,
-    };
-  });
+  const listPulled = useSelector(
+    (state) => state.transientSlice[parent.id].listPulled
+  );
 
   if (!listPulled) {
     parent.list.forEach((id) => {

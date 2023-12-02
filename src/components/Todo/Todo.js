@@ -16,9 +16,13 @@ import { useDispatch } from "react-redux";
 import { generateChild } from "../../utilities/todoUtils";
 
 const Todo = ({ todo, ...props }) => {
-  const listOpen = useSelector(
-    (state) => state.transientSlice[todo.id]?.listOpen
-  );
+  const { listOpen, hadStarter } = useSelector((state) => {
+    const todoSlice = state.transientSlice[todo.id];
+    return {
+      listOpen: todoSlice?.listOpen,
+      hadStarter: todoSlice?.hadStarter,
+    };
+  });
 
   const dispatch = useDispatch();
   const listRef = useRef(null);
