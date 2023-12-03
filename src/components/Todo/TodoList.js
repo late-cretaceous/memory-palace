@@ -2,7 +2,7 @@ import styles from "./TodoList.module.css";
 import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
-import { useState, forwardRef } from "react";
+import { forwardRef } from "react";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,8 +15,6 @@ import {
 import TodoAdder from "./TodoAdder";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
-  const [edgeOver, setEdgeOver] = useState(null);
-
   const dispatch = useDispatch();
 
   const listPulled = useSelector(
@@ -57,14 +55,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
-  const mouseEdgeEnterHandler = (e, index) => {
-    setEdgeOver(index);
-  };
-
-  const mouseEdgeLeaveHandler = (e) => {
-    setEdgeOver(null);
-  };
-
   const todoComponentList = todos.length ? (
     todos.map((todo, index) => {
       return (
@@ -84,9 +74,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
                   color={spectrum[index]}
                   spectrumRange={(props.spectrumRange * 2) / todos.length}
                   lightRange={(props.lightRange * 2) / todos.length}
-                  mouseEdgeEnterHandler={mouseEdgeEnterHandler}
-                  mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
-                  adderIndex={edgeOver}
                   index={index}
                 />
               </div>
@@ -106,9 +93,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
         parent={parent}
         color={props.color}
         className={"phantom"}
-        mouseEdgeLeaveHandler={() => {
-          return;
-        }}
         mouseName="phantom"
       >
         +Todo

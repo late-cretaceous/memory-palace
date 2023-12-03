@@ -16,11 +16,12 @@ import { useDispatch } from "react-redux";
 import { generateChild } from "../../utilities/todoUtils";
 
 const Todo = ({ todo, ...props }) => {
-  const { listOpen, hadStarter } = useSelector((state) => {
+  const { listOpen, hadStarter, edgeActivated } = useSelector((state) => {
     const todoSlice = state.transientSlice[todo.id];
     return {
       listOpen: todoSlice?.listOpen,
       hadStarter: todoSlice?.hadStarter,
+      edgeActivated: todoSlice?.edgeActivated,
     };
   });
 
@@ -53,10 +54,9 @@ const Todo = ({ todo, ...props }) => {
   const todoHead = todo.parent && (
     <TodoHead
       todo={todo}
+      parent={props.parent}
       dragHandleProps={dragHandleProps}
       color={props.color}
-      mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
-      mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
     />
   );
 
@@ -119,13 +119,13 @@ const Todo = ({ todo, ...props }) => {
   };
 
   const todoAdder = (
-    <Transition in={adderOpen} timeout={200} mountOnEnter unmountOnExit>
+    <Transition in={edgeActivated} timeout={200} mountOnEnter unmountOnExit>
       {(state) => (
         <TodoAdder
           {...adderProps}
           parent={props.parent}
+          todoID={todo.id}
           className={adderTransitionClass[state]}
-          mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
           mouseName={"add"}
         >
           +Todo

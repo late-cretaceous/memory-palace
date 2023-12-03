@@ -56,12 +56,7 @@ const TodoHead = (props) => {
         hoverHandler({ id: todo.id, hovering: false });
       }}
     >
-      <Edgebox
-        mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
-        mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
-        todoIndex={todo.index}
-        top={true}
-      />
+      {todo.index > 0 && <Edgebox todoID={props.parent.list[todo.index - 1]} />}
       <div
         className={styles.todoface}
         {...props.dragHandleProps}
@@ -93,14 +88,7 @@ const TodoHead = (props) => {
           color={fontColor}
         />
       </div>
-      {!listOpen && (
-        <Edgebox
-          mouseEdgeEnterHandler={props.mouseEdgeEnterHandler}
-          mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
-          todoIndex={todo.index}
-          top={false}
-        />
-      )}
+      {!listOpen && <Edgebox todoID={todo.id} />}
     </div>
   );
 };

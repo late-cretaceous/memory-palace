@@ -1,13 +1,16 @@
 import { useState } from "react";
 import styles from "./TodoHead.module.css";
+import { useDispatch } from "react-redux";
+import { editTransientTodo } from "../../redux/transientSlice";
 
-const Edgebox = (props) => {
+const Edgebox = ({ todoID: id, ...props }) => {
   const [edgeBoxTimeout, setEdgeBoxTimeout] = useState(null);
   const index = props.top ? props.todoIndex : props.todoIndex + 1;
+  const dispatch = useDispatch();
 
   const onEdgeBoxEnter = (e, index) => {
     const edgeTimeoutId = setTimeout(() => {
-      props.mouseEdgeEnterHandler(e, index);
+      dispatch(editTransientTodo({ id, edit: { edgeActivated: true } }));
       setEdgeBoxTimeout(null);
     }, 100);
 
@@ -26,7 +29,7 @@ const Edgebox = (props) => {
       : null;
 
     if (mouseTo !== "add" && mouseTo !== "edgebox") {
-      props.mouseEdgeLeaveHandler();
+      dispatch(editTransientTodo({ id, edit: { edgeActivated: false } }));
     }
 
     setEdgeBoxTimeout(null);

@@ -1,7 +1,18 @@
 import styles from "./Todo.module.css";
+import { useDispatch } from "react-redux";
+import { editTransientTodo } from "../../redux/transientSlice";
 
 const TodoAdder = ({ parent, ...props }) => {
   const classes = `${styles[props.className]} ${styles.todo} ${styles.adder}`;
+  const dispatch = useDispatch();
+
+  const mouseLeaveHandler = () => {
+    if (props.className === "phantom") return;
+
+    dispatch(
+      editTransientTodo({ id: props.todoID, edit: { edgeActivated: false } })
+    );
+  };
 
   return (
     <div
@@ -10,7 +21,7 @@ const TodoAdder = ({ parent, ...props }) => {
         props.clickAddHandler(parent, false);
       }}
       style={props.style}
-      onMouseLeave={props.mouseEdgeLeaveHandler}
+      onMouseLeave={mouseLeaveHandler}
       data-name={props.mouseName}
     >
       {props.children}
