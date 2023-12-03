@@ -33,14 +33,6 @@ const transientSlice = createSlice({
     toggleListOpen: (state, action) => {
       state[action.payload].listOpen = !state[action.payload].listOpen;
     },
-    toggleHover: (state, action) => {
-      const { id, hovering } = action.payload;
-      state[id].hover = hovering;
-    },
-    toggleStarter: (state, action) => {
-      const { id, value } = action.payload;
-      state[id].isStarter = value;
-    },
     editTransientTodo: (state, action) => {
       const { id, edit } = action.payload;
 
@@ -54,8 +46,6 @@ export const {
   addTransientTodo,
   removeTransientTodo,
   toggleListOpen,
-  toggleHover,
-  toggleStarter,
   editTransientTodo
 } = transientSlice.actions;
 export default transientSlice.reducer;

@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import { addPersistentTodo } from "../../redux/persistentSlice";
 import {
   addTransientTodo,
-  toggleStarter,
   editTransientTodo,
 } from "../../redux/transientSlice";
 import { useDispatch } from "react-redux";
@@ -34,7 +33,12 @@ const Todo = ({ todo, ...props }) => {
     const newSibling = generateChild(parent, siblings, index);
 
     if (!isStarter) {
-      dispatch(toggleStarter({ id: props.siblings[0].id, value: false }));
+      dispatch(
+        editTransientTodo({
+          id: props.siblings[0].id,
+          edit: { isStarter: false },
+        })
+      );
     }
 
     dispatch(addPersistentTodo(newSibling));
