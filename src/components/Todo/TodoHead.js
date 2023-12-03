@@ -34,7 +34,7 @@ const TodoHead = (props) => {
   }`;
 
   const labelDisplay = listOpen
-    ? todo.message.length
+    ? todo.message
     : labelsVisible
     ? todo.lineage.join(".")
     : "";
