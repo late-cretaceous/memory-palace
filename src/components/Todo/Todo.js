@@ -40,7 +40,7 @@ const Todo = ({ todo, ...props }) => {
     dispatch(addTransientTodo({ id: newSibling.id, isStarter }));
   };
 
-  if (listOpen && !todo.list.length) {
+  if (listOpen && !todo.list.length && !hadStarter) {
     addChildHandler(todo, true);
     dispatch(editTransientTodo({ id: todo.id, edit: { hadStarter: true } }));
   }
@@ -81,6 +81,17 @@ const Todo = ({ todo, ...props }) => {
     ? props.color.adjustedHSL(20, 0, 2)
     : props.color;
 
+  const todoAdderInlineStyles = {
+    backgroundColor: props.color.adjustedHSL(0, 0, 5).toString(),
+    color: props.color.negative().adjustedHSL(0, 0, 5).toString(),
+    transition: `all 200ms ease-out`,
+  };
+
+  const adderProps = {
+    style: todoAdderInlineStyles,
+    clickAddHandler: addChildHandler,
+  };
+
   const todoList = (
     <Transition in={listOpen} timeout={500} unmountOnExit>
       {(state) => (
@@ -94,11 +105,12 @@ const Todo = ({ todo, ...props }) => {
             transition: `all ${500}ms ease-in-out`,
           }}
           ref={listRef}
-          addChildHandler={addChildHandler}
+          emptyListAdderProps={adderProps}
         />
       )}
     </Transition>
   );
+
   const adderTransitionClass = {
     entering: "adder-entering",
     entered: "adder-entered",
@@ -106,23 +118,15 @@ const Todo = ({ todo, ...props }) => {
     exited: "adder-exited",
   };
 
-  const todoAdderInlineStyles = {
-    backgroundColor: props.color.adjustedHSL(0, 0, 5).toString(),
-    color: props.color.negative().adjustedHSL(0, 0, 5).toString(),
-    transition: `all 200ms ease-out`,
-  };
-
   const todoAdder = (
     <Transition in={adderOpen} timeout={200} mountOnEnter unmountOnExit>
       {(state) => (
         <TodoAdder
-          todo={todo}
+          {...adderProps}
           parent={props.parent}
-          style={todoAdderInlineStyles}
           className={adderTransitionClass[state]}
           mouseEdgeLeaveHandler={props.mouseEdgeLeaveHandler}
           mouseName={"add"}
-          addChildHandler={addChildHandler}
         >
           +Todo
         </TodoAdder>

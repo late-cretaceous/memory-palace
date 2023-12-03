@@ -1,13 +1,13 @@
 import styles from "./Todo.module.css";
 
-const TodoAdder = ({ todo, parent, ...props }) => {
+const TodoAdder = ({ parent, ...props }) => {
   const classes = `${styles[props.className]} ${styles.todo} ${styles.adder}`;
 
   return (
     <div
       className={classes}
       onClick={() => {
-        props.addChildHandler(parent, false);
+        props.clickAddHandler(parent, false);
       }}
       style={props.style}
       onMouseLeave={props.mouseEdgeLeaveHandler}

@@ -34,15 +34,16 @@
 }
 
 .enterActive.phantom {
-  height: 2rem;
+  height: var(--global-adder-height);
   transition: all var(--global-transition-time);
   overflow: hidden;
 }
 
 .exit.phantom {
-  height: 2rem;
+  height: var(--global-adder-height);
   transition: all var(--global-transition-time);
   overflow: hidden;
+  padding: 0;
 }
 
 .exitActive.phantom {
@@ -56,17 +57,17 @@
   text-align: center;
   cursor: pointer;
   justify-content: center;
-  height: 1.5rem;
+  height: var(--global-adder-height);
   padding: 0.25rem;
 }
 
 .adder-entering {
   overflow: hidden;
-  height: 1.5rem;
+  height: var(--global-adder-height);
 }
 
 .adder-entered {
-  height: 1.5rem;
+  height: var(--global-adder-height);
 }
 
 .adder-exiting {

@@ -12,6 +12,7 @@ import {
   addTransientTodo,
   editTransientTodo,
 } from "../../redux/transientSlice";
+import TodoAdder from "./TodoAdder";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const [edgeOver, setEdgeOver] = useState(null);
@@ -64,35 +65,56 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     setEdgeOver(null);
   };
 
-  const todoComponentList = todos.map((todo, index) => {
-    return (
-      <CSSTransition
-        key={todo.id}
-        timeout={1000}
-        classNames={{ ...todoStyles }}
+  const todoComponentList = todos.length ? (
+    todos.map((todo, index) => {
+      return (
+        <CSSTransition
+          key={todo.id}
+          timeout={1000}
+          classNames={{ ...todoStyles }}
+        >
+          <Draggable key={todo.id} draggableId={todo.id} index={index}>
+            {(provided) => (
+              <div ref={provided.innerRef}>
+                <Todo
+                  todo={todo}
+                  parent={parent}
+                  siblings={todos}
+                  provided={provided}
+                  color={spectrum[index]}
+                  spectrumRange={(props.spectrumRange * 2) / todos.length}
+                  lightRange={(props.lightRange * 2) / todos.length}
+                  mouseEdgeEnterHandler={mouseEdgeEnterHandler}
+                  mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
+                  adderIndex={edgeOver}
+                  index={index}
+                />
+              </div>
+            )}
+          </Draggable>
+        </CSSTransition>
+      );
+    })
+  ) : (
+    <CSSTransition
+      key={"phantom"}
+      timeout={1000}
+      classNames={{ ...todoStyles }}
+    >
+      <TodoAdder
+        {...props.emptyListAdderProps}
+        parent={parent}
+        color={props.color}
+        className={"phantom"}
+        mouseEdgeLeaveHandler={() => {
+          return;
+        }}
+        mouseName="phantom"
       >
-        <Draggable key={todo.id} draggableId={todo.id} index={index}>
-          {(provided) => (
-            <div ref={provided.innerRef}>
-              <Todo
-                todo={todo}
-                parent={parent}
-                siblings={todos}
-                provided={provided}
-                color={spectrum[index]}
-                spectrumRange={(props.spectrumRange * 2) / todos.length}
-                lightRange={(props.lightRange * 2) / todos.length}
-                mouseEdgeEnterHandler={mouseEdgeEnterHandler}
-                mouseEdgeLeaveHandler={mouseEdgeLeaveHandler}
-                adderIndex={edgeOver}
-                index={index}
-              />
-            </div>
-          )}
-        </Draggable>
-      </CSSTransition>
-    );
-  });
+        +Todo
+      </TodoAdder>
+    </CSSTransition>
+  );
 
   return (
     <div className={styles.flexcol} style={props.style} ref={ref}>
