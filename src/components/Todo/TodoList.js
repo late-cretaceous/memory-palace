@@ -43,14 +43,14 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     dispatch(moveTodo(e));
   };
 
-  const lengthPlusOneForBackground = todos.length + 1;
+  const lengthForHeaderAndBackground = todos.length + 2;
   const spectrum = props.color.shades(
     {
       hue: props.color.hue + props.spectrumRange,
       sat: props.color.sat,
       light: props.color.light + props.lightRange,
     },
-    lengthPlusOneForBackground
+    lengthForHeaderAndBackground
   );
 
   console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
@@ -71,7 +71,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
                   parent={parent}
                   siblings={todos}
                   provided={provided}
-                  color={spectrum[index]}
+                  color={spectrum[index + 1]}
                   spectrumRange={(props.spectrumRange * 2) / todos.length}
                   lightRange={(props.lightRange * 2) / todos.length}
                   index={index}
