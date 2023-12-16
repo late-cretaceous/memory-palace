@@ -1,4 +1,5 @@
 import styles from "./Header.module.css";
+import { ReactComponent as Sort } from "../assets/triangle.svg";
 
 const Header = (props) => {
   return (
@@ -10,6 +11,9 @@ const Header = (props) => {
       }}
     >
       <h1>neato note</h1>
+      <div className={styles["header-buttons-row"]}>
+        <Sort />
+      </div>
     </header>
   );
 };
