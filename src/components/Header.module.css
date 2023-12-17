@@ -16,10 +16,20 @@
   display: flex;
   align-items: center;
   justify-content: end;
-  padding: 0.25rem 0;
+  padding-bottom: 0.5rem;
 }
 
 .header h1 {
   margin: 0;
-  padding: 0.5em 0;
+  padding-top: 0.5em;
+}
+
+.button {
+  cursor: pointer;
+  transition: all 0.1s ease-out 0s;
+  opacity: 40%;
+}
+
+.button:hover{
+  opacity: 80%;
 }
