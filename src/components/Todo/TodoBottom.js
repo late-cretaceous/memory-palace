@@ -13,13 +13,9 @@ const TodoBottom = (props) => {
     );
   };
 
-  const { listOpen, isStarter } = useSelector((state) => {
-    const todoSlice = state.transientSlice[props.todo.id];
-    return {
-      listOpen: todoSlice?.listOpen,
-      isStarter: todoSlice?.isStarter,
-    };
-  });
+  const { listOpen, isStarter } = useSelector(
+    (state) => state.transientSlice[props.todo.id]
+  );
 
   const classes = `${styles["todohead-row"]} ${styles["todo-bottom"]} ${
     props.hover ? styles.opaque : styles.transparent

@@ -15,14 +15,9 @@ import { useDispatch } from "react-redux";
 import { generateChild } from "../../utilities/todoUtils";
 
 const Todo = ({ todo, ...props }) => {
-  const { listOpen, hadStarter, edgeActivated } = useSelector((state) => {
-    const todoSlice = state.transientSlice[todo.id];
-    return {
-      listOpen: todoSlice?.listOpen,
-      hadStarter: todoSlice?.hadStarter,
-      edgeActivated: todoSlice?.edgeActivated,
-    };
-  });
+  const { listOpen, hadStarter, edgeActivated } = useSelector(
+    (state) => state.transientSlice[todo.id]
+  );
 
   const dispatch = useDispatch();
   const listRef = useRef(null);
@@ -49,8 +44,6 @@ const Todo = ({ todo, ...props }) => {
     addChildHandler(todo, true);
     dispatch(editTransientTodo({ id: todo.id, edit: { hadStarter: true } }));
   }
-
-  const adderOpen = todo.index + 1 === props.adderIndex;
 
   const draggableProps = props.provided && { ...props.provided.draggableProps };
   const dragHandleProps = props.provided && props.provided.dragHandleProps;
