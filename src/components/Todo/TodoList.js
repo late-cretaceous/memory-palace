@@ -39,6 +39,9 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       : [];
   });
 
+  const sort = useSelector((state) => state.globalSlice.sort);
+  console.log(sort);
+
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
   };
