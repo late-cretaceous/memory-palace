@@ -6,6 +6,7 @@ import { forwardRef } from "react";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "@reduxjs/toolkit";
 import { moveTodo, addExistingTodo } from "../../redux/persistentSlice";
 import { fetchTodo } from "../../utilities/databaseUtils";
 import {
@@ -31,13 +32,15 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     });
   }
 
-  const todos = useSelector((state) => {
-    return state.persistentSlice[parent.id]
-      ? state.persistentSlice[parent.id].list.map(
-          (id) => state.persistentSlice[id]
-        )
-      : [];
-  });
+  const selectTodosMemoized = createSelector(
+    [(state) => state.persistentSlice, (state, parent) => parent.id],
+    (persistentSlice, parentId) =>
+      persistentSlice[parentId]
+        ? persistentSlice[parentId].list.map((id) => persistentSlice[id])
+        : []
+  );
+
+  const todos = useSelector((state) => selectTodosMemoized(state, parent));
 
   const sort = useSelector((state) => state.globalSlice.sort);
   console.log(sort);
