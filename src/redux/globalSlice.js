@@ -5,9 +5,9 @@ const globalSlice = createSlice({
   initialState: { sort: "manual" },
   reducers: {
     sort: (state, action) => {
-        state.sort = action.payload;
-    }
-  }
+      state.sort = state.sort === action.payload ? "manual" : action.payload;
+    },
+  },
 });
 
 export const { sort } = globalSlice.actions;
