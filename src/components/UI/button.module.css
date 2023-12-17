@@ -1,0 +1,10 @@
+.button {
+    cursor: pointer;
+    background-color: transparent;
+    color: inherit;
+    user-select: none;
+    border: none;
+    transition: all 0.1s ease-out 0s;
+    padding: 0px;
+  }
+  

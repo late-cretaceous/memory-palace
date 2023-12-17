@@ -24,12 +24,10 @@
   padding-top: 0.5em;
 }
 
-.button {
-  cursor: pointer;
-  transition: all 0.1s ease-out 0s;
+.header button {
   opacity: 40%;
 }
 
-.button:hover{
+.header button:hover{
   opacity: 80%;
 }

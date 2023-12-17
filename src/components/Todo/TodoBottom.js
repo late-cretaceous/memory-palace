@@ -1,4 +1,5 @@
 import styles from "./TodoHead.module.css";
+import buttonStyle from "../UI/button.module.css";
 import { ReactComponent as Arrow } from "../../assets/triangle.svg";
 import { useDispatch } from "react-redux";
 import { toggleListOpen, editTransientTodo } from "../../redux/transientSlice";
@@ -25,7 +26,7 @@ const TodoBottom = (props) => {
     <div className={classes}>
       {!isStarter && (
         <button
-          className={`${styles.button} ${listOpen ? styles.arrowopen : ""}`}
+          className={`${buttonStyle.button} ${listOpen ? styles.arrowopen : ""}`}
           onClick={arrowClickHandler}
         >
           <span>

@@ -41,18 +41,6 @@
   overflow: visible;
 }
 
-.button {
-  font-size: 0.85rem;
-  font-weight: bold;
-  cursor: pointer;
-  background-color: transparent;
-  color: inherit;
-  user-select: none;
-  border: none;
-  transition: all 0.1s ease-out 0s;
-  padding: 0px;
-}
-
 .todohead-row__cancel .opaque  {
   opacity: 40%;
  }
