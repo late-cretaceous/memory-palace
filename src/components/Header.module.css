@@ -24,10 +24,14 @@
   padding-top: 0.5em;
 }
 
-.header button {
+.unselected {
   opacity: 40%;
 }
 
-.header button:hover{
+.unselected:hover{
   opacity: 80%;
+}
+
+.selected {
+  opacity: 100%;
 }
