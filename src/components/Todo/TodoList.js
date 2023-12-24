@@ -10,6 +10,10 @@ import { createSelector } from "@reduxjs/toolkit";
 import { moveTodo, addExistingTodo } from "../../redux/persistentSlice";
 import { fetchTodo } from "../../utilities/databaseUtils";
 import {
+  mergeArraysAtIdx,
+  previousTodosFrom,
+} from "../../utilities/animationUtils";
+import {
   addTransientTodo,
   editTransientTodo,
 } from "../../redux/transientSlice";
@@ -18,9 +22,10 @@ import TodoAdder from "./TodoAdder";
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const [cascade, setCascade] = useState({
     index: 0,
-    on: true,
+    on: false,
     sort: "manual",
     previousList: [],
+    cascadingList: [],
     sortedList: [],
   });
 
@@ -53,6 +58,10 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   if (cascade.sort !== sort) {
+    const previousList = cascade.cascadingList.length
+      ? previousTodosFrom(cascade.cascadingList)
+      : previousTodosFrom(todos);
+
     const sortedList =
       sort === "date"
         ? Array.from(todos).sort((a, b) => a.message.length - b.message.length)
@@ -63,13 +72,13 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
         ...prev,
         on: true,
         sort: sort,
-        previousList: todos,
+        previousList: previousList,
         sortedList: sortedList,
       };
     });
   }
-  console.log(sort);
-  console.log(cascade);
+  //console.log(sort);
+  //console.log(cascade);
 
   useEffect(() => {
     if (!cascade.on) {
@@ -79,15 +88,42 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
         return { ...prev, on: false, index: 0 };
       });
     }
+    console.log(cascade.index);
+    for (const todo of cascade.cascadingList) {
+      console.log(todo.message);
+    }
+    console.log("---");
+
+    setCascade((prev) => {
+      return {
+        ...prev,
+        cascadingList: mergeArraysAtIdx(
+          cascade.sortedList,
+          cascade.previousList,
+          cascade.index
+        ),
+      };
+    });
+    console.table(
+      mergeArraysAtIdx(cascade.previousList, cascade.sortedList, cascade.index)
+    );
 
     const timeoutId = setTimeout(() => {
       setCascade((prev) => {
         return { ...prev, index: prev.index + 1 };
       });
-    }, 125);
+    }, 2500);
 
     return () => clearTimeout(timeoutId);
-  }, [cascade.on, cascade.cycling, cascade.index, todos.length, setCascade]);
+  }, [
+    cascade.on,
+    cascade.cycling,
+    cascade.index,
+    todos.length,
+    cascade.previousList,
+    cascade.sortedList,
+    setCascade,
+  ]);
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
@@ -103,17 +139,27 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     lengthForHeaderAndBackground
   );
 
-  console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
+  //console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
-  const orderedTodos = sort === "manual" ? todos : cascade.sortedList;
+  const orderedTodos = cascade.on ? cascade.cascadingList : todos;
+  const CSSTransitionProps = (todo) => {
+    return cascade.on
+      ? {
+          key: todo.placeholderKey ?? todo.id,
+          timeout: 0,
+        }
+      : {
+          key: todo.id,
+          timeout: 1000,
+          classNames: { ...todoStyles },
+        };
+  };
 
   const todoComponentList = todos.length ? (
     orderedTodos.map((todo, index) => {
       return (
         <CSSTransition
-          key={todo.id}
-          timeout={1000}
-          classNames={{ ...todoStyles }}
+          {...CSSTransitionProps(todo)}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (
