@@ -20,8 +20,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     index: 0,
     on: true,
     sort: "manual",
-    currentList: [],
-    newList: [],
+    previousList: [],
+    sortedList: [],
   });
 
   const dispatch = useDispatch();
@@ -53,13 +53,18 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   if (cascade.sort !== sort) {
+    const sortedList =
+      sort === "date"
+        ? Array.from(todos).sort((a, b) => a.message.length - b.message.length)
+        : todos;
+
     setCascade((prev) => {
       return {
         ...prev,
         on: true,
         sort: sort,
-        currentList: todos,
-        newList: todos,
+        previousList: todos,
+        sortedList: sortedList,
       };
     });
   }
@@ -79,7 +84,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       setCascade((prev) => {
         return { ...prev, index: prev.index + 1 };
       });
-    }, 500);
+    }, 125);
 
     return () => clearTimeout(timeoutId);
   }, [cascade.on, cascade.cycling, cascade.index, todos.length, setCascade]);
@@ -100,8 +105,10 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
+  const orderedTodos = sort === "manual" ? todos : cascade.sortedList;
+
   const todoComponentList = todos.length ? (
-    todos.map((todo, index) => {
+    orderedTodos.map((todo, index) => {
       return (
         <CSSTransition
           key={todo.id}
