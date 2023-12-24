@@ -2,7 +2,7 @@ import styles from "./TodoList.module.css";
 import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,14 @@ import {
 import TodoAdder from "./TodoAdder";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
+  const [cascade, setCascade] = useState({
+    index: 0,
+    on: true,
+    sort: "manual",
+    currentList: [],
+    newList: [],
+  });
+
   const dispatch = useDispatch();
 
   const listPulled = useSelector(
@@ -43,7 +51,38 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const todos = useSelector((state) => selectTodosMemoized(state, parent));
 
   const sort = useSelector((state) => state.globalSlice.sort);
+
+  if (cascade.sort !== sort) {
+    setCascade((prev) => {
+      return {
+        ...prev,
+        on: true,
+        sort: sort,
+        currentList: todos,
+        newList: todos,
+      };
+    });
+  }
   console.log(sort);
+  console.log(cascade);
+
+  useEffect(() => {
+    if (!cascade.on) {
+      return;
+    } else if (cascade.index >= todos.length) {
+      setCascade((prev) => {
+        return { ...prev, on: false, index: 0 };
+      });
+    }
+
+    const timeoutId = setTimeout(() => {
+      setCascade((prev) => {
+        return { ...prev, index: prev.index + 1 };
+      });
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [cascade.on, cascade.cycling, cascade.index, todos.length, setCascade]);
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
