@@ -24,8 +24,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     index: 0,
     on: false,
     sort: "manual",
-    previousList: [],
-    cascadingList: [],
+    unsortedList: [],
     sortedList: [],
   });
 
@@ -58,9 +57,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   if (cascade.sort !== sort) {
-    const previousList = cascade.cascadingList.length
-      ? previousTodosFrom(cascade.cascadingList)
-      : previousTodosFrom(todos);
+    const unsortedList = cascade.sortedList.length ? cascade.sortedList : todos;
 
     const sortedList =
       sort === "date"
@@ -72,13 +69,11 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
         ...prev,
         on: true,
         sort: sort,
-        previousList: previousList,
+        unsortedList: unsortedList,
         sortedList: sortedList,
       };
     });
   }
-  //console.log(sort);
-  //console.log(cascade);
 
   useEffect(() => {
     if (!cascade.on) {
@@ -88,31 +83,12 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
         return { ...prev, on: false, index: 0 };
       });
     }
-    console.log(cascade.index);
-    for (const todo of cascade.cascadingList) {
-      console.log(todo.message);
-    }
-    console.log("---");
-
-    setCascade((prev) => {
-      return {
-        ...prev,
-        cascadingList: mergeArraysAtIdx(
-          cascade.sortedList,
-          cascade.previousList,
-          cascade.index
-        ),
-      };
-    });
-    console.table(
-      mergeArraysAtIdx(cascade.previousList, cascade.sortedList, cascade.index)
-    );
 
     const timeoutId = setTimeout(() => {
       setCascade((prev) => {
         return { ...prev, index: prev.index + 1 };
       });
-    }, 2500);
+    }, 1000);
 
     return () => clearTimeout(timeoutId);
   }, [
@@ -120,7 +96,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     cascade.cycling,
     cascade.index,
     todos.length,
-    cascade.previousList,
+    cascade.unsortedList,
     cascade.sortedList,
     setCascade,
   ]);
@@ -141,25 +117,35 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   //console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
-  const orderedTodos = cascade.on ? cascade.cascadingList : todos;
-  const CSSTransitionProps = (todo) => {
-    return cascade.on
-      ? {
-          key: todo.placeholderKey ?? todo.id,
-          timeout: 0,
-        }
-      : {
-          key: todo.id,
-          timeout: 1000,
-          classNames: { ...todoStyles },
-        };
-  };
+  const orderedTodos = cascade.on
+    ? cascade.sortedList.slice(0, cascade.index)
+    : todos;
+
+  const cascadeOutTodos = cascade.on
+    ? cascade.unsortedList
+        .slice(cascade.index, cascade.unsortedList.length)
+        .map((todo, index) => {
+          return (
+            <Todo
+              todo={todo}
+              parent={parent}
+              siblings={todos}
+              color={spectrum[index + 1]}
+              spectrumRange={(props.spectrumRange * 2) / todos.length}
+              lightRange={(props.lightRange * 2) / todos.length}
+              index={index}
+            />
+          );
+        })
+    : "";
 
   const todoComponentList = todos.length ? (
     orderedTodos.map((todo, index) => {
       return (
         <CSSTransition
-          {...CSSTransitionProps(todo)}
+          key={todo.id}
+          timeout={cascade.on ? 0 : 1000}
+          classNames={{ ...todoStyles }}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (
@@ -209,6 +195,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
           </ul>
         </Drop>
       </DragDropContext>
+      {cascadeOutTodos}
     </div>
   );
 });
