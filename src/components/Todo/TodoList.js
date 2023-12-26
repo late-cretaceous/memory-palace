@@ -195,15 +195,17 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   return (
     <div className={styles.flexcol} style={props.style} ref={ref}>
-      <DragDropContext onDragEnd={moveTodoHandler}>
-        <Drop id="todoDropArea">
-          <ul className={`${styles.flexcol} ${styles.list} ${!orderedTodos.length ? styles.hide : ''}`}>
-            <TransitionGroup component={null}>
-              {todoComponentList}
-            </TransitionGroup>
-          </ul>
-        </Drop>
-      </DragDropContext>
+      {Boolean(orderedTodos.length) && (
+        <DragDropContext onDragEnd={moveTodoHandler}>
+          <Drop id="todoDropArea">
+            <ul className={`${styles.flexcol} ${styles.list} `}>
+              <TransitionGroup component={null}>
+                {todoComponentList}
+              </TransitionGroup>
+            </ul>
+          </Drop>
+        </DragDropContext>
+      )}
       <ul className={`${styles.flexcol} ${styles.list}`}>{cascadeOutTodos}</ul>
     </div>
   );

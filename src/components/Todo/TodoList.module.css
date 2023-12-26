@@ -11,6 +11,7 @@
   flex: auto;
 }
 
-.hide {
-  display: none;
+.instant-exit {
+  display: none; /* Or any other style for instant disappearance */
+  transition: none; /* Override default transition */
 }
