@@ -125,7 +125,9 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const orderedTodos = cascade.on
     ? cascade.sortedList.slice(0, cascade.index)
-    : todos;
+    : sort === "manual"
+    ? todos
+    : cascade.sortedList;
 
   const cascadeOutTodos = cascade.on
     ? cascade.unsortedList
@@ -152,7 +154,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
         <CSSTransition
           key={todo.id}
           timeout={cascade.initialize || cascade.on ? 0 : 1000}
-          classNames={cascade.initialize || cascade.on ? '' : { ...todoStyles }}
+          classNames={cascade.initialize || cascade.on ? "" : { ...todoStyles }}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (
