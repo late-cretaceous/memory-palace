@@ -151,8 +151,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       return (
         <CSSTransition
           key={todo.id}
-          timeout={ cascade.initialize || cascade.on ? 0 : 1000}
-          classNames={{ ...todoStyles }}
+          timeout={cascade.initialize || cascade.on ? 0 : 1000}
+          classNames={cascade.initialize || cascade.on ? '' : { ...todoStyles }}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (
