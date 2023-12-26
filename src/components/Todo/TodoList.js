@@ -102,7 +102,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       setCascade((prev) => {
         return { ...prev, index: prev.index + 1 };
       });
-    }, 1000);
+    }, 250);
 
     return () => clearTimeout(timeoutId);
   }, [cascade.on, cascade.index, todos.length]);
@@ -125,9 +125,9 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const orderedTodos = cascade.on
     ? cascade.sortedList.slice(0, cascade.index)
-    : sort === "manual"
-    ? todos
     : cascade.sortedList;
+
+  console.table(orderedTodos);
 
   const cascadeOutTodos = cascade.on
     ? cascade.unsortedList
@@ -197,14 +197,14 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     <div className={styles.flexcol} style={props.style} ref={ref}>
       <DragDropContext onDragEnd={moveTodoHandler}>
         <Drop id="todoDropArea">
-          <ul className={`${styles.flexcol} ${styles.list}`}>
+          <ul className={`${styles.flexcol} ${styles.list} ${!orderedTodos.length ? styles.hide : ''}`}>
             <TransitionGroup component={null}>
               {todoComponentList}
             </TransitionGroup>
           </ul>
         </Drop>
       </DragDropContext>
-      {cascadeOutTodos}
+      <ul className={`${styles.flexcol} ${styles.list}`}>{cascadeOutTodos}</ul>
     </div>
   );
 });
