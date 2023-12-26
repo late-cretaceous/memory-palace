@@ -22,6 +22,7 @@ import TodoAdder from "./TodoAdder";
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const [cascade, setCascade] = useState({
     index: 0,
+    initialize: false,
     on: false,
     sort: "manual",
     unsortedList: [],
@@ -57,6 +58,20 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   if (cascade.sort !== sort) {
+    setCascade((prev) => {
+      return { ...prev, sort: sort, initialize: true };
+    });
+  }
+
+  useEffect(() => {
+    if (!cascade.initialize) return;
+
+    setCascade((prev) => {
+      return { ...prev, on: true };
+    });
+  }, [cascade.initialize]);
+
+  if (cascade.on && cascade.initialize) {
     const unsortedList = cascade.sortedList.length ? cascade.sortedList : todos;
 
     const sortedList =
@@ -67,8 +82,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     setCascade((prev) => {
       return {
         ...prev,
-        on: true,
-        sort: sort,
+        initialize: false,
         unsortedList: unsortedList,
         sortedList: sortedList,
       };
@@ -91,15 +105,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     }, 1000);
 
     return () => clearTimeout(timeoutId);
-  }, [
-    cascade.on,
-    cascade.cycling,
-    cascade.index,
-    todos.length,
-    cascade.unsortedList,
-    cascade.sortedList,
-    setCascade,
-  ]);
+  }, [cascade.on, cascade.index, todos.length]);
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
@@ -128,6 +134,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
           return (
             <Todo
               todo={todo}
+              key={todo.id}
               parent={parent}
               siblings={todos}
               color={spectrum[index + 1]}
@@ -144,7 +151,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       return (
         <CSSTransition
           key={todo.id}
-          timeout={cascade.on ? 0 : 1000}
+          timeout={ cascade.initialize || cascade.on ? 0 : 1000}
           classNames={{ ...todoStyles }}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
