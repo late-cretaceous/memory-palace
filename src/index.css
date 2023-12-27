@@ -6,6 +6,7 @@
   --global-todo-preview-height: 3.5rem;
   --global-transition-time: 500ms;
   --global-adder-height: 1.5rem;
+  --global-header-height: 6.5rem;
 }
 
 html {

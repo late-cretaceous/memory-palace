@@ -11,7 +11,13 @@
   flex: auto;
 }
 
-.instant-exit {
-  display: none; /* Or any other style for instant disappearance */
-  transition: none; /* Override default transition */
+.back {
+  position: relative;
+  z-index: 1;
+}
+
+.front {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
 }

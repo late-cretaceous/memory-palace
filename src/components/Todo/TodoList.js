@@ -10,10 +10,6 @@ import { createSelector } from "@reduxjs/toolkit";
 import { moveTodo, addExistingTodo } from "../../redux/persistentSlice";
 import { fetchTodo } from "../../utilities/databaseUtils";
 import {
-  mergeArraysAtIdx,
-  previousTodosFrom,
-} from "../../utilities/animationUtils";
-import {
   addTransientTodo,
   editTransientTodo,
 } from "../../redux/transientSlice";
@@ -73,9 +69,12 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   useEffect(() => {
     if (!cascade.initialize || cascade.on) return;
 
-    setCascade((prev) => {
-      return { ...prev, on: true };
-    });
+    //Timeout here is for testing only
+    setTimeout(() => {
+      setCascade((prev) => {
+        return { ...prev, on: true };
+      });
+    }, 2000);
   }, [cascade.initialize, cascade.on]);
 
   if (cascade.on && cascade.initialize) {
@@ -202,7 +201,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       {Boolean(orderedTodos.length) && (
         <DragDropContext onDragEnd={moveTodoHandler}>
           <Drop id="todoDropArea">
-            <ul className={`${styles.flexcol} ${styles.list} `}>
+            <ul className={`${styles.flexcol} ${styles.list} ${cascade.initialize ? styles.front : '' }`}>
               <TransitionGroup component={null}>
                 {todoComponentList}
               </TransitionGroup>
@@ -210,7 +209,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
           </Drop>
         </DragDropContext>
       )}
-      <ul className={`${styles.flexcol} ${styles.list}`}>{cascadeOutTodos}</ul>
+      <ul className={`${styles.flexcol} ${styles.list} ${cascade.initialize ? styles.back : '' }`}>{cascadeOutTodos}</ul>
     </div>
   );
 });
