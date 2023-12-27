@@ -58,22 +58,27 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   if (cascade.sort !== sort) {
+    const unsortedList = cascade.sortedList.length ? cascade.sortedList : todos;
+
     setCascade((prev) => {
-      return { ...prev, sort: sort, initialize: true };
+      return {
+        ...prev,
+        sort: sort,
+        initialize: true,
+        unsortedList: unsortedList,
+      };
     });
   }
 
   useEffect(() => {
-    if (!cascade.initialize) return;
+    if (!cascade.initialize || cascade.on) return;
 
     setCascade((prev) => {
       return { ...prev, on: true };
     });
-  }, [cascade.initialize]);
+  }, [cascade.initialize, cascade.on]);
 
   if (cascade.on && cascade.initialize) {
-    const unsortedList = cascade.sortedList.length ? cascade.sortedList : todos;
-
     const sortedList =
       sort === "date"
         ? Array.from(todos).sort((a, b) => a.message.length - b.message.length)
@@ -83,7 +88,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       return {
         ...prev,
         initialize: false,
-        unsortedList: unsortedList,
         sortedList: sortedList,
       };
     });
@@ -129,7 +133,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   console.table(orderedTodos);
 
-  const cascadeOutTodos = cascade.on
+  const cascadeOutTodos = cascade.on || cascade.initialize
     ? cascade.unsortedList
         .slice(cascade.index, cascade.unsortedList.length)
         .map((todo, index) => {
