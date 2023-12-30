@@ -3,6 +3,7 @@ import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { forwardRef, useEffect, useState } from "react";
+import useSortAnimation from "../../utilities/useSortAnimation";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,6 +53,9 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const todos = useSelector((state) => selectTodosMemoized(state, parent));
 
   const sort = useSelector((state) => state.globalSlice.sort);
+
+  const cascadeTest = useSortAnimation(todos, sort);
+  console.log(cascadeTest);
 
   if (cascade.sort !== sort) {
     const unsortedList = cascade.sortedList.length ? cascade.sortedList : todos;
