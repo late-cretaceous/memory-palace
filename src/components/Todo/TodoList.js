@@ -74,7 +74,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       setCascade((prev) => {
         return { ...prev, on: true };
       });
-    }, 2000);
+    }, 0);
   }, [cascade.initialize, cascade.on]);
 
   if (cascade.on && cascade.initialize) {
@@ -128,28 +128,29 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const orderedTodos = cascade.on
     ? cascade.sortedList.slice(0, cascade.index)
-    : cascade.sortedList;
+    : cascade.initialize || cascade.sort !== "manual"
+    ? cascade.sortedList
+    : todos;
 
-  console.table(orderedTodos);
-
-  const cascadeOutTodos = cascade.on || cascade.initialize
-    ? cascade.unsortedList
-        .slice(cascade.index, cascade.unsortedList.length)
-        .map((todo, index) => {
-          return (
-            <Todo
-              todo={todo}
-              key={todo.id}
-              parent={parent}
-              siblings={todos}
-              color={spectrum[index + 1]}
-              spectrumRange={(props.spectrumRange * 2) / todos.length}
-              lightRange={(props.lightRange * 2) / todos.length}
-              index={index}
-            />
-          );
-        })
-    : "";
+  const cascadeOutTodos =
+    cascade.on || cascade.initialize
+      ? cascade.unsortedList
+          .slice(cascade.index, cascade.unsortedList.length)
+          .map((todo, index) => {
+            return (
+              <Todo
+                todo={todo}
+                key={todo.id}
+                parent={parent}
+                siblings={todos}
+                color={spectrum[index + 1]}
+                spectrumRange={(props.spectrumRange * 2) / todos.length}
+                lightRange={(props.lightRange * 2) / todos.length}
+                index={index}
+              />
+            );
+          })
+      : "";
 
   const todoComponentList = todos.length ? (
     orderedTodos.map((todo, index) => {
@@ -201,7 +202,11 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       {Boolean(orderedTodos.length) && (
         <DragDropContext onDragEnd={moveTodoHandler}>
           <Drop id="todoDropArea">
-            <ul className={`${styles.flexcol} ${styles.list} ${cascade.initialize ? styles.front : '' }`}>
+            <ul
+              className={`${styles.flexcol} ${styles.list} ${
+                cascade.initialize ? styles.front : ""
+              }`}
+            >
               <TransitionGroup component={null}>
                 {todoComponentList}
               </TransitionGroup>
@@ -209,7 +214,13 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
           </Drop>
         </DragDropContext>
       )}
-      <ul className={`${styles.flexcol} ${styles.list} ${cascade.initialize ? styles.back : '' }`}>{cascadeOutTodos}</ul>
+      <ul
+        className={`${styles.flexcol} ${styles.list} ${
+          cascade.initialize ? styles.back : ""
+        }`}
+      >
+        {cascadeOutTodos}
+      </ul>
     </div>
   );
 });
