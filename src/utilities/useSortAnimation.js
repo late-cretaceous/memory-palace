@@ -6,8 +6,8 @@ const useSortAnimation = (todos, sort) => {
     initialize: false,
     on: false,
     sort: sort,
-    unsortedList: [],
-    sortedList: [],
+    unsortedList: todos,
+    sortedList: todos,
   });
 
   if (cascade.sort !== sort) {
@@ -16,7 +16,7 @@ const useSortAnimation = (todos, sort) => {
         ...prev,
         sort: sort,
         initialize: true,
-        unsortedList: todos,
+        unsortedList: cascade.sortedList,
       };
     });
   }
