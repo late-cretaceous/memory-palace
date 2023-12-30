@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 const useSortAnimation = (todos, sort) => {
   const [cascade, setCascade] = useState({
     index: 0,
-    initialize: false,
+    phase: "off",
     on: false,
     sort: sort,
     unsortedList: todos,
@@ -15,24 +15,22 @@ const useSortAnimation = (todos, sort) => {
       return {
         ...prev,
         sort: sort,
-        initialize: true,
+        phase: "initialize",
+        on: true,
         unsortedList: cascade.sortedList,
       };
     });
   }
 
   useEffect(() => {
-    if (!cascade.initialize || cascade.on) return;
+    if (cascade.phase !== "initialize") return;
 
-    //Timeout here is for testing only
-    setTimeout(() => {
-      setCascade((prev) => {
-        return { ...prev, on: true };
-      });
-    }, 0);
-  }, [cascade.initialize, cascade.on]);
+    setCascade((prev) => {
+      return { ...prev, phase: "frameskip" };
+    });
+  }, [cascade.phase]);
 
-  if (cascade.on && cascade.initialize) {
+  if (cascade.phase === "frameskip") {
     const sortedList =
       sort === "date"
         ? Array.from(todos).sort((a, b) => a.message.length - b.message.length)
@@ -41,18 +39,17 @@ const useSortAnimation = (todos, sort) => {
     setCascade((prev) => {
       return {
         ...prev,
-        initialize: false,
+        phase: "cascade",
         sortedList: sortedList,
       };
     });
   }
 
   useEffect(() => {
-    if (!cascade.on) {
-      return;
-    } else if (cascade.index >= todos.length) {
+    if (cascade.phase !== "cascade") return;
+    else if (cascade.index >= todos.length) {
       setCascade((prev) => {
-        return { ...prev, on: false, index: 0 };
+        return { ...prev, phase: "off", on: false, index: 0 };
       });
     }
 
@@ -63,9 +60,7 @@ const useSortAnimation = (todos, sort) => {
     }, 250);
 
     return () => clearTimeout(timeoutId);
-  }, [cascade.on, cascade.index, todos.length]);
-
-
+  }, [cascade.phase, cascade.index, todos.length]);
 
   return cascade;
 };

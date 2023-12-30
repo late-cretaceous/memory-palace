@@ -2,7 +2,7 @@ import styles from "./TodoList.module.css";
 import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
-import { forwardRef, useEffect } from "react";
+import { forwardRef } from "react";
 import useSortAnimation from "../../utilities/useSortAnimation";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -46,6 +46,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   const cascade = useSortAnimation(todos, sort);
+  console.log(cascade);
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));
@@ -63,39 +64,39 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   //console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
-  const orderedTodos = cascade.on
-    ? cascade.sortedList.slice(0, cascade.index)
-    : cascade.initialize || cascade.sort !== "manual"
-    ? cascade.sortedList
-    : todos;
+  const orderedTodos =
+    cascade.phase === "cascade"
+      ? cascade.sortedList.slice(0, cascade.index)
+      : cascade.phase === "initialize" || cascade.sort !== "manual"
+      ? cascade.sortedList
+      : todos;
 
-  const cascadeOutTodos =
-    cascade.on || cascade.initialize
-      ? cascade.unsortedList
-          .slice(cascade.index, cascade.unsortedList.length)
-          .map((todo, index) => {
-            return (
-              <Todo
-                todo={todo}
-                key={todo.id}
-                parent={parent}
-                siblings={todos}
-                color={spectrum[index + 1]}
-                spectrumRange={(props.spectrumRange * 2) / todos.length}
-                lightRange={(props.lightRange * 2) / todos.length}
-                index={index}
-              />
-            );
-          })
-      : "";
+  const cascadeOutTodos = cascade.on
+    ? cascade.unsortedList
+        .slice(cascade.index, cascade.unsortedList.length)
+        .map((todo, index) => {
+          return (
+            <Todo
+              todo={todo}
+              key={todo.id}
+              parent={parent}
+              siblings={todos}
+              color={spectrum[index + 1]}
+              spectrumRange={(props.spectrumRange * 2) / todos.length}
+              lightRange={(props.lightRange * 2) / todos.length}
+              index={index}
+            />
+          );
+        })
+    : "";
 
   const todoComponentList = todos.length ? (
     orderedTodos.map((todo, index) => {
       return (
         <CSSTransition
           key={todo.id}
-          timeout={cascade.initialize || cascade.on ? 0 : 1000}
-          classNames={cascade.initialize || cascade.on ? "" : { ...todoStyles }}
+          timeout={cascade.on ? 0 : 1000}
+          classNames={cascade.on ? "" : { ...todoStyles }}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (
@@ -141,7 +142,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
           <Drop id="todoDropArea">
             <ul
               className={`${styles.flexcol} ${styles.list} ${
-                cascade.initialize ? styles.front : ""
+                cascade.phase === "initialize" ? styles.front : ""
               }`}
             >
               <TransitionGroup component={null}>
@@ -153,7 +154,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       )}
       <ul
         className={`${styles.flexcol} ${styles.list} ${
-          cascade.initialize ? styles.back : ""
+          cascade.phase === "initialize" ? styles.back : ""
         }`}
       >
         {cascadeOutTodos}
