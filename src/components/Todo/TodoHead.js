@@ -16,8 +16,9 @@ const TodoHead = (props) => {
     todo = props.todo;
   }
 
-  const { listOpen, hover } =
+  const { listOpen, hover, inCascade } =
     useSelector((state) => state.transientSlice[props.todo.id]) ?? {};
+  
 
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
@@ -79,6 +80,7 @@ const TodoHead = (props) => {
             containerHover={hover}
             inputHandler={typeBodyHandler}
             placeholder={"Type a to-do"}
+            autofocus={!inCascade}
           />
         </CSSTransition>
         <TodoBottom

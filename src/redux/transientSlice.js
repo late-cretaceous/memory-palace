@@ -9,6 +9,7 @@ const createTransientTodo = (initialValues) => {
     hadStarter: false,
     listPulled: false,
     edgeActivated: false,
+    inCascade: false,
   };
 
   return Object.assign(defaultValues, initialValues);

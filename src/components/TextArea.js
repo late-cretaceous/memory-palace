@@ -7,6 +7,7 @@ const TextArea = ({
   inputHandler,
   text,
   placeholder,
+  autofocus = true,
 }) => {
   const [typedText, setTypedText] = useState(placeholder);
   const [displayedText, setDisplayedText] = useState(typedText);
@@ -28,7 +29,7 @@ const TextArea = ({
   useEffect(() => {
     setSpaceWidth(pureTextAreaWidth("_ _") - pureTextAreaWidth("__"));
 
-    containerRef.current.querySelector("textarea").focus();
+    autofocus && containerRef.current.querySelector("textarea").focus();    
   }, []);
 
   useEffect(() => {

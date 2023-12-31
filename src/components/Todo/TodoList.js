@@ -46,7 +46,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   const cascade = useSortAnimation(todos, sort);
-  console.log(cascade);
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e));

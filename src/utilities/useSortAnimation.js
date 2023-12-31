@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { editTransientTodo } from "../redux/transientSlice";
 
 const useSortAnimation = (todos, sort) => {
   const [cascade, setCascade] = useState({
@@ -10,6 +12,8 @@ const useSortAnimation = (todos, sort) => {
     sortedList: todos,
   });
 
+  const dispatch = useDispatch();
+
   if (cascade.sort !== sort) {
     setCascade((prev) => {
       return {
@@ -19,6 +23,15 @@ const useSortAnimation = (todos, sort) => {
         on: true,
         unsortedList: cascade.sortedList,
       };
+    });
+
+    cascade.sortedList.forEach((todo) => {
+      dispatch(
+        editTransientTodo({
+          id: todo.id,
+          edit: { inCascade: true },
+        })
+      );
     });
   }
 
@@ -51,6 +64,15 @@ const useSortAnimation = (todos, sort) => {
       setCascade((prev) => {
         return { ...prev, phase: "off", on: false, index: 0 };
       });
+
+      todos.forEach((todo) => {
+        dispatch(
+          editTransientTodo({
+            id: todo.id,
+            edit: { inCascade: false },
+          })
+        );
+      });
     }
 
     const timeoutId = setTimeout(() => {
@@ -60,7 +82,7 @@ const useSortAnimation = (todos, sort) => {
     }, 250);
 
     return () => clearTimeout(timeoutId);
-  }, [cascade.phase, cascade.index, todos.length]);
+  }, [cascade.phase, cascade.index, todos.length, dispatch, todos]);
 
   return cascade;
 };
