@@ -60,20 +60,6 @@ const useSortAnimation = (todos, sort) => {
 
   useEffect(() => {
     if (cascade.phase !== "cascade") return;
-    else if (cascade.index >= todos.length) {
-      setCascade((prev) => {
-        return { ...prev, phase: "off", on: false, index: 0 };
-      });
-
-      todos.forEach((todo) => {
-        dispatch(
-          editTransientTodo({
-            id: todo.id,
-            edit: { inCascade: false },
-          })
-        );
-      });
-    }
 
     const timeoutId = setTimeout(() => {
       setCascade((prev) => {
@@ -82,7 +68,22 @@ const useSortAnimation = (todos, sort) => {
     }, 250);
 
     return () => clearTimeout(timeoutId);
-  }, [cascade.phase, cascade.index, todos.length, dispatch, todos]);
+  }, [cascade.phase, cascade.index]);
+
+  if (cascade.index > todos.length) {
+    setCascade((prev) => {
+      return { ...prev, phase: "off", on: false, index: 0 };
+    });
+
+    todos.forEach((todo) => {
+      dispatch(
+        editTransientTodo({
+          id: todo.id,
+          edit: { inCascade: false },
+        })
+      );
+    });
+  }
 
   return cascade;
 };
