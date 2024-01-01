@@ -16,16 +16,6 @@ export const includeChild = (parent, id, storage) => {
   return reorderedState({ ...parent, list: newList }, storage);
 };
 
-export const moveChild = (parentId, fromIndex, toIndex, storage) => {
-  const parent = storage[parentId];
-  const newList = [...parent.list];
-  const [draggedTodo] = newList.splice(fromIndex, 1);
-
-  newList.splice(toIndex, 0, draggedTodo);
-
-  return reorderedState({ ...parent, list: newList }, storage);
-};
-
 export const forgetChild = (parent, id, storage) => {
   const newParent = {
     ...parent,
@@ -57,6 +47,19 @@ const reIndex = (children) => {
     acc[child.id] = { ...child, index };
     return acc;
   }, {});
+};
+
+const moveItem = (list, fromIndex, toIndex) => {
+  const newList = [...list];
+  const [draggedTodo] = newList.splice(fromIndex, 1);
+
+  newList.splice(toIndex, 0, draggedTodo);
+
+  return newList;
+};
+
+export const moveAndReIndex = (list, fromIndex, toIndex) => {
+  return reIndex(moveItem(list, fromIndex, toIndex));
 };
 
 const reorderedState = (newListParent, storage) => {

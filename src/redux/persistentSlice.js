@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { includeChild, moveChild, forgetChild } from "../utilities/todoUtils";
+import { includeChild, forgetChild } from "../utilities/todoUtils";
 import {
   addToStorage,
   mergeToStateAndStore,
@@ -35,18 +35,18 @@ const persistentSlice = createSlice({
       removeFromStorage(id);
     },
     moveTodo: (state, action) => {
-      const e = action.payload;
-      const parentId = state[e.draggableId].parent;
+      const e = action.payload.e;
+      const parent = state[state[e.draggableId].parent];
+      const reorderedTodos = action.payload.reorderedTodos;
 
       if (!e.destination) return;
 
-      const updatedFamily = moveChild(
-        parentId,
-        e.source.index,
-        e.destination.index,
-        state
-      );
-
+      // Probably will not need to update the parent's list when you use the transient position property
+      const updatedFamily = {
+        [parent.id]: { ...parent, list: Object.keys(reorderedTodos) },
+        ...reorderedTodos,
+      };
+      
       mergeToStateAndStore(state, updatedFamily);
     },
     editTodo: (state, action) => {

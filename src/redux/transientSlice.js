@@ -10,6 +10,7 @@ const createTransientTodo = (initialValues) => {
     listPulled: false,
     edgeActivated: false,
     inCascade: false,
+    position: null,
   };
 
   return Object.assign(defaultValues, initialValues);
@@ -25,9 +26,7 @@ const transientSlice = createSlice({
     removeTransientTodo: (state, action) => {
       const id = action.payload;
 
-      action.payload.descendants.forEach(
-        (id) => delete state[id]
-      );
+      action.payload.descendants.forEach((id) => delete state[id]);
 
       delete state[id];
     },

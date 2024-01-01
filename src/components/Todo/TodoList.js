@@ -15,6 +15,7 @@ import {
   editTransientTodo,
 } from "../../redux/transientSlice";
 import TodoAdder from "./TodoAdder";
+import { moveAndReIndex } from "../../utilities/todoUtils";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const dispatch = useDispatch();
@@ -25,8 +26,10 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   if (!listPulled) {
     parent.list.forEach((id) => {
-      dispatch(addExistingTodo(fetchTodo(id)));
-      dispatch(addTransientTodo({ id }));
+      const todo = fetchTodo(id);
+
+      dispatch(addExistingTodo(todo));
+      dispatch(addTransientTodo({ id, position: todo.index }));
       dispatch(
         editTransientTodo({ id: parent.id, edit: { listPulled: true } })
       );
@@ -46,9 +49,24 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   const cascade = useSortAnimation(todos, sort);
-
+  
   const moveTodoHandler = (e) => {
-    dispatch(moveTodo(e));
+    const reorderedTodos = moveAndReIndex(
+      todos,
+      e.source.index,
+      e.destination.index
+    );
+
+    dispatch(moveTodo({ e, reorderedTodos }));
+
+    Object.values(reorderedTodos).forEach((todo) => {
+      dispatch(
+        editTransientTodo({
+          id: todo.id,
+          edit: { position: todo.index },
+        })
+      );
+    });
   };
 
   const lengthForHeaderAndBackground = todos.length + 2;
