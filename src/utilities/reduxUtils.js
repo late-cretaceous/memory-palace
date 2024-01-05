@@ -21,6 +21,20 @@ export const loadTodos = () => {
   }
 };
 
+const stateUpdatesDispatch = (reorderedTodos) => {
+  return (dispatch) => {
+    dispatch(updateStateAndStore(reorderedTodos));
+    dispatch(
+      editTransientTodos(
+        Object.values(reorderedTodos).map((todo) => ({
+          id: todo.id,
+          edit: { position: todo.index },
+        }))
+      )
+    );
+  };
+};
+
 export const saveTodo = (todo) => {
   localStorage.setItem(todo.id, JSON.stringify(todo));
 };
@@ -39,20 +53,8 @@ export const moveTodo = (e, parent, todos) => {
   const reorderedTodos = reIndex(movedTodos);
   const newParent = { ...parent, list: Object.keys(reorderedTodos) };
 
-  return (dispatch) => {
-    dispatch(
-      updateStateAndStore({ [newParent.id]: newParent, ...reorderedTodos })
-    );
-    dispatch(
-      editTransientTodos(
-        Object.values(reorderedTodos).map((todo) => ({
-          id: todo.id,
-          edit: { position: todo.index },
-        }))
-      )
-    );
-  };
-
-  //Separate out reIndex from splice in moveTodo so you can use that in the other two
-  //Todo: updated removeTodo and include addTodo to both to reorder transient todos
+  return stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent });
 };
+
+//Separate out reIndex from splice in moveTodo so you can use that in the other two
+//Todo: updated removeTodo and include addTodo to both to reorder transient todos
