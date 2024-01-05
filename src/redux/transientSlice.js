@@ -16,6 +16,10 @@ const createTransientTodo = (initialValues) => {
   return Object.assign(defaultValues, initialValues);
 };
 
+const editTodo = (state, id, edit) => {
+  return { ...state[id], ...edit };
+};
+
 const transientSlice = createSlice({
   name: "transientTodos",
   initialState: {},
@@ -33,11 +37,13 @@ const transientSlice = createSlice({
     toggleListOpen: (state, action) => {
       state[action.payload].listOpen = !state[action.payload].listOpen;
     },
-    editTransientTodo: (state, action) => {
-      const { id, edit } = action.payload;
-
-      const newTodo = { ...state[id], ...edit };
-      state[id] = newTodo;
+    editTransientTodo: (state, { payload: { id, edit } }) => {
+      state[id] = editTodo(state, id, edit);
+    },
+    editTransientTodos: (state, { payload: edits }) => {
+      edits.forEach(({id, edit}) => {
+        state[id] = editTodo(state, id, edit);
+      });
     },
   },
 });
@@ -46,6 +52,7 @@ export const {
   addTransientTodo,
   removeTransientTodo,
   toggleListOpen,
-  editTransientTodo
+  editTransientTodo,
+  editTransientTodos,
 } = transientSlice.actions;
 export default transientSlice.reducer;

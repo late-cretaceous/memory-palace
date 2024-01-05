@@ -42,14 +42,14 @@ export const newNumber = (siblings) => {
   }
 };
 
-const reIndex = (children) => {
+export const reIndex = (children) => {
   return children.reduce((acc, child, index) => {
     acc[child.id] = { ...child, index };
     return acc;
   }, {});
 };
 
-const moveItem = (list, fromIndex, toIndex) => {
+export const moveItem = (list, fromIndex, toIndex) => {
   const newList = [...list];
   const [draggedTodo] = newList.splice(fromIndex, 1);
 

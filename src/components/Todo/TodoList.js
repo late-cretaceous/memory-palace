@@ -8,14 +8,14 @@ import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
-import { moveTodo, addExistingTodo } from "../../redux/persistentSlice";
+import { addExistingTodo } from "../../redux/persistentSlice";
 import { fetchTodo } from "../../utilities/databaseUtils";
 import {
   addTransientTodo,
   editTransientTodo,
 } from "../../redux/transientSlice";
 import TodoAdder from "./TodoAdder";
-import { moveAndReIndex } from "../../utilities/todoUtils";
+import { moveTodo } from "../../utilities/reduxUtils";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const dispatch = useDispatch();
@@ -50,23 +50,10 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const cascade = useSortAnimation(todos, sort);
   
+  console.table(useSelector((state) => state.transientSlice));
+
   const moveTodoHandler = (e) => {
-    const reorderedTodos = moveAndReIndex(
-      todos,
-      e.source.index,
-      e.destination.index
-    );
-
-    dispatch(moveTodo({ e, reorderedTodos }));
-
-    Object.values(reorderedTodos).forEach((todo) => {
-      dispatch(
-        editTransientTodo({
-          id: todo.id,
-          edit: { position: todo.index },
-        })
-      );
-    });
+    dispatch(moveTodo(e, parent, todos));
   };
 
   const lengthForHeaderAndBackground = todos.length + 2;

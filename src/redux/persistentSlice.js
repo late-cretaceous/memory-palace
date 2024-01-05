@@ -34,19 +34,8 @@ const persistentSlice = createSlice({
       delete state[id];
       removeFromStorage(id);
     },
-    moveTodo: (state, action) => {
-      const e = action.payload.e;
-      const parent = state[state[e.draggableId].parent];
-      const reorderedTodos = action.payload.reorderedTodos;
-
-      if (!e.destination) return;
-
-      // Probably will not need to update the parent's list when you use the transient position property
-      const updatedFamily = {
-        [parent.id]: { ...parent, list: Object.keys(reorderedTodos) },
-        ...reorderedTodos,
-      };
-      
+    updateStateAndStore: (state, action) => {
+      const updatedFamily = action.payload;
       mergeToStateAndStore(state, updatedFamily);
     },
     editTodo: (state, action) => {
@@ -66,9 +55,9 @@ const persistentSlice = createSlice({
 export const {
   addPersistentTodo,
   removePersistentTodo,
-  moveTodo,
   editTodo,
   addExistingTodo,
+  updateStateAndStore,
 } = persistentSlice.actions;
 
 export default persistentSlice.reducer;
