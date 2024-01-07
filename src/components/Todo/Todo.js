@@ -14,7 +14,7 @@ import {
 import { useDispatch } from "react-redux";
 import { generateChild } from "../../utilities/todoUtils";
 
-const Todo = ({ todo, ...props }) => {
+const Todo = ({ family: {todo, parent, siblings}, ...props }) => {
   const { listOpen, hadStarter, edgeActivated } = useSelector(
     (state) => state.transientSlice[todo.id]
   );
@@ -24,7 +24,7 @@ const Todo = ({ todo, ...props }) => {
 
   const addChildHandler = (parent, isStarter = false) => {
     const index = isStarter ? 0 : todo.index + 1;
-    const siblings = isStarter ? [] : props.siblings;
+    siblings = isStarter ? [] : siblings;
     const newSibling = generateChild(parent, siblings, index);
 
     if (!isStarter) {
@@ -50,8 +50,7 @@ const Todo = ({ todo, ...props }) => {
 
   const todoHead = todo.parent && (
     <TodoHead
-      todo={todo}
-      parent={props.parent}
+      family={{ todo, parent, siblings }}
       dragHandleProps={dragHandleProps}
       color={props.color}
     />

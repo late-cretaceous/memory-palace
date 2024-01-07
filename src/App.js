@@ -48,9 +48,7 @@ function App() {
     <div style={{ backgroundColor: bColor }} className={"background"}>
       <Header color={color} />
       <Todo
-        todo={bigTodo}
-        parent={null}
-        siblings={[]}
+        family={{ todo: bigTodo, parent: null, siblings: [] }}
         color={color}
         spectrumRange={spectrumRange}
         lightRange={lightRange}

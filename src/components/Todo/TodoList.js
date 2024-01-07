@@ -49,8 +49,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   const cascade = useSortAnimation(todos, sort);
-  
-  console.table(useSelector((state) => state.transientSlice));
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e, parent, todos));
@@ -81,10 +79,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
         .map((todo, index) => {
           return (
             <Todo
-              todo={todo}
+              family={{ todo: todo, parent: parent, siblings: todos }}
               key={todo.id}
-              parent={parent}
-              siblings={todos}
               color={spectrum[index + 1]}
               spectrumRange={(props.spectrumRange * 2) / todos.length}
               lightRange={(props.lightRange * 2) / todos.length}
@@ -106,7 +102,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
             {(provided) => (
               <div ref={provided.innerRef}>
                 <Todo
-                  todo={todo}
+                  family={{ todo: todo, parent: parent, siblings: todos }}
                   parent={parent}
                   siblings={todos}
                   provided={provided}

@@ -4,10 +4,10 @@ import CloseIcon from "../../assets/CloseIcon";
 import { useDispatch } from "react-redux";
 import { removeTodo } from "../../utilities/reduxUtils";
 
-const TodoTop = ({ todo, ...props }) => {
+const TodoTop = ({ family: {todo, parent, siblings}, ...props }) => {
   const dispatch = useDispatch();
   const removeSelfHandler = () => {
-    dispatch(removeTodo(todo.id));
+    dispatch(removeTodo(todo.id, parent, siblings));
   };
 
   return (

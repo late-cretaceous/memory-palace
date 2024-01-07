@@ -8,16 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
 
-const TodoHead = (props) => {
+const TodoHead = ({family: {todo, parent, siblings}, ...props}) => {
   const labelsVisible = useSelector((state) => state.labelSlice.visible);
   const dispatch = useDispatch();
-  let todo = useSelector((state) => state.persistentSlice[props.todo.id]);
-  if (!todo) {
-    todo = props.todo;
-  }
+  todo = useSelector((state) => state.persistentSlice[todo.id]) ?? todo;
+
 
   const { listOpen, hover, inCascade } =
-    useSelector((state) => state.transientSlice[props.todo.id]) ?? {};
+    useSelector((state) => state.transientSlice[todo.id]) ?? {};
   
 
   const typeBodyHandler = (textInput) => {
@@ -57,7 +55,7 @@ const TodoHead = (props) => {
         hoverHandler({ id: todo.id, edit: { hover: false } });
       }}
     >
-      {todo.index > 0 && <Edgebox todoID={props.parent.list[todo.index - 1]} />}
+      {todo.index > 0 && <Edgebox todoID={parent.list[todo.index - 1]} />}
       <div
         className={styles.todoface}
         {...props.dragHandleProps}
@@ -66,7 +64,7 @@ const TodoHead = (props) => {
         <TodoTop
           hover={hover}
           labelDisplay={labelDisplay}
-          todo={todo}
+          family={{ todo, parent, siblings }}
           fontColor={fontColor}
         />
         <CSSTransition
