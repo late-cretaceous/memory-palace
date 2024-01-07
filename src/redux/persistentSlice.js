@@ -27,9 +27,7 @@ const persistentSlice = createSlice({
       });
 
       const id = action.payload.id;
-      const removee = state[action.payload.id];
-      const updatedFamily = forgetChild(state[removee.parent], id, state);
-      mergeToStateAndStore(state, updatedFamily);
+
 
       delete state[id];
       removeFromStorage(id);

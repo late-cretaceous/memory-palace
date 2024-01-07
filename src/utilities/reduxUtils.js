@@ -41,19 +41,14 @@ export const saveTodo = (todo) => {
 
 export const removeTodo = (id, parent, todos) => {
   const action = { id: id, descendants: listHierarchy(id) };
-  const newTodos = Object.values(todos).reduce((acc, todo) => {
-    if (todo.id !== id) {
-      acc[todo.id] = todo;
-    }
-    return acc;
-  }, {});
-  const newParent = { ...parent, list: Object.keys(newTodos) };
+  const newTodos = Object.values(todos).filter((todo) => todo.id !== id);
+  const reorderedTodos = reIndex(newTodos);
+  const newParent = { ...parent, list: Object.keys(reorderedTodos) };
 
-  //So, stateUpdatesDispatch can update the existing
-  //But then you still need to remove the todos using listHierarchy
-  //So you can clear out more of the remove functions and make them strictly listHiearchy
+  
+
   return (dispatch) => {
-    dispatch(removeTransientTodo(action));
+    dispatch(stateUpdatesDispatch({...reorderedTodos, [parent.id]: newParent}));
     dispatch(removePersistentTodo(action));
   };
 };
