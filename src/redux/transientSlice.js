@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { loadTodoKeys } from "../utilities/reduxUtils";
 
 const createTransientTodo = (initialValues) => {
   const defaultValues = {
@@ -27,11 +28,6 @@ const transientSlice = createSlice({
     addTransientTodo: (state, action) => {
       state[action.payload.id] = createTransientTodo(action.payload);
     },
-    removeTransientTodo: (state, {payload: {id, descendants}}) => {
-      descendants.forEach((id) => delete state[id]);
-
-      delete state[id];
-    },
     toggleListOpen: (state, action) => {
       state[action.payload].listOpen = !state[action.payload].listOpen;
     },
@@ -39,9 +35,19 @@ const transientSlice = createSlice({
       state[id] = editTodo(state, id, edit);
     },
     editTransientTodos: (state, { payload: edits }) => {
-      edits.forEach(({id, edit}) => {
+      edits.forEach(({ id, edit }) => {
         state[id] = editTodo(state, id, edit);
       });
+    },
+    trimTransientSlice: (state) => {
+      const transientSliceKeys = Object.keys(state);
+      const localStorageKeys = loadTodoKeys();
+
+      const transientSliceKeysToRemove = transientSliceKeys.filter(
+        (key) => !localStorageKeys.includes(key)
+      );
+
+      transientSliceKeysToRemove.forEach((key) => delete state[key]);
     },
   },
 });
@@ -52,5 +58,6 @@ export const {
   toggleListOpen,
   editTransientTodo,
   editTransientTodos,
+  trimTransientSlice,
 } = transientSlice.actions;
 export default transientSlice.reducer;

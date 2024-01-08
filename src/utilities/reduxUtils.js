@@ -1,8 +1,5 @@
 import { removePersistentTodo } from "../redux/persistentSlice";
-import {
-  removeTransientTodo,
-  editTransientTodos,
-} from "../redux/transientSlice";
+import { editTransientTodos } from "../redux/transientSlice";
 import { moveItem, reIndex } from "./todoUtils";
 import { listHierarchy } from "./databaseUtils";
 import { updateStateAndStore } from "../redux/persistentSlice";
@@ -19,6 +16,10 @@ export const loadTodos = () => {
   } catch (err) {
     return undefined;
   }
+};
+
+export const loadTodoKeys = () => {
+  return Object.keys(localStorage);
 };
 
 const stateUpdatesDispatch = (reorderedTodos) => {
@@ -45,10 +46,10 @@ export const removeTodo = (id, parent, todos) => {
   const reorderedTodos = reIndex(newTodos);
   const newParent = { ...parent, list: Object.keys(reorderedTodos) };
 
-  
-
   return (dispatch) => {
-    dispatch(stateUpdatesDispatch({...reorderedTodos, [parent.id]: newParent}));
+    dispatch(
+      stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent })
+    );
     dispatch(removePersistentTodo(action));
   };
 };

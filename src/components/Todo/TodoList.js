@@ -16,6 +16,7 @@ import {
 } from "../../redux/transientSlice";
 import TodoAdder from "./TodoAdder";
 import { moveTodo } from "../../utilities/reduxUtils";
+import useTransientTrimmer from "../../utilities/useTransientTrimmer";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const dispatch = useDispatch();
@@ -49,10 +50,13 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   const cascade = useSortAnimation(todos, sort);
+  const animationTime = 1000;
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e, parent, todos));
   };
+
+  useTransientTrimmer(animationTime);
 
   const lengthForHeaderAndBackground = todos.length + 2;
   const spectrum = props.color.shades(
@@ -95,7 +99,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       return (
         <CSSTransition
           key={todo.id}
-          timeout={cascade.on ? 0 : 1000}
+          timeout={cascade.on ? 0 : animationTime}
           classNames={cascade.on ? "" : { ...todoStyles }}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
@@ -120,7 +124,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   ) : (
     <CSSTransition
       key={"phantom"}
-      timeout={1000}
+      timeout={animationTime}
       classNames={{ ...todoStyles }}
     >
       <TodoAdder
