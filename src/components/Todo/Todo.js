@@ -14,7 +14,7 @@ import {
 import { useDispatch } from "react-redux";
 import { generateChild } from "../../utilities/todoUtils";
 
-const Todo = ({ family: {todo, parent, siblings}, ...props }) => {
+const Todo = ({ family: { todo, parent, siblings }, ...props }) => {
   const { listOpen, hadStarter, edgeActivated } = useSelector(
     (state) => state.transientSlice[todo.id]
   );
@@ -37,7 +37,9 @@ const Todo = ({ family: {todo, parent, siblings}, ...props }) => {
     }
 
     dispatch(addPersistentTodo(newSibling));
-    dispatch(addTransientTodo({ id: newSibling.id, isStarter }));
+    dispatch(
+      addTransientTodo({ id: newSibling.id, isStarter, position: index })
+    );
   };
 
   if (listOpen && !todo.list.length && !hadStarter) {
