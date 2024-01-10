@@ -1,6 +1,6 @@
 import { removePersistentTodo } from "../redux/persistentSlice";
 import { editTransientTodos } from "../redux/transientSlice";
-import { moveItem, reIndex } from "./todoUtils";
+import { moveItem, reIndex, generateChild } from "./todoUtils";
 import { listHierarchy } from "./databaseUtils";
 import { updateStateAndStore } from "../redux/persistentSlice";
 
@@ -62,5 +62,13 @@ export const moveTodo = (e, parent, todos) => {
   return stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent });
 };
 
-//Separate out reIndex from splice in moveTodo so you can use that in the other two
-//Todo: updated removeTodo and include addTodo to both to reorder transient todos
+export const addTodo = (parent, todos, index, isStarter) => {
+  const newIndex = isStarter ? 0 : index + 1;
+  const siblings = isStarter ? [] : todos;
+  const newSibling = generateChild(parent, siblings, newIndex);
+
+  const reorderedTodos = reIndex(siblings.splice(newIndex, 0, newSibling));
+  const newParent = { ...parent, list: Object.keys(reorderedTodos) };
+
+  return stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent });
+}

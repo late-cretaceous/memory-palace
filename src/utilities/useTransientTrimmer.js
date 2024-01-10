@@ -15,7 +15,6 @@ function useTransientTrimmer(animationTime) {
 
   useEffect(() => {
     if (transientLengthForTrimmer > persistentLengthForTrimmer) {
-      console.log("trimming transientSlice in hook");
       const timeStamp = setTimeout(() => {
         dispatch(trimTransientSlice());
       }, animationTime + 1000);
