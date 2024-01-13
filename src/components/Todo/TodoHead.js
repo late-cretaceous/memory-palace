@@ -12,9 +12,10 @@ const TodoHead = ({family: {todo, parent, siblings}, ...props}) => {
   const labelsVisible = useSelector((state) => state.labelSlice.visible);
   const dispatch = useDispatch();
   todo = useSelector((state) => state.persistentSlice[todo.id]) ?? todo;
+  parent = useSelector((state) => state.persistentSlice[parent.id]);
 
 
-  const { listOpen, hover, inCascade } =
+  const { listOpen, hover, inCascade, position } =
     useSelector((state) => state.transientSlice[todo.id]) ?? {};
   
 
@@ -55,7 +56,7 @@ const TodoHead = ({family: {todo, parent, siblings}, ...props}) => {
         hoverHandler({ id: todo.id, edit: { hover: false } });
       }}
     >
-      {todo.index > 0 && <Edgebox todoID={parent.list[todo.index - 1]} />}
+      {todo.index > 0 && <Edgebox todoID={parent.list[position - 1]} />}
       <div
         className={styles.todoface}
         {...props.dragHandleProps}
