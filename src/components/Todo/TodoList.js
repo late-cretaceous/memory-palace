@@ -49,8 +49,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const sort = useSelector((state) => state.globalSlice.sort);
 
-  console.table(useSelector((state) => state.transientSlice));
-
   const cascade = useSortAnimation(todos, sort);
   const animationTime = 1000;
 
@@ -70,7 +68,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     lengthForHeaderAndBackground
   );
 
-  //console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
+  console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
   const orderedTodos =
     cascade.phase === "cascade"

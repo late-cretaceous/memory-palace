@@ -8,17 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
 
-const TodoHead = ({family: {todo, parent, siblings}, ...props}) => {
+const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
   const labelsVisible = useSelector((state) => state.labelSlice.visible);
   const dispatch = useDispatch();
   todo = useSelector((state) => state.persistentSlice[todo.id]) ?? todo;
   parent = useSelector((state) => state.persistentSlice[parent.id]);
 
+  const transientTodos = useSelector((state) => state.transientSlice) ?? {};
 
-  const { listOpen, hover, inCascade, position } =
-    useSelector((state) => state.transientSlice[todo.id]) ?? {};
-  
-  const sort = useSelector((state) => state.globalSlice.sort);
+  const { listOpen, hover, inCascade, position } = transientTodos[todo.id];
 
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
@@ -41,8 +39,13 @@ const TodoHead = ({family: {todo, parent, siblings}, ...props}) => {
     : "";
 
   const fontColor = props.color.negative().toString();
-  
-  const previousSiblingIndex = parent.list[position - 1];
+
+  const previousTodo =
+    position > 0
+      ? Object.values(transientTodos).find(
+          (transientTodo) => transientTodo.position === position - 1
+        ).id
+      : 0;
 
   return (
     <div
@@ -59,7 +62,7 @@ const TodoHead = ({family: {todo, parent, siblings}, ...props}) => {
         hoverHandler({ id: todo.id, edit: { hover: false } });
       }}
     >
-      {todo.index > 0 && <Edgebox todoID={parent.list[position - 1]} />}
+      {previousTodo > 0 && <Edgebox todoID={previousTodo} />}
       <div
         className={styles.todoface}
         {...props.dragHandleProps}
