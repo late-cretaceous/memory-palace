@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { includeChild, forgetChild } from "../utilities/todoUtils";
 import {
   addToStorage,
   mergeToStateAndStore,
@@ -10,16 +9,6 @@ const persistentSlice = createSlice({
   name: "persistentSlice",
   initialState: {},
   reducers: {
-    addPersistentTodo: (state, action) => {
-      const todo = action.payload;
-      state[todo.id] = todo;
-      if (todo.parent) {
-        const updatedFamily = includeChild(state[todo.parent], todo.id, state);
-        mergeToStateAndStore(state, updatedFamily);
-      } else {
-        addToStorage(todo);
-      }
-    },
     removePersistentTodo: (state, action) => {
       action.payload.descendants.forEach((id) => {
         delete state[id];
@@ -51,7 +40,6 @@ const persistentSlice = createSlice({
 });
 
 export const {
-  addPersistentTodo,
   removePersistentTodo,
   editTodo,
   addExistingTodo,
