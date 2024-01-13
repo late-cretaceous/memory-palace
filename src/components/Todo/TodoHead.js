@@ -18,6 +18,7 @@ const TodoHead = ({family: {todo, parent, siblings}, ...props}) => {
   const { listOpen, hover, inCascade, position } =
     useSelector((state) => state.transientSlice[todo.id]) ?? {};
   
+  const sort = useSelector((state) => state.globalSlice.sort);
 
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
@@ -40,6 +41,8 @@ const TodoHead = ({family: {todo, parent, siblings}, ...props}) => {
     : "";
 
   const fontColor = props.color.negative().toString();
+  
+  const previousSiblingIndex = parent.list[position - 1];
 
   return (
     <div

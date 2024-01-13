@@ -53,6 +53,20 @@ const transientSlice = createSlice({
 
       transientSliceKeysToRemove.forEach((key) => delete state[key]);
     },
+    sortTransientTodos: (state, { payload: { todos, sort } }) => {
+      const sortedList =
+        sort === "manuel"
+          ? todos
+          : Array.from(todos).sort(
+              (a, b) => a.message.length - b.message.length
+            );
+      
+      const sortedIDs = sortedList.map((todo) => todo.id);
+
+      sortedIDs.forEach((id, index) => {
+        state[id].position = index;
+      });
+    },
   },
 });
 
@@ -63,5 +77,6 @@ export const {
   editTransientTodo,
   editTransientTodos,
   trimTransientSlice,
+  sortTransientTodos,
 } = transientSlice.actions;
 export default transientSlice.reducer;

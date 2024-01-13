@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { editTransientTodo } from "../redux/transientSlice";
+import { editTransientTodo, sortTransientTodos } from "../redux/transientSlice";
 
 const useSortAnimation = (todos, sort) => {
   const [cascade, setCascade] = useState({
@@ -25,11 +25,16 @@ const useSortAnimation = (todos, sort) => {
       };
     });
 
+    const newlySortedList =
+      sort === "manual"
+        ? todos
+        : Array.from(todos).sort((a, b) => a.message.length - b.message.length);
+
     cascade.sortedList.forEach((todo) => {
       dispatch(
         editTransientTodo({
           id: todo.id,
-          edit: { inCascade: true },
+          edit: { inCascade: true, position: newlySortedList.indexOf(todo) },
         })
       );
     });
