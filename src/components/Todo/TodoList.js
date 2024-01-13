@@ -49,6 +49,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const sort = useSelector((state) => state.globalSlice.sort);
 
+  console.table(useSelector((state) => state.transientSlice));
+
   const cascade = useSortAnimation(todos, sort);
   const animationTime = 1000;
 

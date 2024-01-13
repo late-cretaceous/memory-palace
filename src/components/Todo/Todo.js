@@ -6,13 +6,9 @@ import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 import constants from "../constants.js";
 import { useSelector } from "react-redux";
-import { addPersistentTodo } from "../../redux/persistentSlice";
-import {
-  addTransientTodo,
-  editTransientTodo,
-} from "../../redux/transientSlice";
+import { editTransientTodo } from "../../redux/transientSlice";
 import { useDispatch } from "react-redux";
-import { generateChild } from "../../utilities/todoUtils";
+import { addTodo } from "../../utilities/reduxUtils";
 
 const Todo = ({ family: { todo, parent, siblings }, ...props }) => {
   const { listOpen, hadStarter, edgeActivated } = useSelector(
@@ -23,10 +19,6 @@ const Todo = ({ family: { todo, parent, siblings }, ...props }) => {
   const listRef = useRef(null);
 
   const addChildHandler = (parent, isStarter = false) => {
-    const index = isStarter ? 0 : todo.index + 1;
-    siblings = isStarter ? [] : siblings;
-    const newSibling = generateChild(parent, siblings, index);
-
     if (!isStarter) {
       dispatch(
         editTransientTodo({
@@ -36,10 +28,7 @@ const Todo = ({ family: { todo, parent, siblings }, ...props }) => {
       );
     }
 
-    dispatch(addPersistentTodo(newSibling));
-    dispatch(
-      addTransientTodo({ id: newSibling.id, isStarter, position: index })
-    );
+    dispatch(addTodo(parent, siblings, todo.index, isStarter));
   };
 
   if (listOpen && !todo.list.length && !hadStarter) {

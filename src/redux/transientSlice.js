@@ -36,6 +36,10 @@ const transientSlice = createSlice({
     },
     editTransientTodos: (state, { payload: edits }) => {
       edits.forEach(({ id, edit }) => {
+        if (!state[id]) {
+          state[id] = createTransientTodo({ id });
+        }
+
         state[id] = editTodo(state, id, edit);
       });
     },

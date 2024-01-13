@@ -66,8 +66,9 @@ export const addTodo = (parent, todos, index, isStarter) => {
   const newIndex = isStarter ? 0 : index + 1;
   const siblings = isStarter ? [] : todos;
   const newSibling = generateChild(parent, siblings, newIndex);
+  siblings.splice(newIndex, 0, newSibling);
 
-  const reorderedTodos = reIndex(siblings.splice(newIndex, 0, newSibling));
+  const reorderedTodos = reIndex(siblings);
   const newParent = { ...parent, list: Object.keys(reorderedTodos) };
 
   return stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent });
