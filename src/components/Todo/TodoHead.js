@@ -40,12 +40,10 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
 
   const fontColor = props.color.negative().toString();
 
-  const previousTodo =
-    position > 0
-      ? Object.values(transientTodos).find(
-          (transientTodo) => transientTodo.position === position - 1
-        ).id
-      : 0;
+  const adderPosition = position > 0 ? position - 1 : 0;
+  const previousTodo = Object.values(transientTodos).find(
+    (transientTodo) => transientTodo.position === adderPosition
+  ).id;
 
   return (
     <div
@@ -62,7 +60,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
         hoverHandler({ id: todo.id, edit: { hover: false } });
       }}
     >
-      {previousTodo > 0 && <Edgebox todoID={previousTodo} />}
+      {<Edgebox todoID={previousTodo} first={position === 0} />}
       <div
         className={styles.todoface}
         {...props.dragHandleProps}
@@ -95,7 +93,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
           color={fontColor}
         />
       </div>
-      {!listOpen && <Edgebox todoID={todo.id} />}
+      {!listOpen && <Edgebox todoID={todo.id} first={false} />}
     </div>
   );
 };

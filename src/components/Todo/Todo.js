@@ -105,18 +105,30 @@ const Todo = ({ family: { todo, parent, siblings }, ...props }) => {
     exited: "adder-exited",
   };
 
+  const todoAdderComponent = transitionState => (
+    <TodoAdder
+      {...adderProps}
+      parent={props.parent}
+      todoID={todo.id}
+      className={adderTransitionClass[transitionState]}
+      mouseName={"add"}
+    >
+      +Todo
+    </TodoAdder>
+  );
+
   const todoAdder = (
-    <Transition in={edgeActivated} timeout={200} mountOnEnter unmountOnExit>
+    <Transition in={edgeActivated.bottom} timeout={200} mountOnEnter unmountOnExit>
       {(state) => (
-        <TodoAdder
-          {...adderProps}
-          parent={props.parent}
-          todoID={todo.id}
-          className={adderTransitionClass[state]}
-          mouseName={"add"}
-        >
-          +Todo
-        </TodoAdder>
+        todoAdderComponent(state)
+      )}
+    </Transition>
+  );
+
+  const firstTodoAdder = (
+    <Transition in={edgeActivated.top} timeout={200} mountOnEnter unmountOnExit>
+      {(state) => (
+        todoAdderComponent(state)
       )}
     </Transition>
   );
@@ -126,6 +138,7 @@ const Todo = ({ family: { todo, parent, siblings }, ...props }) => {
 
   return (
     <div className={todoStyles} {...draggableProps}>
+      {firstTodoAdder}
       {todoHead}
       {todoList}
       {todoAdder}

@@ -9,7 +9,7 @@ const createTransientTodo = (initialValues) => {
     isStarter: false,
     hadStarter: false,
     listPulled: false,
-    edgeActivated: false,
+    edgeActivated: { top: false, bottom: false },
     inCascade: false,
     position: null,
   };

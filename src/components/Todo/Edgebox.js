@@ -10,7 +10,12 @@ const Edgebox = ({ todoID: id, ...props }) => {
 
   const onEdgeBoxEnter = (e, index) => {
     const edgeTimeoutId = setTimeout(() => {
-      dispatch(editTransientTodo({ id, edit: { edgeActivated: true } }));
+      dispatch(
+        editTransientTodo({
+          id,
+          edit: { edgeActivated: { top: props.first, bottom: !props.first } },
+        })
+      );
       setEdgeBoxTimeout(null);
     }, 100);
 
@@ -29,7 +34,12 @@ const Edgebox = ({ todoID: id, ...props }) => {
       : null;
 
     if (mouseTo !== "add" && mouseTo !== "edgebox") {
-      dispatch(editTransientTodo({ id, edit: { edgeActivated: false } }));
+      dispatch(
+        editTransientTodo({
+          id,
+          edit: { edgeActivated: { top: false, bottom: false } },
+        })
+      );
     }
 
     setEdgeBoxTimeout(null);
