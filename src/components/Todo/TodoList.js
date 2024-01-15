@@ -68,7 +68,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     lengthForHeaderAndBackground
   );
 
-  console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
+  //console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
   const orderedTodos =
     cascade.phase === "cascade"

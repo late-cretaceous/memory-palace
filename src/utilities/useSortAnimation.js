@@ -2,7 +2,21 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { editTransientTodo } from "../redux/transientSlice";
 
-const useSortAnimation = (todos, sort) => {
+const sortedTransientTodos = (todos, sort) => {
+  const newlySortedList =
+    sort === "manual"
+      ? todos
+      : Array.from(todos).sort((a, b) => a.message.length - b.message.length);
+
+  return newlySortedList;
+};
+
+const isDelayRound = (index, delay) => {
+  if (delay && index === 0) return true;
+  return false;
+};
+
+const useSortAnimation = (todos, sort, delay = true) => {
   const [cascade, setCascade] = useState({
     index: 0,
     phase: "off",
@@ -10,24 +24,28 @@ const useSortAnimation = (todos, sort) => {
     sort: sort,
     unsortedList: todos,
     sortedList: todos,
+    delay: delay,
   });
 
   const dispatch = useDispatch();
 
   if (cascade.sort !== sort) {
+    const initialList = cascade.sort === "manual" ? todos : cascade.sortedList;
+
     setCascade((prev) => {
       return {
         ...prev,
         sort: sort,
         phase: "initialize",
         on: true,
-        unsortedList: cascade.sortedList,
+        unsortedList: initialList,
+        sortedList: initialList,
       };
     });
 
     const newlySortedList = sortedTransientTodos(todos, sort);
 
-    cascade.sortedList.forEach((todo) => {
+    newlySortedList.forEach((todo) => {
       dispatch(
         editTransientTodo({
           id: todo.id,
@@ -64,17 +82,19 @@ const useSortAnimation = (todos, sort) => {
     if (cascade.phase !== "cascade") return;
 
     const timeoutId = setTimeout(() => {
+      const increment = cascade.delay ? 0 : 1;
+
       setCascade((prev) => {
-        return { ...prev, index: prev.index + 1 };
+        return { ...prev, index: cascade.index + increment, delay: false };
       });
     }, 250);
 
     return () => clearTimeout(timeoutId);
-  }, [cascade.phase, cascade.index]);
+  }, [cascade.phase, cascade.index, cascade.delay]);
 
   if (cascade.index > todos.length) {
     setCascade((prev) => {
-      return { ...prev, phase: "off", on: false, index: 0 };
+      return { ...prev, phase: "off", on: false, index: 0, delay: delay };
     });
 
     todos.forEach((todo) => {
@@ -89,14 +109,5 @@ const useSortAnimation = (todos, sort) => {
 
   return cascade;
 };
-
-const sortedTransientTodos = (todos, sort) => {
-  const newlySortedList =
-  sort === "manual"
-    ? todos
-    : Array.from(todos).sort((a, b) => a.message.length - b.message.length);
-
-  return newlySortedList;
-}
 
 export default useSortAnimation;
