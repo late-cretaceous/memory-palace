@@ -7,8 +7,8 @@ const globalSlice = createSlice({
     sort: (state, action) => {
       state.sort = state.sort === action.payload ? "manual" : action.payload;
     },
-    toggleColorNegative: (state) => {
-      state.headerColorNegative = !state.headerColorNegative;
+    toggleColorNegative: (state, {payload: {area}}) => {
+      state[area] = !state[area];
     },
   },
 });
