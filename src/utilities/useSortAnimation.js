@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { editTransientTodo } from "../redux/transientSlice";
+import { toggleColorNegative } from "../redux/globalSlice";
 
 const sortedTransientTodos = (todos, sort) => {
   const newlySortedList =
@@ -9,11 +10,6 @@ const sortedTransientTodos = (todos, sort) => {
       : Array.from(todos).sort((a, b) => a.message.length - b.message.length);
 
   return newlySortedList;
-};
-
-const isDelayRound = (index, delay) => {
-  if (delay && index === 0) return true;
-  return false;
 };
 
 const useSortAnimation = (todos, sort, delay = true) => {
@@ -58,10 +54,12 @@ const useSortAnimation = (todos, sort, delay = true) => {
   useEffect(() => {
     if (cascade.phase !== "initialize") return;
 
+    dispatch(toggleColorNegative());
+
     setCascade((prev) => {
       return { ...prev, phase: "frameskip" };
     });
-  }, [cascade.phase]);
+  }, [cascade.phase, dispatch]);
 
   if (cascade.phase === "frameskip") {
     const sortedList =
