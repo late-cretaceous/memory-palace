@@ -56,6 +56,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     dispatch(moveTodo(e, parent, todos));
   };
 
+  const {headerColorNegative, backgroundColorNegative} = useSelector((state) => state.globalSlice);
+  
   useTransientTrimmer(animationTime);
 
   const lengthForHeaderAndBackground = todos.length + 2;

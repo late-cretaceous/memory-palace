@@ -3,16 +3,7 @@ import { useDispatch } from "react-redux";
 import { editTransientTodo } from "../redux/transientSlice";
 import { toggleColorNegative } from "../redux/globalSlice";
 
-const sortedTransientTodos = (todos, sort) => {
-  const newlySortedList =
-    sort === "manual"
-      ? todos
-      : Array.from(todos).sort((a, b) => a.message.length - b.message.length);
-
-  return newlySortedList;
-};
-
-const useSortAnimation = (todos, sort, delay = true) => {
+const useSortAnimation = (todos, sort, introStepOn = true, outroStepOn = true) => {
   const [cascade, setCascade] = useState({
     index: 0,
     phase: "off",
@@ -20,7 +11,8 @@ const useSortAnimation = (todos, sort, delay = true) => {
     sort: sort,
     unsortedList: todos,
     sortedList: todos,
-    delay: delay,
+    introStep: introStepOn,
+    outroStep: false,
   });
 
   const dispatch = useDispatch();
@@ -54,7 +46,7 @@ const useSortAnimation = (todos, sort, delay = true) => {
   useEffect(() => {
     if (cascade.phase !== "initialize") return;
 
-    dispatch(toggleColorNegative());
+    dispatch(toggleColorNegative({area: "headerColorNegative"}));
 
     setCascade((prev) => {
       return { ...prev, phase: "frameskip" };
@@ -80,19 +72,36 @@ const useSortAnimation = (todos, sort, delay = true) => {
     if (cascade.phase !== "cascade") return;
 
     const timeoutId = setTimeout(() => {
-      const increment = cascade.delay ? 0 : 1;
+      const increment =
+        cascade.introStep || isOutroStep(outroStepOn, cascade, todos.length) ? 0 : 1;
 
       setCascade((prev) => {
-        return { ...prev, index: cascade.index + increment, delay: false };
+        return {
+          ...prev,
+          index: cascade.index + increment,
+          introStep: false,
+          outroStep: isOutroStep(cascade, todos.length),
+        };
       });
     }, 250);
 
     return () => clearTimeout(timeoutId);
-  }, [cascade.phase, cascade.index, cascade.delay]);
+  }, [cascade, todos.length, outroStepOn]);
 
   if (cascade.index > todos.length) {
+    if (outroStepOn) {
+      dispatch(toggleColorNegative({area: "backgroundColorNegative"}));
+    }
+
     setCascade((prev) => {
-      return { ...prev, phase: "off", on: false, index: 0, delay: delay };
+      return {
+        ...prev,
+        phase: "off",
+        on: false,
+        index: 0,
+        introStep: introStepOn,
+        outroStep: false,
+      };
     });
 
     todos.forEach((todo) => {
@@ -106,6 +115,19 @@ const useSortAnimation = (todos, sort, delay = true) => {
   }
 
   return cascade;
+};
+
+const isOutroStep = (outroStepOn, cascade, length) => {
+  return outroStepOn && !cascade.outroStep && cascade.index === length;
+};
+
+const sortedTransientTodos = (todos, sort) => {
+  const newlySortedList =
+    sort === "manual"
+      ? todos
+      : Array.from(todos).sort((a, b) => a.message.length - b.message.length);
+
+  return newlySortedList;
 };
 
 export default useSortAnimation;
