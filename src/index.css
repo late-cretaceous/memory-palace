@@ -7,6 +7,7 @@
   --global-transition-time: 500ms;
   --global-adder-height: 1.5rem;
   --global-header-height: 6.5rem;
+  --global-transition: all var(--global-transition-time) ease-out 0s;
 }
 
 html {
@@ -36,5 +37,6 @@ code {
   min-height: 100vh;
   height: auto;
   overflow: auto;
+  transition: all var(--global-transition-time) ease-out 0s;
 }
 

@@ -1,13 +1,15 @@
 import Header from "./components/Header";
 import Todo from "./components/Todo/Todo";
 import HSL from "./utilities/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addExistingTodo } from "./redux/persistentSlice";
 import { addTransientTodo } from "./redux/transientSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchTodo } from "./utilities/databaseUtils";
 
 function App() {
+  const [color] = useState(HSL.random());
+  const [lightRange] = useState(color.randomSignWithinBounds(20, "light"));
   const dispatch = useDispatch();
 
   const bigTodo = fetchTodo("bigTodo") ?? {
@@ -21,8 +23,6 @@ function App() {
 
   dispatch(addExistingTodo(bigTodo));
   dispatch(addTransientTodo({ id: bigTodo.id, listOpen: true }));
-
-  const color = HSL.random();
 
   //scaffold show/hide labels using reducer
   useEffect(() => {
@@ -40,8 +40,10 @@ function App() {
   }, [dispatch]);
 
   const spectrumRange = 60;
-  const lightRange = color.randomSignWithinBounds(20, "light");
-  const bColor = color.adjustedHSLBounded(spectrumRange, 0, lightRange);
+  let bColor = color.adjustedHSLBounded(spectrumRange, 0, lightRange);
+  const backgroundColorNegative = useSelector(state => state.globalSlice.backgroundColorNegative);
+  bColor = backgroundColorNegative ? bColor.negative() : bColor;
+
   console.log(`Background color: ${bColor}`);
 
   return (
