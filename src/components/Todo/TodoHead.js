@@ -16,7 +16,8 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
 
   const transientTodos = useSelector((state) => state.transientSlice) ?? {};
 
-  const { listOpen, hover, inCascade, position } = transientTodos[todo.id];
+  const { listOpen, hover, inCascade, position, colorNegative } =
+    transientTodos[todo.id];
 
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
@@ -38,7 +39,8 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     ? todo.lineage.join(".")
     : "";
 
-  const fontColor = props.color.negative().toString();
+  const color = colorNegative ? props.color.negative() : props.color;
+  const fontColor = color.negative();
 
   const adderPosition = position > 0 ? position - 1 : 0;
   const previousTodo = Object.values(transientTodos).find(
@@ -49,7 +51,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     <div
       className={todoHeadStyles}
       style={{
-        backgroundColor: props.color.toString(),
+        backgroundColor: color,
         color: fontColor,
       }}
       id={todo.id}

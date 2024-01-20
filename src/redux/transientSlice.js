@@ -12,6 +12,7 @@ const createTransientTodo = (initialValues) => {
     edgeActivated: { top: false, bottom: false },
     inCascade: false,
     position: null,
+    colorNegative: false,
   };
 
   return Object.assign(defaultValues, initialValues);
@@ -30,6 +31,9 @@ const transientSlice = createSlice({
     },
     toggleListOpen: (state, action) => {
       state[action.payload].listOpen = !state[action.payload].listOpen;
+    },
+    toggleTransientColorNegative: (state, { payload: { id } }) => {
+      state[id].colorNegative = !state[id].colorNegative;
     },
     editTransientTodo: (state, { payload: { id, edit } }) => {
       state[id] = editTodo(state, id, edit);
@@ -63,5 +67,6 @@ export const {
   editTransientTodo,
   editTransientTodos,
   trimTransientSlice,
+  toggleTransientColorNegative,
 } = transientSlice.actions;
 export default transientSlice.reducer;

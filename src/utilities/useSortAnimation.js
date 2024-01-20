@@ -2,8 +2,14 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { editTransientTodo } from "../redux/transientSlice";
 import { toggleColorNegative } from "../redux/globalSlice";
+import { toggleTransientColorNegative } from "../redux/transientSlice";
 
-const useSortAnimation = (todos, sort, introStepOn = true, outroStepOn = true) => {
+const useSortAnimation = (
+  todos,
+  sort,
+  introStepOn = true,
+  outroStepOn = true
+) => {
   const [cascade, setCascade] = useState({
     index: 0,
     phase: "off",
@@ -46,7 +52,7 @@ const useSortAnimation = (todos, sort, introStepOn = true, outroStepOn = true) =
   useEffect(() => {
     if (cascade.phase !== "initialize") return;
 
-    dispatch(toggleColorNegative({area: "headerColorNegative"}));
+    dispatch(toggleColorNegative({ area: "headerColorNegative" }));
 
     setCascade((prev) => {
       return { ...prev, phase: "frameskip" };
@@ -73,7 +79,19 @@ const useSortAnimation = (todos, sort, introStepOn = true, outroStepOn = true) =
 
     const timeoutId = setTimeout(() => {
       const increment =
-        cascade.introStep || isOutroStep(outroStepOn, cascade, todos.length) ? 0 : 1;
+        cascade.introStep || isOutroStep(outroStepOn, cascade, todos.length)
+          ? 0
+          : 1;
+      
+      console.log(`Cascade index: ${cascade.index}`);
+
+      if (cascade.index < todos.length && !cascade.introStep) {
+        dispatch(
+          toggleTransientColorNegative({
+            id: cascade.sortedList[cascade.index].id,
+          })
+        );
+      }
 
       setCascade((prev) => {
         return {
@@ -86,11 +104,11 @@ const useSortAnimation = (todos, sort, introStepOn = true, outroStepOn = true) =
     }, 250);
 
     return () => clearTimeout(timeoutId);
-  }, [cascade, todos.length, outroStepOn]);
+  }, [cascade, todos.length, outroStepOn, dispatch]);
 
   if (cascade.index > todos.length) {
     if (outroStepOn) {
-      dispatch(toggleColorNegative({area: "backgroundColorNegative"}));
+      dispatch(toggleColorNegative({ area: "backgroundColorNegative" }));
     }
 
     setCascade((prev) => {

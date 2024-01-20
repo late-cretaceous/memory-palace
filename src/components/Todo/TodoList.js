@@ -89,6 +89,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
               spectrumRange={(props.spectrumRange * 2) / todos.length}
               lightRange={(props.lightRange * 2) / todos.length}
               index={index}
+              old={true}
             />
           );
         })
@@ -114,6 +115,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
                   spectrumRange={(props.spectrumRange * 2) / todos.length}
                   lightRange={(props.lightRange * 2) / todos.length}
                   index={index}
+                  old={false}
                 />
               </div>
             )}
