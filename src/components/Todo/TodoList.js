@@ -70,6 +70,13 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   //console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
 
+  const todoTransitionClass = {
+    enter: cascade.on ? '' : todoStyles.enter,
+    enterActive: cascade.on ? '' : todoStyles.enterActive,
+    exit: todoStyles.exit,
+    exitActive: todoStyles.exitActive,
+  };
+
   const orderedTodos =
     cascade.phase === "cascade"
       ? cascade.sortedList.slice(0, cascade.index)
@@ -101,7 +108,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
         <CSSTransition
           key={todo.id}
           timeout={cascade.on ? 0 : animationTime}
-          classNames={cascade.on ? "" : { ...todoStyles }}
+          classNames={{ ...todoTransitionClass }}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (

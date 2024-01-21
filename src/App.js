@@ -10,19 +10,26 @@ import { fetchTodo } from "./utilities/databaseUtils";
 function App() {
   const [color] = useState(HSL.random());
   const [lightRange] = useState(color.randomSignWithinBounds(20, "light"));
+  const [bigTodo] = useState(
+    fetchTodo("bigTodo") ?? {
+      id: "bigTodo",
+      lineage: [],
+      index: null,
+      parent: null,
+      message: "",
+      list: [],
+    }
+  );
+  const [firstRender, setFirstRender] = useState(true);
+
+
   const dispatch = useDispatch();
 
-  const bigTodo = fetchTodo("bigTodo") ?? {
-    id: "bigTodo",
-    lineage: [],
-    index: null,
-    parent: null,
-    message: "",
-    list: [],
-  };
-
-  dispatch(addExistingTodo(bigTodo));
-  dispatch(addTransientTodo({ id: bigTodo.id, listOpen: true }));
+  if (firstRender) {
+    dispatch(addExistingTodo(bigTodo));
+    dispatch(addTransientTodo({ id: bigTodo.id, listOpen: true }));
+    setFirstRender(false);
+  }
 
   //scaffold show/hide labels using reducer
   useEffect(() => {
@@ -41,7 +48,9 @@ function App() {
 
   const spectrumRange = 60;
   let bColor = color.adjustedHSLBounded(spectrumRange, 0, lightRange);
-  const backgroundColorNegative = useSelector(state => state.globalSlice.backgroundColorNegative);
+  const backgroundColorNegative = useSelector(
+    (state) => state.globalSlice.backgroundColorNegative
+  );
   bColor = backgroundColorNegative ? bColor.negative() : bColor;
 
   console.log(`Background color: ${bColor}`);
