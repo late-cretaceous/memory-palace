@@ -103,7 +103,7 @@ const useSortAnimation = (
           outroStep: isOutroStep(cascade, todos.length),
         };
       });
-    }, 100);
+    }, 500);
 
     return () => clearTimeout(timeoutId);
   }, [cascade, todos.length, outroStepOn, dispatch]);

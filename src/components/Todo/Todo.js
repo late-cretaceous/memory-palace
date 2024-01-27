@@ -44,6 +44,7 @@ const Todo = ({ family: { todo, parent, siblings }, ...props }) => {
       family={{ todo, parent, siblings }}
       dragHandleProps={dragHandleProps}
       color={props.color}
+      old={props.old}
     />
   );
 

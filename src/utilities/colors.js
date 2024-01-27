@@ -12,7 +12,7 @@ class HSL {
   }
 
   static getHSLValues(colorString) {
-    const hslRegex = /hsl\((\d+)%,\s*(\d+)%,\s*(\d+)%\)/;
+    const hslRegex = /hsl\((\d{1,3}),\s(\d{1,3})%,\s(\d{1,3})%\)/;
     const matches = colorString.match(hslRegex);
 
     if (!matches) return null;
@@ -34,6 +34,14 @@ class HSL {
 
   negative() {
     return new HSL(this.hue + 180, this.sat + 50, this.light + 50);
+  }
+
+  isSameColor(other) {
+    return (
+      this.hue === other.hue &&
+      this.sat === other.sat &&
+      this.light === other.light
+    );
   }
 
   adjustedHSL(hue, sat, light) {
@@ -83,10 +91,7 @@ class HSL {
 function divideRange(start, end, sections) {
   const divisionSize = (end - start) / (sections - 1);
 
-  return Array.from(
-    { length: sections },
-    (_, i) => start + i * divisionSize
-  );
+  return Array.from({ length: sections }, (_, i) => start + i * divisionSize);
 }
 
 const coinToss = () => Math.round(Math.random());

@@ -7,6 +7,7 @@ import TodoTop from "./TodoTop";
 import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
+import HSL from "../../utilities/colors";
 
 const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
   const labelsVisible = useSelector((state) => state.labelSlice.visible);
@@ -16,8 +17,19 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
 
   const transientTodos = useSelector((state) => state.transientSlice) ?? {};
 
-  const { listOpen, hover, inCascade, position, colorNegative } =
-    transientTodos[todo.id];
+  const {
+    listOpen,
+    hover,
+    inCascade,
+    position,
+    colorNegative,
+    previousColorString,
+  } = transientTodos[todo.id];
+
+  console.log(colorNegative);
+  console.log(`${todo.id}, old: ${props.old}`);
+
+  const previousColor = HSL.fromString(previousColorString);
 
   const typeBodyHandler = (textInput) => {
     dispatch(editTodo({ id: todo.id, edit: { message: textInput } }));
@@ -39,8 +51,21 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     ? todo.lineage.join(".")
     : "";
 
-  const color = colorNegative ? props.color.negative() : props.color;
+  let color = colorNegative ? props.color.negative() : props.color;
   const fontColor = color.negative();
+
+  //note: your cgoing to need to replace this
+  //with something updates previous color for all todos at the start of the cascade
+  //to account for any newly added todos
+  if (!inCascade && !color.isSameColor(previousColor)) {
+    dispatch(
+      editTransientTodo({
+        id: todo.id,
+        edit: { previousColorString: color.toString() },
+      })
+    );
+    console.log(`${previousColor} changed to ${color}`);
+  }
 
   const adderPosition = position > 0 ? position - 1 : 0;
   const previousTodo = Object.values(transientTodos).find(
