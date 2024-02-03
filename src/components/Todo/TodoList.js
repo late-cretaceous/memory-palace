@@ -79,7 +79,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const orderedTodos =
     cascade.phase === "cascade"
-      ? cascade.sortedList.slice(0, cascade.index)
+      ? cascade.sortedList.slice(0, cascade.index + 1)
       : cascade.phase === "initialize" || cascade.sort !== "manual"
       ? cascade.sortedList
       : todos;
@@ -88,7 +88,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const cascadeOutTodos = cascade.on
     ? cascade.unsortedList
-        .slice(cascade.index, cascade.unsortedList.length)
+        .slice(cascade.index + 1, cascade.unsortedList.length)
         .map((todo, index) => {
           return (
             <Todo

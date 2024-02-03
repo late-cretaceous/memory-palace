@@ -11,13 +11,12 @@ const useSortAnimation = (
   outroStepOn = true
 ) => {
   const [cascade, setCascade] = useState({
-    index: 0,
+    index: introStepOn ? -1 : 0,
     phase: "off",
     on: false,
     sort: sort,
     unsortedList: todos,
     sortedList: todos,
-    introStep: introStepOn,
     outroStep: false,
     switchColor: false,
   });
@@ -80,8 +79,6 @@ const useSortAnimation = (
 
     console.log(`index: ${cascade.index}, switchColor: ${cascade.switchColor}`);
     if (
-      !cascade.introStep &&
-      cascade.index < todos.length &&
       !cascade.switchColor
     ) {
       setCascade((prev) => {
@@ -94,11 +91,11 @@ const useSortAnimation = (
       dispatch(toggleColorNegative({ area: "backgroundColorNegative" }));
     }
 
-    if (cascade.switchColor) {
+    if (cascade.switchColor && cascade.index > 0) {
       console.log("toggleTransientColorNegative");
       dispatch(
         toggleTransientColorNegative({
-          id: cascade.sortedList[cascade.index].id,
+          id: cascade.sortedList[cascade.index - 1].id,
         })
       );
     }
@@ -106,7 +103,7 @@ const useSortAnimation = (
     const timeoutId = setTimeout(() => {
       console.log("--1000 ms--");
       const increment =
-        cascade.introStep || isOutroStep(outroStepOn, cascade, todos.length)
+        isOutroStep(outroStepOn, cascade, todos.length)
           ? 0
           : 1;
 
@@ -114,12 +111,11 @@ const useSortAnimation = (
         return {
           ...prev,
           index: cascade.index + increment,
-          introStep: false,
           outroStep: isOutroStep(cascade, todos.length),
           switchColor: false,
         };
       });
-    }, 100);
+    }, 1000);
 
     return () => clearTimeout(timeoutId);
   }, [cascade, todos.length, outroStepOn, dispatch]);
@@ -130,8 +126,7 @@ const useSortAnimation = (
         ...prev,
         phase: "off",
         on: false,
-        index: 0,
-        introStep: introStepOn,
+        index: introStepOn ? -1 : 0,
         outroStep: false,
       };
     });
