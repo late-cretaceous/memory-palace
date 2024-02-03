@@ -19,6 +19,7 @@ const useSortAnimation = (
     sortedList: todos,
     introStep: introStepOn,
     outroStep: false,
+    switchColor: false,
   });
 
   const dispatch = useDispatch();
@@ -77,23 +78,37 @@ const useSortAnimation = (
   useEffect(() => {
     if (cascade.phase !== "cascade") return;
 
-    if (!cascade.introStep && cascade.index < todos.length) {
+    console.log(`index: ${cascade.index}, switchColor: ${cascade.switchColor}`);
+    if (
+      !cascade.introStep &&
+      cascade.index < todos.length &&
+      !cascade.switchColor
+    ) {
+      setCascade((prev) => {
+        return {
+          ...prev,
+          switchColor: true,
+        };
+      });
+    } else if (cascade.index >= todos.length) {
+      dispatch(toggleColorNegative({ area: "backgroundColorNegative" }));
+    }
+
+    if (cascade.switchColor) {
+      console.log("toggleTransientColorNegative");
       dispatch(
         toggleTransientColorNegative({
           id: cascade.sortedList[cascade.index].id,
         })
       );
-    } else if (cascade.index >= todos.length) {
-      dispatch(toggleColorNegative({ area: "backgroundColorNegative" }));
     }
 
     const timeoutId = setTimeout(() => {
+      console.log("--1000 ms--");
       const increment =
         cascade.introStep || isOutroStep(outroStepOn, cascade, todos.length)
           ? 0
           : 1;
-      
-      console.log(`Cascade index: ${cascade.index}`);
 
       setCascade((prev) => {
         return {
@@ -101,9 +116,10 @@ const useSortAnimation = (
           index: cascade.index + increment,
           introStep: false,
           outroStep: isOutroStep(cascade, todos.length),
+          switchColor: false,
         };
       });
-    }, 500);
+    }, 100);
 
     return () => clearTimeout(timeoutId);
   }, [cascade, todos.length, outroStepOn, dispatch]);

@@ -26,9 +26,6 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     previousColorString,
   } = transientTodos[todo.id];
 
-  console.log(colorNegative);
-  console.log(`${todo.id}, old: ${props.old}`);
-
   const previousColor = HSL.fromString(previousColorString);
 
   const typeBodyHandler = (textInput) => {

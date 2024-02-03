@@ -83,6 +83,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       : cascade.phase === "initialize" || cascade.sort !== "manual"
       ? cascade.sortedList
       : todos;
+  
+    console.log(orderedTodos);
 
   const cascadeOutTodos = cascade.on
     ? cascade.unsortedList
