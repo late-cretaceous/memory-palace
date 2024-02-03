@@ -48,10 +48,14 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     ? todo.lineage.join(".")
     : "";
 
-  let color = colorNegative ? props.color.negative() : props.color;
+  let color = props.old
+    ? previousColor
+    : colorNegative
+    ? props.color.negative()
+    : props.color;
   const fontColor = color.negative();
 
-  //note: your cgoing to need to replace this
+  //note: your going to need to replace this
   //with something updates previous color for all todos at the start of the cascade
   //to account for any newly added todos
   if (!inCascade && !color.isSameColor(previousColor)) {
