@@ -4,6 +4,7 @@ const globalSlice = createSlice({
   name: "globalSlice",
   initialState: {
     sort: "manual",
+    cascadePhase: "off",
     headerColorNegative: false,
     backgroundColorNegative: false,
   },
@@ -14,9 +15,13 @@ const globalSlice = createSlice({
     toggleColorNegative: (state, { payload: { area } }) => {
       state[area] = !state[area];
     },
+    setCascadePhase: (state, action) => {
+      state.cascadePhase = action.payload;
+    },
   },
 });
 
-export const { sort, toggleColorNegative } = globalSlice.actions;
+export const { sort, toggleColorNegative, setCascadePhase } =
+  globalSlice.actions;
 
 export default globalSlice.reducer;

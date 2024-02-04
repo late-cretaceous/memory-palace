@@ -14,6 +14,7 @@ import {
   addTransientTodo,
   editTransientTodo,
 } from "../../redux/transientSlice";
+import { setCascadePhase } from "../../redux/globalSlice";
 import TodoAdder from "./TodoAdder";
 import { moveTodo } from "../../utilities/reduxUtils";
 import useTransientTrimmer from "../../utilities/useTransientTrimmer";
@@ -50,12 +51,14 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const sort = useSelector((state) => state.globalSlice.sort);
 
   const cascade = useSortAnimation(todos, sort);
+  dispatch(setCascadePhase(cascade.phase));
+
   const animationTime = 1000;
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e, parent, todos));
   };
-  
+
   useTransientTrimmer(animationTime);
 
   const lengthForHeaderAndBackground = todos.length + 2;
@@ -68,11 +71,12 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     lengthForHeaderAndBackground
   );
 
-  //console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange));
+  //console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange))
+
 
   const todoTransitionClass = {
-    enter: cascade.on ? '' : todoStyles.enter,
-    enterActive: cascade.on ? '' : todoStyles.enterActive,
+    enter: cascade.on ? "" : todoStyles.enter,
+    enterActive: cascade.on ? "" : todoStyles.enterActive,
     exit: todoStyles.exit,
     exitActive: todoStyles.exitActive,
   };
@@ -83,8 +87,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       : cascade.phase === "initialize" || cascade.sort !== "manual"
       ? cascade.sortedList
       : todos;
-  
-    console.log(orderedTodos);
 
   const cascadeOutTodos = cascade.on
     ? cascade.unsortedList

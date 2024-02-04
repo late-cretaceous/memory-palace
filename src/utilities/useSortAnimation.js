@@ -77,9 +77,7 @@ const useSortAnimation = (
   useEffect(() => {
     if (cascade.phase !== "cascade") return;
 
-    console.log(`index: ${cascade.index}`);
     if (cascade.index >= 0 && cascade.index < todos.length) {
-      console.log(`toggleTransientColorNegative: ${cascade.index}`);
       dispatch(
         toggleTransientColorNegative({
           id: cascade.sortedList[cascade.index].id,
@@ -92,7 +90,7 @@ const useSortAnimation = (
     }
 
     const timeoutId = setTimeout(() => {
-      console.log("--1000 ms--");
+      console.log("--cascade step--");
       const increment = isOutroStep(outroStepOn, cascade, todos.length) ? 0 : 1;
 
       setCascade((prev) => {

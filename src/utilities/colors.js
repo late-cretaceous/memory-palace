@@ -12,12 +12,12 @@ class HSL {
   }
 
   static getHSLValues(colorString) {
-    const hslRegex = /hsl\((\d{1,3}),\s(\d{1,3})%,\s(\d{1,3})%\)/;
+    const hslRegex = /hsl\((\d+(?:\.\d*)?),\s*(\d+(?:\.\d*)?)%,\s*(\d+(?:\.\d*)?)%\)/;
     const matches = colorString.match(hslRegex);
 
     if (!matches) return null;
 
-    return Array.from({ length: 3 }, (_, i) => parseInt(matches[i + 1], 10));
+    return Array.from({ length: 3 }, (_, i) => parseFloat(matches[i + 1], 10));
   }
 
   static random() {

@@ -16,6 +16,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
   parent = useSelector((state) => state.persistentSlice[parent.id]);
 
   const transientTodos = useSelector((state) => state.transientSlice) ?? {};
+  const cascadePhase = useSelector((state) => state.globalSlice.cascadePhase);
 
   const {
     listOpen,
@@ -48,24 +49,20 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     ? todo.lineage.join(".")
     : "";
 
-  let color = props.old
+  const color = props.old
     ? previousColor
     : colorNegative
     ? props.color.negative()
     : props.color;
   const fontColor = color.negative();
 
-  //note: your going to need to replace this
-  //with something updates previous color for all todos at the start of the cascade
-  //to account for any newly added todos
-  if (!inCascade && !color.isSameColor(previousColor)) {
+  if (cascadePhase === "initialize" && !previousColor.isSameColor(color)){
     dispatch(
       editTransientTodo({
         id: todo.id,
         edit: { previousColorString: color.toString() },
       })
     );
-    console.log(`${previousColor} changed to ${color}`);
   }
 
   const adderPosition = position > 0 ? position - 1 : 0;

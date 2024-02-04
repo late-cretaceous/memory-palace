@@ -13,7 +13,7 @@ const createTransientTodo = (initialValues) => {
     inCascade: false,
     position: null,
     colorNegative: false,
-    previousColorString: "hsl(252, 43%, 70%)",
+    previousColorString: "hsl(0, 0%, 0%)",
   };
 
   return Object.assign(defaultValues, initialValues);
