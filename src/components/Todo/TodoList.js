@@ -3,7 +3,7 @@ import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { forwardRef } from "react";
-import useSortAnimation from "../../utilities/useSortAnimation";
+import useTodoListState from "../../utilities/useTodoListState";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,7 +50,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const sort = useSelector((state) => state.globalSlice.sort);
 
-  const cascade = useSortAnimation(todos, sort);
+  const cascade = useTodoListState(todos, sort);
   dispatch(setCascadePhase(cascade.phase));
 
   const animationTime = 1000;
