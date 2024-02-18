@@ -10,15 +10,17 @@ import { editTransientTodo } from "../../redux/transientSlice";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../utilities/reduxUtils";
 
-const Todo = ({ family: { todo, parent, siblings }, ...props }) => {
-  const { listOpen, hadStarter, edgeActivated } = useSelector(
+const Todo = ({ family, ...props }) => {
+  const { todo, parent, siblings } = family;
+  
+  const { listOpen, hadStarter, edgeActivated, position } = useSelector(
     (state) => state.transientSlice[todo.id]
   );
 
   const dispatch = useDispatch();
   const listRef = useRef(null);
 
-  const addChildHandler = (parent, isStarter = false) => {
+  const addChildHandler = (isStarter = false) => {
     if (!isStarter) {
       dispatch(
         editTransientTodo({
@@ -28,7 +30,7 @@ const Todo = ({ family: { todo, parent, siblings }, ...props }) => {
       );
     }
 
-    dispatch(addTodo(parent, siblings, todo.index, isStarter));
+    dispatch(addTodo(family, isStarter));
   };
 
   if (listOpen && !todo.list.length && !hadStarter) {

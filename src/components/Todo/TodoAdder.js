@@ -18,7 +18,7 @@ const TodoAdder = ({ parent, ...props }) => {
     <div
       className={classes}
       onClick={() => {
-        props.clickAddHandler(parent, false);
+        props.clickAddHandler(false);
       }}
       style={props.style}
       onMouseLeave={mouseLeaveHandler}
