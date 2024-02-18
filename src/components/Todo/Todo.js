@@ -32,7 +32,12 @@ const Todo = ({ family, ...props }) => {
       );
     }
 
-    const newIndex = isStarter ? 0 : todo.index + 1;
+    const newIndex =
+      isStarter || edgeActivated.top
+        ? 0
+        : sorted
+        ? siblings.length
+        : todo.index + 1;
 
     dispatch(addTodo(family, newIndex, isStarter));
   };
@@ -112,7 +117,7 @@ const Todo = ({ family, ...props }) => {
     exited: "adder-exited",
   };
 
-  const todoAdderComponent = transitionState => (
+  const todoAdderComponent = (transitionState) => (
     <TodoAdder
       {...adderProps}
       parent={props.parent}
@@ -125,18 +130,19 @@ const Todo = ({ family, ...props }) => {
   );
 
   const todoAdder = (
-    <Transition in={edgeActivated.bottom} timeout={200} mountOnEnter unmountOnExit>
-      {(state) => (
-        todoAdderComponent(state)
-      )}
+    <Transition
+      in={edgeActivated.bottom}
+      timeout={200}
+      mountOnEnter
+      unmountOnExit
+    >
+      {(state) => todoAdderComponent(state)}
     </Transition>
   );
 
   const firstTodoAdder = (
     <Transition in={edgeActivated.top} timeout={200} mountOnEnter unmountOnExit>
-      {(state) => (
-        todoAdderComponent(state)
-      )}
+      {(state) => todoAdderComponent(state)}
     </Transition>
   );
 
