@@ -81,6 +81,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     exitActive: todoStyles.exitActive,
   };
 
+  //try to eventually use the posotion property to determine the order of the todos
+  //you may run into trouble with the screen flash
   const orderedTodos =
     cascade.phase === "cascade"
       ? cascade.sortedList.slice(0, cascade.index + 1)
