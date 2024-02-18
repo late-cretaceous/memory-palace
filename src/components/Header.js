@@ -6,7 +6,9 @@ import { sort } from "../redux/globalSlice";
 
 const Header = (props) => {
   const dispatch = useDispatch();
-  const headerColorNegative = useSelector(state => state.globalSlice.headerColorNegative);
+  const { sorted, headerColorNegative } = useSelector(
+    (state) => state.globalSlice
+  );
   const color = headerColorNegative ? props.color.negative() : props.color;
   const colorComplement = color.negative().toString();
   const sorting = Boolean(
@@ -30,7 +32,7 @@ const Header = (props) => {
           className={buttonClasses}
           onClick={() => {
             console.log("Sort clicked");
-            dispatch(sort("date"));
+            dispatch(sort(sorted ? "manual" : "date"));
           }}
         >
           <Sort style={{ fill: colorComplement }} />

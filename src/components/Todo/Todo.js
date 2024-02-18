@@ -12,10 +12,12 @@ import { addTodo } from "../../utilities/reduxUtils";
 
 const Todo = ({ family, ...props }) => {
   const { todo, parent, siblings } = family;
-  
+
   const { listOpen, hadStarter, edgeActivated, position } = useSelector(
     (state) => state.transientSlice[todo.id]
   );
+
+  const sorted = useSelector((state) => state.globalSlice.sorted);
 
   const dispatch = useDispatch();
   const listRef = useRef(null);
@@ -30,7 +32,9 @@ const Todo = ({ family, ...props }) => {
       );
     }
 
-    dispatch(addTodo(family, isStarter));
+    const newIndex = isStarter ? 0 : todo.index + 1;
+
+    dispatch(addTodo(family, newIndex, isStarter));
   };
 
   if (listOpen && !todo.list.length && !hadStarter) {

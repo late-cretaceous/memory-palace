@@ -62,11 +62,10 @@ export const moveTodo = (e, parent, todos) => {
   return stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent });
 };
 
-export const addTodo = ({ todo, parent, siblings }, isStarter) => {
-  const newIndex = isStarter ? 0 : todo.index + 1;
+export const addTodo = ({ todo, parent, siblings }, index, isStarter) => {
   siblings = isStarter ? [] : siblings;
-  const newSibling = generateChild(parent, siblings, newIndex);
-  siblings.splice(newIndex, 0, newSibling);
+  const newSibling = generateChild(parent, siblings, index);
+  siblings.splice(index, 0, newSibling);
 
   const reorderedTodos = reIndex(siblings);
   const newParent = { ...parent, list: Object.keys(reorderedTodos) };
