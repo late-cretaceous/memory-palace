@@ -22,7 +22,7 @@ export const loadTodoKeys = () => {
   return Object.keys(localStorage);
 };
 
-const stateUpdatesDispatch = (reorderedTodos) => {
+const stateUpdatesDispatch = (reorderedTodos, newIdAndPosition = null) => {
   return (dispatch) => {
     dispatch(updateStateAndStore(reorderedTodos));
     dispatch(
@@ -62,13 +62,19 @@ export const moveTodo = (e, parent, todos) => {
   return stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent });
 };
 
-export const addTodo = ({ todo, parent, siblings }, index, isStarter) => {
-  siblings = isStarter ? [] : siblings;
+export const addTodo = (parent, siblings, index, position) => {
   const newSibling = generateChild(parent, siblings, index);
   siblings.splice(index, 0, newSibling);
 
   const reorderedTodos = reIndex(siblings);
   const newParent = { ...parent, list: Object.keys(reorderedTodos) };
+  const newIdAndPosition = { id: newSibling.id, position: position };
 
-  return stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent });
-}
+  return stateUpdatesDispatch(
+    {
+      ...reorderedTodos,
+      [parent.id]: newParent,
+    },
+    newIdAndPosition
+  );
+};

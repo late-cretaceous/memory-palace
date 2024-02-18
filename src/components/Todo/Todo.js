@@ -39,7 +39,11 @@ const Todo = ({ family, ...props }) => {
         ? siblings.length
         : todo.index + 1;
 
-    dispatch(addTodo(family, newIndex, isStarter));
+    const newPosition = isStarter || edgeActivated.top ? 0 : position + 1;
+
+    const siblingList = isStarter ? [] : siblings;
+
+    dispatch(addTodo(parent, siblingList, newIndex, newPosition));
   };
 
   if (listOpen && !todo.list.length && !hadStarter) {

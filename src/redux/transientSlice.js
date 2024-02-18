@@ -58,6 +58,26 @@ const transientSlice = createSlice({
 
       transientSliceKeysToRemove.forEach((key) => delete state[key]);
     },
+    addTransientAndReorder: (
+      state,
+      { payload: { todos, newIdAndPosition: newTodoInfo } }
+    ) => {
+      console.log(`newTodoInfo: ${newTodoInfo.id} ${newTodoInfo.position}`);
+      Object.values(todos).forEach((todo) => {
+        if (todo.id === newTodoInfo.id) {
+          state[todo.id] = createTransientTodo({
+            id: todo.id,
+            position: newTodoInfo.position,
+          });
+        } else {
+          if (state[todo.id].position >= newTodoInfo.position) {
+            state[todo.id].position = state[todo.id].position + 1;
+          }
+        }
+      console.log("state in transientSlice");
+      Object.values(state).forEach((todo) => console.log(`${todo.id}: ${todo.position}`));
+      });
+    },
   },
 });
 
@@ -69,5 +89,6 @@ export const {
   editTransientTodos,
   trimTransientSlice,
   toggleTransientColorNegative,
+  addTransientAndReorder,
 } = transientSlice.actions;
 export default transientSlice.reducer;
