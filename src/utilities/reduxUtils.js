@@ -1,5 +1,6 @@
 import { removePersistentTodo } from "../redux/persistentSlice";
 import { editTransientTodos } from "../redux/transientSlice";
+import { addOrRemoveTransientAndReorder } from "../redux/transientSlice";
 import { moveItem, reIndex, generateChild } from "./todoUtils";
 import { listHierarchy } from "./databaseUtils";
 import { updateStateAndStore } from "../redux/persistentSlice";
@@ -22,17 +23,10 @@ export const loadTodoKeys = () => {
   return Object.keys(localStorage);
 };
 
-const stateUpdatesDispatch = (reorderedTodos, newIdAndPosition = null) => {
+const stateUpdatesDispatch = (reorderedTodos, newTodoInfo) => {
   return (dispatch) => {
     dispatch(updateStateAndStore(reorderedTodos));
-    dispatch(
-      editTransientTodos(
-        Object.values(reorderedTodos).map((todo) => ({
-          id: todo.id,
-          edit: { position: todo.index },
-        }))
-      )
-    );
+    dispatch(addOrRemoveTransientAndReorder({todos: reorderedTodos, info: newTodoInfo}));
   };
 };
 
@@ -40,15 +34,25 @@ export const saveTodo = (todo) => {
   localStorage.setItem(todo.id, JSON.stringify(todo));
 };
 
-export const removeTodo = (id, parent, todos) => {
+export const removeTodo = (family, position) => {
+  const {
+    todo: { id },
+    parent,
+    siblings: todos,
+  } = family;
   const action = { id: id, descendants: listHierarchy(id) };
   const newTodos = Object.values(todos).filter((todo) => todo.id !== id);
   const reorderedTodos = reIndex(newTodos);
   const newParent = { ...parent, list: Object.keys(reorderedTodos) };
 
+  const removedTransientInfo = { id: id, position: position, type: "remove" };
+
   return (dispatch) => {
     dispatch(
-      stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent })
+      stateUpdatesDispatch(
+        { ...reorderedTodos, [parent.id]: newParent },
+        removedTransientInfo
+      )
     );
     dispatch(removePersistentTodo(action));
   };
@@ -68,13 +72,17 @@ export const addTodo = (parent, siblings, index, position) => {
 
   const reorderedTodos = reIndex(siblings);
   const newParent = { ...parent, list: Object.keys(reorderedTodos) };
-  const newIdAndPosition = { id: newSibling.id, position: position };
+  const addedTransientInfo = {
+    id: newSibling.id,
+    position: position,
+    type: "add",
+  };
 
   return stateUpdatesDispatch(
     {
       ...reorderedTodos,
       [parent.id]: newParent,
     },
-    newIdAndPosition
+    addedTransientInfo
   );
 };

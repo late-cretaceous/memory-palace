@@ -47,8 +47,12 @@ const transientSlice = createSlice({
 
         state[id] = editTodo(state, id, edit);
       });
+      Object.values(state).forEach((todo) =>
+        console.log(`${todo.id}: ${todo.position}`)
+      );
     },
     trimTransientSlice: (state) => {
+      console.log("trimming");
       const transientSliceKeys = Object.keys(state);
       const localStorageKeys = loadTodoKeys();
 
@@ -58,25 +62,34 @@ const transientSlice = createSlice({
 
       transientSliceKeysToRemove.forEach((key) => delete state[key]);
     },
-    addTransientAndReorder: (
+    addOrRemoveTransientAndReorder: (
       state,
-      { payload: { todos, newIdAndPosition: newTodoInfo } }
+      { payload: { todos, info } }
     ) => {
-      console.log(`newTodoInfo: ${newTodoInfo.id} ${newTodoInfo.position}`);
-      Object.values(todos).forEach((todo) => {
-        if (todo.id === newTodoInfo.id) {
-          state[todo.id] = createTransientTodo({
-            id: todo.id,
-            position: newTodoInfo.position,
-          });
-        } else {
-          if (state[todo.id].position >= newTodoInfo.position) {
-            state[todo.id].position = state[todo.id].position + 1;
+      if (info.type === "add") {
+        Object.values(todos).forEach((todo) => {
+          if (todo.id === info.id) {
+            state[todo.id] = createTransientTodo({
+              id: todo.id,
+              position: info.position,
+            });
+          } else {
+            if (state[todo.id].position >= info.position) {
+              state[todo.id].position = state[todo.id].position + 1;
+            }
           }
-        }
+        });
+      } else if (info.type === "remove") {
+        Object.values(todos).forEach((todo) => {
+          if (state[todo.id].position > info.position) {
+            state[todo.id].position = state[todo.id].position - 1;
+          }
+        });
+      }
       console.log("state in transientSlice");
-      Object.values(state).forEach((todo) => console.log(`${todo.id}: ${todo.position}`));
-      });
+      Object.values(state).forEach((todo) =>
+        console.log(`${todo.id}: ${todo.position}`)
+      );
     },
   },
 });
@@ -89,6 +102,6 @@ export const {
   editTransientTodos,
   trimTransientSlice,
   toggleTransientColorNegative,
-  addTransientAndReorder,
+  addOrRemoveTransientAndReorder,
 } = transientSlice.actions;
 export default transientSlice.reducer;

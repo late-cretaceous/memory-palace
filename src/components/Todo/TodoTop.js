@@ -3,11 +3,15 @@ import buttonStyle from "../UI/button.module.css";
 import CloseIcon from "../../assets/CloseIcon";
 import { useDispatch } from "react-redux";
 import { removeTodo } from "../../utilities/reduxUtils";
+import { useSelector } from "react-redux";
 
-const TodoTop = ({ family: {todo, parent, siblings}, ...props }) => {
+const TodoTop = ({ family, ...props }) => {
   const dispatch = useDispatch();
+  const position = useSelector(
+    (state) => state.transientSlice[family.todo.id].position
+  );
   const removeSelfHandler = () => {
-    dispatch(removeTodo(todo.id, parent, siblings));
+    dispatch(removeTodo(family, position));
   };
 
   return (
@@ -21,7 +25,7 @@ const TodoTop = ({ family: {todo, parent, siblings}, ...props }) => {
           props.hover ? styles.opaque : styles.transparent
         }`}
         onClick={removeSelfHandler}
-        id={todo.id}
+        id={family.todo.id}
       >
         <CloseIcon fill={props.fontColor} />
       </button>
