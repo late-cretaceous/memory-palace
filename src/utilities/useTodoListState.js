@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useSortAnimation from "./useSortAnimation";
-import useSortedListStaticChanges from "./useSortedListStaticChanges";
+import useListDisplayUpdate from "./useListDisplayUpdate";
 
 const useTodoListState = (
   todos,
@@ -20,7 +20,7 @@ const useTodoListState = (
   });
 
   useSortAnimation(cascade, setCascade, todos, sort, introStepOn, outroStepOn);
-  useSortedListStaticChanges(cascade, setCascade, todos);
+  useListDisplayUpdate(cascade, setCascade, todos);
 
   return cascade;
 };
