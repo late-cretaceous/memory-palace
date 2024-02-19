@@ -43,7 +43,7 @@ const Todo = ({ family, ...props }) => {
 
     const siblingList = isStarter ? [] : siblings;
 
-    dispatch(addTodo(parent, siblingList, newIndex, newPosition));
+    dispatch(addTodo(parent, siblingList, newIndex, newPosition, sorted));
   };
 
   if (listOpen && !todo.list.length && !hadStarter) {

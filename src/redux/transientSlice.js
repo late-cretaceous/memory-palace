@@ -70,8 +70,9 @@ const transientSlice = createSlice({
         Object.values(todos).forEach((todo) => {
           if (todo.id === info.id) {
             state[todo.id] = createTransientTodo({
-              id: todo.id,
+              id: info.id,
               position: info.position,
+              colorNegative: info.sorted
             });
           } else {
             if (state[todo.id].position >= info.position) {
@@ -86,10 +87,6 @@ const transientSlice = createSlice({
           }
         });
       }
-      console.log("state in transientSlice");
-      Object.values(state).forEach((todo) =>
-        console.log(`${todo.id}: ${todo.position}`)
-      );
     },
   },
 });
