@@ -6,6 +6,7 @@ export const generateChild = (parent, siblings, index = 0) => {
     parent: parent.id,
     message: "",
     list: [],
+    date: { month: "", day: "", year: ""}
   };
 };
 

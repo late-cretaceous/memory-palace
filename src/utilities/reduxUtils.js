@@ -1,5 +1,4 @@
 import { removePersistentTodo } from "../redux/persistentSlice";
-import { editTransientTodos } from "../redux/transientSlice";
 import { addOrRemoveTransientAndReorder } from "../redux/transientSlice";
 import { moveItem, reIndex, generateChild } from "./todoUtils";
 import { listHierarchy } from "./databaseUtils";
@@ -67,6 +66,8 @@ export const moveTodo = (e, parent, todos) => {
 };
 
 export const addTodo = (parent, siblings, index, position, sorted) => {
+  console.log("addTodo");
+  console.log("parent: ", parent);
   const newSibling = generateChild(parent, siblings, index);
   siblings.splice(index, 0, newSibling);
 

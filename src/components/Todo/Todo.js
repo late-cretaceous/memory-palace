@@ -22,7 +22,7 @@ const Todo = ({ family, ...props }) => {
   const dispatch = useDispatch();
   const listRef = useRef(null);
 
-  const addChildHandler = (isStarter = false) => {
+  const addChildHandler = (parent, isStarter = false) => {
     if (!isStarter) {
       dispatch(
         editTransientTodo({
@@ -47,6 +47,7 @@ const Todo = ({ family, ...props }) => {
   };
 
   if (listOpen && !todo.list.length && !hadStarter) {
+    console.log("initial running");
     addChildHandler(todo, true);
     dispatch(editTransientTodo({ id: todo.id, edit: { hadStarter: true } }));
   }

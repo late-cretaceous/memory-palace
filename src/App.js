@@ -18,6 +18,7 @@ function App() {
       parent: null,
       message: "",
       list: [],
+      date: { month: "", day: "", year: "" },
     }
   );
   const [firstRender, setFirstRender] = useState(true);
