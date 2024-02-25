@@ -27,6 +27,7 @@ const persistentSlice = createSlice({
     },
     editTodo: (state, action) => {
       const { id, edit } = action.payload;
+      console.log("editTodo", id, edit);
 
       const newTodo = { ...state[id], ...edit };
       state[id] = newTodo;

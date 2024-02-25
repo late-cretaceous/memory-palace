@@ -4,7 +4,7 @@ import CloseIcon from "../../assets/CloseIcon";
 import { useDispatch } from "react-redux";
 import { removeTodo } from "../../utilities/reduxUtils";
 import { useSelector } from "react-redux";
-import DateInput from "./DateInput";
+import DateInput from "./DateInputs";
 
 const TodoTop = ({ family, ...props }) => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const TodoTop = ({ family, ...props }) => {
       className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
     >
       <h5 className={`${styles.label}`}>{props.labelDisplay}</h5>
-
+    <DateInput todo={family.todo} />
       <button
         type="button"
         className={`${buttonStyle.button} ${

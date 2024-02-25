@@ -1,7 +1,7 @@
 import styles from "./TodoHead.module.css";
 import TodoBottom from "./TodoBottom";
 import Edgebox from "./Edgebox";
-import TextArea from "../TextArea";
+import TextArea from "../Inputs/TextArea";
 import { CSSTransition } from "react-transition-group";
 import TodoTop from "./TodoTop";
 import { useDispatch, useSelector } from "react-redux";

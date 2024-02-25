@@ -2,24 +2,24 @@ import { useDispatch } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { useSelector } from "react-redux";
 
-const DateInput = ({todo, ...props}) => {
+const DateInput = ({ todo, ...props }) => {
   const dispatch = useDispatch();
-  const date = useSelector((state) => state[todo.id].date);
+  const date = useSelector((state) => state.persistentSlice[todo.id].date);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    switch (name) {
-      case "month":
-        dispatch(editTodo(todo.id, { date: { month: value } }));
-        break;
-      case "day":
-        dispatch(editTodo(todo.id, { date: { day: value } }));
-        break;
-      case "year":
-        dispatch(editTodo(todo.id, { date: { year: value } }));
-        break;
-      default:
-        break;
+
+    if (!isNaN(value)) {
+      const month = name === "month" ? value : date.month;
+      const day = name === "day" ? value : date.day;
+      const year = name === "year" ? value : date.year;
+
+      dispatch(
+        editTodo({
+          id: todo.id,
+          edit: { date: { month: month, day: day, year: year } },
+        })
+      );
     }
   };
 
@@ -31,14 +31,12 @@ const DateInput = ({todo, ...props}) => {
         value={date.month}
         onChange={handleInputChange}
       />
-      /
       <input
         type="text"
         name="day"
         value={date.day}
         onChange={handleInputChange}
       />
-      /
       <input
         type="text"
         name="year"

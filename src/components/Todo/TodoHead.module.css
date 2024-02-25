@@ -37,7 +37,7 @@
 
 .todohead-row__cancel {
   justify-content: space-between;
-  height: 12px;
+  /* height: 12px; */
   overflow: visible;
 }
 
