@@ -26,9 +26,7 @@ const persistentSlice = createSlice({
       mergeToStateAndStore(state, updatedFamily);
     },
     editTodo: (state, action) => {
-      console.log("editTodo action", action);
       const { id, edit } = action.payload;
-      console.log("editTodo", id, edit);
 
       const newTodo = { ...state[id], ...edit };
       state[id] = newTodo;

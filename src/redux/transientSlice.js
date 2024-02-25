@@ -47,9 +47,6 @@ const transientSlice = createSlice({
 
         state[id] = editTodo(state, id, edit);
       });
-      Object.values(state).forEach((todo) =>
-        console.log(`${todo.id}: ${todo.position}`)
-      );
     },
     trimTransientSlice: (state) => {
       console.log("trimming");

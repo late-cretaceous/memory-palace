@@ -81,7 +81,6 @@ const useSortAnimation = (
     }
 
     const timeoutId = setTimeout(() => {
-      console.log("--cascade step--");
       const increment = isOutroStep(outroStepOn, cascade, todos.length) ? 0 : 1;
 
       setCascade((prev) => {
