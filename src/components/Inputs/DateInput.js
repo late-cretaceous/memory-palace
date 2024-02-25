@@ -23,7 +23,7 @@ const DateInput = ({ todo, name }) => {
     <input
       type="text"
       name={name}
-      value={date.month}
+      value={date[name]}
       onChange={handleInputChange}
     />
   );
