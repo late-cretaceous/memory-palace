@@ -1,0 +1,18 @@
+.input-el {
+  font: inherit;
+  background: none;
+  border-style: none;
+  width: 2ch;
+  padding: 0;
+  font-weight: bold;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3ch;
+  height: 3ch;
+  border-radius: 25%;
+  margin: 0 0.5ch 0 0.5ch;
+}

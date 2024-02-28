@@ -95,7 +95,8 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
           hover={hover}
           labelDisplay={labelDisplay}
           family={{ todo, parent, siblings }}
-          fontColor={fontColor}
+          negativeColor={fontColor}
+          color={color}
         />
         <CSSTransition
           in={!listOpen}

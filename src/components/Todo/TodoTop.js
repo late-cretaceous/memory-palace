@@ -20,7 +20,11 @@ const TodoTop = ({ family, ...props }) => {
       className={`${styles["todohead-row"]} ${styles["todohead-row__cancel"]}`}
     >
       <h5 className={`${styles.label}`}>{props.labelDisplay}</h5>
-    <DateForm todo={family.todo} />
+      <DateForm
+        todo={family.todo}
+        color={props.color}
+        negativeColor={props.negativeColor}
+      />
       <button
         type="button"
         className={`${buttonStyle.button} ${
@@ -29,7 +33,7 @@ const TodoTop = ({ family, ...props }) => {
         onClick={removeSelfHandler}
         id={family.todo.id}
       >
-        <CloseIcon fill={props.fontColor} />
+        <CloseIcon fill={props.negative} />
       </button>
     </div>
   );

@@ -31,7 +31,6 @@ const Header = (props) => {
         <button
           className={buttonClasses}
           onClick={() => {
-            console.log("Sort clicked");
             dispatch(sort(sorted ? "manual" : "date"));
           }}
         >

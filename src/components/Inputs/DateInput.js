@@ -1,8 +1,9 @@
 import { useDispatch } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { useSelector } from "react-redux";
+import styles from "./DateInput.module.css";
 
-const DateInput = ({ todo, name }) => {
+const DateInput = ({ todo, name, ...props }) => {
   const dispatch = useDispatch();
   const date = useSelector((state) => state.persistentSlice[todo.id].date);
 
@@ -42,13 +43,18 @@ const DateInput = ({ todo, name }) => {
   };
 
   return (
-    <input
-      type="text"
-      name={name}
-      value={date[name]}
-      onChange={handleInputChange}
-      onBlur={handleBlur}
-    />
+    <div className={styles["wrapper"]}
+    style={{ backgroundColor: props.negativeColor }}>
+      <input
+        style={{ color: props.color }}
+        className={styles["input-el"]}
+        type="text"
+        name={name}
+        value={date[name]}
+        onChange={handleInputChange}
+        onBlur={handleBlur}
+      />
+    </div>
   );
 };
 
