@@ -36,15 +36,17 @@ const DateInput = ({ todo, name, ...props }) => {
       dispatch(
         editTodo({
           id: todo.id,
-          edit: { date: { ...date, [name]: dayLimits[name] } },
+          edit: { date: { ...date, [name]: dayLimits[name].toString() } },
         })
       );
     }
   };
 
   return (
-    <div className={styles["wrapper"]}
-    style={{ backgroundColor: props.negativeColor }}>
+    <div
+      className={styles["wrapper"]}
+      style={{ backgroundColor: props.negativeColor }}
+    >
       <input
         style={{ color: props.color }}
         className={styles["input-el"]}

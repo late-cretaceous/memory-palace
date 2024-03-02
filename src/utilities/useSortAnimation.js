@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { editTransientTodo } from "../redux/transientSlice";
 import { toggleColorNegative } from "../redux/globalSlice";
 import { toggleTransientColorNegative } from "../redux/transientSlice";
+import { sortTodosByDate } from "./todoUtils";
 
 const useSortAnimation = (
   cascade,
@@ -51,10 +52,7 @@ const useSortAnimation = (
   }, [cascade.phase, dispatch]);
 
   if (cascade.phase === "frameskip") {
-    const sortedList =
-      sort === "date"
-        ? Array.from(todos).sort((a, b) => a.message.length - b.message.length)
-        : todos;
+    const sortedList = sort === "date" ? sortTodosByDate(todos) : todos;
 
     setCascade((prev) => {
       return {

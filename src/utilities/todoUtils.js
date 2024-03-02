@@ -69,3 +69,14 @@ const reorderedState = (newListParent, storage) => {
     ...reIndex(Array.from(newListParent.list, (id) => storage[id])),
   };
 };
+
+export const sortTodosByDate = (todos) => {
+  const newTodos = [...todos];
+  newTodos.sort((a, b) => {
+    const aDate = new Date(a.date.year, a.date.month - 1, a.date.day);
+    const bDate = new Date(b.date.year, b.date.month - 1, b.date.day);
+    return aDate - bDate;
+  });
+  return newTodos;
+}
+  
