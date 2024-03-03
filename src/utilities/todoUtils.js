@@ -6,7 +6,7 @@ export const generateChild = (parent, siblings, index = 0) => {
     parent: parent.id,
     message: "",
     list: [],
-    date: { month: "", day: "", year: ""}
+    date: { month: "", day: "", year: "" },
   };
 };
 
@@ -70,13 +70,20 @@ const reorderedState = (newListParent, storage) => {
   };
 };
 
+const incompleteDate = (date) => {
+  return Boolean(date.month && date.day && date.year);
+};
+
 export const sortTodosByDate = (todos) => {
   const newTodos = [...todos];
   newTodos.sort((a, b) => {
+    if (incompleteDate(a.date)) return -1;
+    if (incompleteDate(b.date)) return 1;
+
     const aDate = new Date(a.date.year, a.date.month - 1, a.date.day);
     const bDate = new Date(b.date.year, b.date.month - 1, b.date.day);
+    console.log(aDate, bDate, aDate - bDate);
     return aDate - bDate;
   });
   return newTodos;
-}
-  
+};
