@@ -5,7 +5,14 @@ import styles from "./DateInput.module.css";
 
 const DateInput = ({ todo, name, ...props }) => {
   const dispatch = useDispatch();
-  const date = useSelector((state) => state.persistentSlice[todo.id].date);
+  const date = useSelector(
+    (state) =>
+      state.persistentSlice[todo.id]?.date ?? {
+        month: null,
+        day: null,
+        year: null,
+      }
+  );
 
   const handleInputChange = (e) => {
     const twoDigitValue = e.target.value.slice(0, 2);
