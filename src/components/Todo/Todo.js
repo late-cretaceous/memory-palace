@@ -26,7 +26,7 @@ const Todo = ({ family, ...props }) => {
     if (!isStarter) {
       dispatch(
         editTransientTodo({
-          id: props.siblings[0].id,
+          id: siblings[0].id,
           edit: { isStarter: false },
         })
       );
@@ -124,7 +124,7 @@ const Todo = ({ family, ...props }) => {
   const todoAdderComponent = (transitionState) => (
     <TodoAdder
       {...adderProps}
-      parent={props.parent}
+      parent={parent}
       todoID={todo.id}
       className={adderTransitionClass[transitionState]}
       mouseName={"add"}

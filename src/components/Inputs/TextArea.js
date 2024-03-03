@@ -114,7 +114,7 @@ const TextArea = ({
         } `}
         style={{
           width: `${textWidth}px`,
-          padding: `0.25rem ${spaceWidth * 2}px 0 0.75rem`,
+          padding: `0 ${spaceWidth * 2}px 0 0.75rem`,
         }}
       >
         <textarea
