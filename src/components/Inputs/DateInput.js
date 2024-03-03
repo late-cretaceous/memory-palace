@@ -14,6 +14,8 @@ const DateInput = ({ todo, name, ...props }) => {
       }
   );
 
+  const hover = useSelector((state) => state.transientSlice[todo.id].hover);
+
   const handleInputChange = (e) => {
     const twoDigitValue = e.target.value.slice(0, 2);
 
@@ -49,10 +51,11 @@ const DateInput = ({ todo, name, ...props }) => {
     }
   };
 
+  const backgroundColor = hover ? props.color.faded(3) : props.color.faded(1);
   return (
     <div
       className={styles["wrapper"]}
-      style={{ backgroundColor: props.negativeColor }}
+      style={{ backgroundColor: backgroundColor }}
     >
       <input
         style={{ color: props.color }}

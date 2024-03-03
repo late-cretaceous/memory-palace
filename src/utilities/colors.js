@@ -86,6 +86,12 @@ class HSL {
 
     return randomDirectionWithinBounds(this[dimension], magnitude, range);
   }
+
+  faded(divergence = 1) {
+    const lightAdjustment = this.light < 50 ? divergence * 10 : -divergence * 10;
+    const satAdjustment = divergence * 10;
+    return new HSL(this.hue, this.sat - satAdjustment, this.light + lightAdjustment);
+  }
 }
 
 function divideRange(start, end, sections) {
