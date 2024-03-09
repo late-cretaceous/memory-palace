@@ -28,17 +28,6 @@ const useSortAnimation = (
         sortedList: initialList,
       };
     });
-
-    const newlySortedList = sortedTransientTodos(todos, sort);
-
-    newlySortedList.forEach((todo) => {
-      dispatch(
-        editTransientTodo({
-          id: todo.id,
-          edit: { inCascade: true, position: newlySortedList.indexOf(todo) },
-        })
-      );
-    });
   }
 
   useEffect(() => {
@@ -60,6 +49,15 @@ const useSortAnimation = (
         phase: "cascade",
         sortedList: sortedList,
       };
+    });
+
+    sortedList.forEach((todo) => {
+      dispatch(
+        editTransientTodo({
+          id: todo.id,
+          edit: { inCascade: true, position: sortedList.indexOf(todo) },
+        })
+      );
     });
   }
 
