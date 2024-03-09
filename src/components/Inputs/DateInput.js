@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { useSelector } from "react-redux";
 import styles from "./DateInput.module.css";
+import { useState } from "react";
 
 const DateInput = ({ todo, name, ...props }) => {
   const dispatch = useDispatch();
@@ -14,7 +15,11 @@ const DateInput = ({ todo, name, ...props }) => {
       }
   );
 
-  const hover = useSelector((state) => state.transientSlice[todo.id].hover);
+  const sort = useSelector((state) => state.globalSlice.sort);
+
+  const parentHover = useSelector(
+    (state) => state.transientSlice[todo.id].hover
+  );
 
   const handleInputChange = (e) => {
     const twoDigitValue = e.target.value.slice(0, 2);
@@ -51,10 +56,19 @@ const DateInput = ({ todo, name, ...props }) => {
     }
   };
 
-  const backgroundColor = hover ? props.color.faded(3) : props.color.faded(1);
+  const backgroundColor = !Boolean(date[name])
+    ? props.color.faded(0.25)
+    : parentHover
+    ? props.color.faded(3)
+    : props.color.faded(1);
+
+  const wrapperClasses = `${styles.wrapper} ${
+    sort === "date" && !props.old ? "" : styles.hidden
+  }`;
+
   return (
     <div
-      className={styles["wrapper"]}
+      className={wrapperClasses}
       style={{ backgroundColor: backgroundColor }}
     >
       <input

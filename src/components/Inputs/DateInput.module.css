@@ -17,3 +17,7 @@
   border-radius: 25%;
   margin: 0 0.5ch 0 0.5ch;
 }
+
+.hidden {
+  visibility: hidden;
+}

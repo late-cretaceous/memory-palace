@@ -97,6 +97,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
           family={{ todo, parent, siblings }}
           negativeColor={fontColor}
           color={color}
+          old={props.old}
         />
         <CSSTransition
           in={!listOpen}

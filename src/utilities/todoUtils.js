@@ -82,7 +82,6 @@ export const sortTodosByDate = (todos) => {
 
     const aDate = new Date(a.date.year, a.date.month - 1, a.date.day);
     const bDate = new Date(b.date.year, b.date.month - 1, b.date.day);
-    console.log(aDate, bDate, aDate - bDate);
     return aDate - bDate;
   });
   return newTodos;
