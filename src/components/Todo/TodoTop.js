@@ -24,7 +24,6 @@ const TodoTop = ({ family, ...props }) => {
         todo={family.todo}
         color={props.color}
         negativeColor={props.negativeColor}
-        old={props.old}
       />
       <button
         type="button"

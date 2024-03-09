@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { useSelector } from "react-redux";
 import styles from "./DateInput.module.css";
-import { useState } from "react";
 
 const DateInput = ({ todo, name, ...props }) => {
   const dispatch = useDispatch();
@@ -15,7 +14,9 @@ const DateInput = ({ todo, name, ...props }) => {
       }
   );
 
-  const sort = useSelector((state) => state.globalSlice.sort);
+  const parentSortedAs = useSelector(
+    (state) => state.transientSlice[todo.id].sortedAs
+  );
 
   const parentHover = useSelector(
     (state) => state.transientSlice[todo.id].hover
@@ -63,7 +64,7 @@ const DateInput = ({ todo, name, ...props }) => {
     : props.color.faded(1);
 
   const wrapperClasses = `${styles.wrapper} ${
-    sort === "date" && !props.old ? "" : styles.hidden
+    parentSortedAs === "date" ? "" : styles.hidden
   }`;
 
   return (

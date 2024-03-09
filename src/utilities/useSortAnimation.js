@@ -66,7 +66,7 @@ const useSortAnimation = (
   useEffect(() => {
     if (cascade.phase !== "cascade") return;
 
-    if (cascade.index >= 0 && cascade.index < todos.length) {
+    if (isInBounds(cascade.index, todos.length)) {
       dispatch(
         toggleTransientColorNegative({
           id: cascade.sortedList[cascade.index].id,
@@ -89,6 +89,15 @@ const useSortAnimation = (
           switchColor: false,
         };
       });
+
+      if (isInBounds(cascade.index, todos.length)) {
+        dispatch(
+          editTransientTodo({
+            id: cascade.sortedList[cascade.index].id,
+            edit: { sortedAs: sort },
+          })
+        );
+      }
     }, 75);
 
     return () => clearTimeout(timeoutId);
@@ -120,6 +129,10 @@ const useSortAnimation = (
 
 const isOutroStep = (outroStepOn, cascade, length) => {
   return outroStepOn && !cascade.outroStep && cascade.index === length;
+};
+
+const isInBounds = (index, length) => {
+  return index >= 0 && index < length;
 };
 
 const sortedTransientTodos = (todos, sort) => {

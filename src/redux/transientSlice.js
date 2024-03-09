@@ -14,6 +14,7 @@ const createTransientTodo = (initialValues) => {
     position: null,
     colorNegative: false,
     previousColorString: "hsl(0, 0%, 0%)",
+    sortedAs: "manual"
   };
 
   return Object.assign(defaultValues, initialValues);

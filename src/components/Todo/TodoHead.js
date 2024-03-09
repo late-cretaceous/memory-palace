@@ -56,7 +56,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     : props.color;
   const fontColor = color.negative();
 
-  if (cascadePhase === "initialize" && !previousColor.isSameColor(color)){
+  if (cascadePhase === "off" && !previousColor.isSameColor(color)){
     dispatch(
       editTransientTodo({
         id: todo.id,
@@ -97,7 +97,6 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
           family={{ todo, parent, siblings }}
           negativeColor={fontColor}
           color={color}
-          old={props.old}
         />
         <CSSTransition
           in={!listOpen}
