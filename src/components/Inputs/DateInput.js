@@ -63,8 +63,12 @@ const DateInput = ({ todo, name, ...props }) => {
     ? props.color.faded(3)
     : props.color.faded(1);
 
+  const visible =
+    (parentSortedAs === "date" && props.old) ||
+    (parentSortedAs === "manual" && !props.old);
+
   const wrapperClasses = `${styles.wrapper} ${
-    parentSortedAs === "date" ? "" : styles.hidden
+    visible ? "" : styles.hidden
   }`;
 
   return (
