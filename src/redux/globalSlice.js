@@ -8,6 +8,7 @@ const globalSlice = createSlice({
     cascadePhase: "off",
     headerColorNegative: false,
     backgroundColorNegative: false,
+    edgeBoxTimeout: null,
   },
   reducers: {
     sort: (state, action) => {
@@ -25,10 +26,13 @@ const globalSlice = createSlice({
     setCascadePhase: (state, action) => {
       state.cascadePhase = action.payload;
     },
+    setEdgeBoxTimeoutId: (state, { payload }) => {
+      state.edgeBoxTimeout = payload;
+    },
   },
 });
 
-export const { sort, toggleColorNegative, setCascadePhase } =
+export const { sort, toggleColorNegative, setCascadePhase, setEdgeBoxTimeoutId } =
   globalSlice.actions;
 
 export default globalSlice.reducer;

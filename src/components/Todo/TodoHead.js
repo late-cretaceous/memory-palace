@@ -7,6 +7,7 @@ import TodoTop from "./TodoTop";
 import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
+import { setEdgeBoxTimeoutId } from "../../redux/globalSlice";
 import HSL from "../../utilities/colors";
 
 const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
@@ -17,6 +18,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
 
   const transientTodos = useSelector((state) => state.transientSlice) ?? {};
   const cascadePhase = useSelector((state) => state.globalSlice.cascadePhase);
+  const edgeBoxTimeoutId = useSelector((state) => state.globalSlice.edgeBoxTimeout);
 
   const {
     listOpen,
@@ -38,6 +40,13 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
   const hoverHandler = (action) => {
     dispatch(editTransientTodo(action));
   };
+
+  const faceMouseEnterHandler = () => {
+    if (edgeBoxTimeoutId) {
+      clearTimeout(edgeBoxTimeoutId);
+      dispatch(setEdgeBoxTimeoutId(null));
+    }
+  }
 
   const todoHeadStyles = `${styles.todohead} ${
     listOpen ? styles.preview : styles.full
@@ -90,6 +99,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
         className={styles.todoface}
         {...props.dragHandleProps}
         style={{ paddingLeft: `${1 + (todo.lineage.length - 1) * 2}rem` }}
+        onMouseEnter={faceMouseEnterHandler}
       >
         <TodoTop
           hover={hover}

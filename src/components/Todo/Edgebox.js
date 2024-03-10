@@ -1,12 +1,12 @@
-import { useState } from "react";
 import styles from "./TodoHead.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editTransientTodo } from "../../redux/transientSlice";
+import { setEdgeBoxTimeoutId } from "../../redux/globalSlice";
 
 const Edgebox = ({ todoID: id, ...props }) => {
-  const [edgeBoxTimeout, setEdgeBoxTimeout] = useState(null);
   const index = props.top ? props.todoIndex : props.todoIndex + 1;
   const dispatch = useDispatch();
+  const edgeBoxTimeoutId = useSelector((state) => state.globalSlice.edgeBoxTimeout);
 
   const onEdgeBoxEnter = (e) => {
     const mouseFrom = e.relatedTarget.dataset.name ?? null;
@@ -20,16 +20,16 @@ const Edgebox = ({ todoID: id, ...props }) => {
           edit: { edgeActivated: { top: props.first, bottom: !props.first } },
         })
       );
-      setEdgeBoxTimeout(null);
-    }, 100);
+      dispatch(setEdgeBoxTimeoutId(null));
+    }, 200);
 
-    setEdgeBoxTimeout(edgeTimeoutId);
+    dispatch(setEdgeBoxTimeoutId(edgeTimeoutId));
   };
 
   const onEdgeBoxLeave = (e) => {
-    if (edgeBoxTimeout) {
-      clearTimeout(edgeBoxTimeout);
-      setEdgeBoxTimeout(null);
+    if (edgeBoxTimeoutId) {
+      clearTimeout(edgeBoxTimeoutId);
+      dispatch(setEdgeBoxTimeoutId(null));
       return;
     }
 
@@ -46,7 +46,7 @@ const Edgebox = ({ todoID: id, ...props }) => {
       );
     }
 
-    setEdgeBoxTimeout(null);
+    dispatch(setEdgeBoxTimeoutId(null));
   };
 
   return (
