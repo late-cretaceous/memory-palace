@@ -8,7 +8,11 @@ const Edgebox = ({ todoID: id, ...props }) => {
   const index = props.top ? props.todoIndex : props.todoIndex + 1;
   const dispatch = useDispatch();
 
-  const onEdgeBoxEnter = (e, index) => {
+  const onEdgeBoxEnter = (e) => {
+    const mouseFrom = e.relatedTarget.dataset.name ?? null;
+
+    if (mouseFrom === "add") return;
+  
     const edgeTimeoutId = setTimeout(() => {
       dispatch(
         editTransientTodo({
