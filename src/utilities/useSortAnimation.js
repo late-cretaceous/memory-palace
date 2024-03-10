@@ -70,6 +70,13 @@ const useSortAnimation = (
           id: cascade.sortedList[cascade.index].id,
         })
       );
+
+      dispatch(
+        editTransientTodo({
+          id: cascade.sortedList[cascade.index].id,
+          edit: { sortedAs: sort },
+        })
+      );
     }
 
     if (cascade.index >= todos.length) {
@@ -87,15 +94,6 @@ const useSortAnimation = (
           switchColor: false,
         };
       });
-
-      if (isInBounds(cascade.index, todos.length)) {
-        dispatch(
-          editTransientTodo({
-            id: cascade.sortedList[cascade.index].id,
-            edit: { sortedAs: sort },
-          })
-        );
-      }
     }, 75);
 
     return () => clearTimeout(timeoutId);

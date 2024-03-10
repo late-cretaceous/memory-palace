@@ -14,9 +14,10 @@ const DateInput = ({ todo, name, ...props }) => {
       }
   );
 
-  const parentSortedAs = useSelector(
-    (state) => state.transientSlice[todo.id].sortedAs
+  const { inCascade, sortedAs: parentSortedAs } = useSelector(
+    (state) => state.transientSlice[todo.id]
   );
+  const { sort } = useSelector((state) => state.globalSlice);
 
   const parentHover = useSelector(
     (state) => state.transientSlice[todo.id].hover
@@ -57,19 +58,17 @@ const DateInput = ({ todo, name, ...props }) => {
     }
   };
 
-  const backgroundColor = !Boolean(date[name])
+  const backgroundColor = isEmpty(date[name])
     ? props.color.faded(0.25)
     : parentHover
     ? props.color.faded(3)
     : props.color.faded(1);
 
-  const visible =
-    (parentSortedAs === "date" && props.old) ||
-    (parentSortedAs === "manual" && !props.old);
+  const invisible =
+    isOldAndCascadingIntoDate(inCascade, props.old, sort) ||
+    isNewAndNotHoveredInManual(props.old, parentHover, parentSortedAs);
 
-  const wrapperClasses = `${styles.wrapper} ${
-    visible ? "" : styles.hidden
-  }`;
+  const wrapperClasses = `${styles.wrapper} ${invisible ? styles.hidden : ""}`;
 
   return (
     <div
@@ -87,6 +86,16 @@ const DateInput = ({ todo, name, ...props }) => {
       />
     </div>
   );
+};
+
+const isEmpty = (field) => !Boolean(field);
+
+const isOldAndCascadingIntoDate = (inCascade, old, sort) => {
+  return inCascade && old && sort === "date";
+};
+
+const isNewAndNotHoveredInManual = (hover, old, sortedAs) => {
+  return !old && !hover && sortedAs === "manual";
 };
 
 export default DateInput;
