@@ -131,13 +131,4 @@ const isInBounds = (index, length) => {
   return index >= 0 && index < length;
 };
 
-const sortedTransientTodos = (todos, sort) => {
-  const newlySortedList =
-    sort === "manual"
-      ? todos
-      : Array.from(todos).sort((a, b) => a.message.length - b.message.length);
-
-  return newlySortedList;
-};
-
 export default useSortAnimation;

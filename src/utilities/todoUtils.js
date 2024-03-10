@@ -71,7 +71,7 @@ const reorderedState = (newListParent, storage) => {
 };
 
 const incompleteDate = (date) => {
-  return Boolean(date.month && date.day && date.year);
+  return !Boolean(date.month && date.day && date.year);
 };
 
 export const sortTodosByDate = (todos) => {
