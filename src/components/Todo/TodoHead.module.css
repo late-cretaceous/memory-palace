@@ -53,8 +53,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  top: 6px;
 }
 
 .todohead textarea::placeholder {
