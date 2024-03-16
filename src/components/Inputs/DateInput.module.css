@@ -5,7 +5,7 @@
   width: 2ch;
   padding: 0;
   font-weight: bold;
-  text-align: center;
+  text-align: center; 
 }
 
 .wrapper {
@@ -16,6 +16,7 @@
   height: 2.5ch;
   border-radius: 25%;
   margin: 0 0.5ch 0 0.5ch;
+  transition: background-color 0.3s;
 }
 
 .hidden {

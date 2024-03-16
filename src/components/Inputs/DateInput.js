@@ -1,9 +1,10 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 import styles from "./DateInput.module.css";
 
 const DateInput = ({ todo, name, ...props }) => {
+  const [selfHover, setSelfHover] = useState(false);
   const dispatch = useDispatch();
   const date = useSelector(
     (state) =>
@@ -22,6 +23,14 @@ const DateInput = ({ todo, name, ...props }) => {
   const parentHover = useSelector(
     (state) => state.transientSlice[todo.id].hover
   );
+
+  const handleMouseEnter = () => {
+    setSelfHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    setSelfHover(false);
+  };
 
   const handleInputChange = (e) => {
     const twoDigitValue = e.target.value.slice(0, 2);
@@ -58,10 +67,14 @@ const DateInput = ({ todo, name, ...props }) => {
     }
   };
 
-  const backgroundColor = isEmpty(date[name])
+  const isDateEmpty = isEmpty(date[name]);
+  const shouldFadeLight = isDateEmpty && !selfHover;
+  const shouldFadeHeavy = (isDateEmpty && selfHover) || parentHover;
+
+  const backgroundColor = shouldFadeLight
     ? props.color.faded(0.25)
-    : parentHover
-    ? props.color.faded(3)
+    : shouldFadeHeavy
+    ? props.color.faded(2.5)
     : props.color.faded(1);
 
   const invisible =
@@ -74,6 +87,8 @@ const DateInput = ({ todo, name, ...props }) => {
     <div
       className={wrapperClasses}
       style={{ backgroundColor: backgroundColor }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <input
         style={{ color: props.color }}
