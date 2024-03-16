@@ -69,12 +69,15 @@ const DateInput = ({ todo, name, ...props }) => {
 
   const isDateEmpty = isEmpty(date[name]);
   const shouldFadeLight = isDateEmpty && !selfHover;
-  const shouldFadeHeavy = (isDateEmpty && selfHover) || parentHover;
+  const shouldFadeMedium = (isDateEmpty && selfHover) || (parentHover && !selfHover);
+  const shouldFadeHeavy = !isDateEmpty && selfHover;
 
   const backgroundColor = shouldFadeLight
     ? props.color.faded(0.25)
-    : shouldFadeHeavy
+    : shouldFadeMedium
     ? props.color.faded(2.5)
+    : shouldFadeHeavy
+    ? props.color.faded(5)
     : props.color.faded(1);
 
   const invisible =
