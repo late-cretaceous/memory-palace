@@ -1,9 +1,9 @@
 
 const CloseIcon = ({ id, fill }) => (
   <svg
-    height="24"
+    height="26"
     viewBox="0 -960 960 960"
-    width="24"
+    width="26"
     version="1.1"
     id={id}
     xmlns="http://www.w3.org/2000/svg"

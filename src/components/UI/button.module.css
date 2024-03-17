@@ -4,7 +4,10 @@
     color: inherit;
     user-select: none;
     border: none;
-    transition: all 0.1s ease-out 0s;
     padding: 0px;
+  }
+
+  .transparent {
+    opacity: 0;
   }
   
