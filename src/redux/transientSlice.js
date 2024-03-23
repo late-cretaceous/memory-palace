@@ -14,7 +14,9 @@ const createTransientTodo = (initialValues) => {
     position: null,
     colorNegative: false,
     previousColorString: "hsl(0, 0%, 0%)",
-    sortedAs: "manual"
+    sortedAs: "manual",
+    isNew: false,
+    hasNewChild: false,
   };
 
   return Object.assign(defaultValues, initialValues);
@@ -68,6 +70,7 @@ const transientSlice = createSlice({
               id: info.id,
               position: info.position,
               colorNegative: info.sorted,
+              isNew: true,
             });
           } else {
             if (state[todo.id].position >= info.position) {

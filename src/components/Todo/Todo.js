@@ -1,19 +1,18 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import TodoHead from "./TodoHead";
 import TodoList from "./TodoList";
 import TodoAdder from "./TodoAdder";
 import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 import constants from "../constants.js";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { editTransientTodo } from "../../redux/transientSlice";
-import { useDispatch } from "react-redux";
 import { addTodo } from "../../utilities/reduxUtils";
 
 const Todo = ({ family, ...props }) => {
   const { todo, parent, siblings } = family;
 
-  const { listOpen, hadStarter, edgeActivated, position } = useSelector(
+  const { listOpen, hadStarter, edgeActivated, position, isNew } = useSelector(
     (state) => state.transientSlice[todo.id]
   );
 
@@ -21,6 +20,7 @@ const Todo = ({ family, ...props }) => {
 
   const dispatch = useDispatch();
   const listRef = useRef(null);
+  const timeoutId = useRef(null);
 
   const addChildHandler = (parent, isStarter = false) => {
     if (!isStarter) {
@@ -45,6 +45,33 @@ const Todo = ({ family, ...props }) => {
 
     dispatch(addTodo(parent, siblingList, newIndex, newPosition, sorted));
   };
+
+  const markAsNotNewHandler = (isNew) => {
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
+
+    if (isNew) {
+      timeoutId.current = setTimeout(() => {
+        dispatch(editTransientTodo({ id: todo.id, edit: { isNew: false } }));
+        dispatch(
+          editTransientTodo({ id: parent.id, edit: { hasNewChild: true } })
+        );
+      }, 2000);
+    }
+  };
+
+  const cancelNotNewHandler = () => {
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutId.current);
+    };
+  }, []);
 
   if (listOpen && !todo.list.length && !hadStarter) {
     addChildHandler(todo, true);
@@ -154,7 +181,12 @@ const Todo = ({ family, ...props }) => {
   todoStyles += !todo.parent ? ` ${styles.bigTodo}` : "";
 
   return (
-    <div className={todoStyles} {...draggableProps}>
+    <div
+      className={todoStyles}
+      onMouseLeave={() => markAsNotNewHandler(isNew)}
+      onMouseEnter={cancelNotNewHandler}
+      {...draggableProps}
+    >
       {firstTodoAdder}
       {todoHead}
       {todoList}
