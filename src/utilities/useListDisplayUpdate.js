@@ -4,9 +4,11 @@ import { editTransientTodo } from "../redux/transientSlice";
 const useListDisplayUpdate = (cascade, setCascade, todos) => {
   const positions = useSelector((state) => transientPositions(state, todos));
   const parentId = todos[0].parent;
-  const hasNewMousedOutChild = useSelector((state) => state.transientSlice[parentId].hasNewChild);
+  const { newChildSort } = useSelector(
+    (state) => state.transientSlice[parentId]
+  );
   const dispatch = useDispatch();
-
+  console.log(newChildSort);
 
   if (todoQuantitiesDiffer(cascade.sortedList, todos)) {
     const newList = [...todos];
@@ -15,11 +17,13 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
     setCascade({ ...cascade, sortedList: newList });
   }
 
-  if (hasNewMousedOutChild) {
-    dispatch(editTransientTodo({
-      id: parentId,
-      edit: { hasNewChild: false },
-    }));
+  if (newChildSort.stage === "new") {
+    dispatch(
+      editTransientTodo({
+        id: parentId,
+        edit: { newChildSort: { ...newChildSort, stage: "switching" } },
+      })
+    );
   }
 };
 
@@ -30,7 +34,6 @@ const transientPositions = (state, todos) => {
   }, {});
 };
 
-const todoQuantitiesDiffer = (lista, listb) =>
-  lista.length !== listb.length;
+const todoQuantitiesDiffer = (lista, listb) => lista.length !== listb.length;
 
 export default useListDisplayUpdate;

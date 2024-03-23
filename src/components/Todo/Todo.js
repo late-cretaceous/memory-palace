@@ -55,7 +55,10 @@ const Todo = ({ family, ...props }) => {
       timeoutId.current = setTimeout(() => {
         dispatch(editTransientTodo({ id: todo.id, edit: { isNew: false } }));
         dispatch(
-          editTransientTodo({ id: parent.id, edit: { hasNewChild: true } })
+          editTransientTodo({
+            id: parent.id,
+            edit: { newChildSort: { id: todo.id, stage: "new" } },
+          })
         );
       }, 2000);
     }
