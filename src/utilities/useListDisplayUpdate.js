@@ -29,6 +29,19 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
       })
     );
   }
+
+  if (newChildSort.stage === "adding") {
+    console.log("adding");
+
+    dispatch(editTransientTodo({ id: newChildSort.id, edit: { hide: false } }));
+
+    dispatch(
+      editTransientTodo({
+        id: parentId,
+        edit: { newChildSort: { id: null, stage: null } },
+      })
+    );
+  }
 };
 
 const todoQuantitiesDiffer = (lista, listb) => lista.length !== listb.length;
