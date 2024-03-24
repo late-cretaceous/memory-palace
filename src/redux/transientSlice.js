@@ -17,6 +17,7 @@ const createTransientTodo = (initialValues) => {
     sortedAs: "manual",
     isNew: false,
     newChildSort: { id: null, stage: null },
+    hide: false,
   };
 
   return Object.assign(defaultValues, initialValues);

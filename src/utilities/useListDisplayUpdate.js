@@ -1,14 +1,16 @@
 import { useSelector, useDispatch } from "react-redux";
 import { editTransientTodo } from "../redux/transientSlice";
+import { propertyById } from "./reduxUtils";
 
 const useListDisplayUpdate = (cascade, setCascade, todos) => {
-  const positions = useSelector((state) => transientPositions(state, todos));
+  const positions = useSelector((state) =>
+    propertyById(state, todos, "position")
+  );
   const parentId = todos[0].parent;
   const { newChildSort } = useSelector(
     (state) => state.transientSlice[parentId]
   );
   const dispatch = useDispatch();
-  console.log(newChildSort);
 
   if (todoQuantitiesDiffer(cascade.sortedList, todos)) {
     const newList = [...todos];
@@ -18,6 +20,8 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
   }
 
   if (newChildSort.stage === "new") {
+    dispatch(editTransientTodo({ id: newChildSort.id, edit: { hide: true } }));
+
     dispatch(
       editTransientTodo({
         id: parentId,
@@ -25,13 +29,6 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
       })
     );
   }
-};
-
-const transientPositions = (state, todos) => {
-  return todos.reduce((acc, todo) => {
-    acc[todo.id] = state.transientSlice[todo.id].position;
-    return acc;
-  }, {});
 };
 
 const todoQuantitiesDiffer = (lista, listb) => lista.length !== listb.length;

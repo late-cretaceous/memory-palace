@@ -86,3 +86,10 @@ export const addTodo = (parent, siblings, index, position, sorted) => {
     addedTransientInfo
   );
 };
+
+export const propertyById = (state, todos, property) => {
+  return todos.reduce((acc, todo) => {
+    acc[todo.id] = state.transientSlice[todo.id][property];
+    return acc;
+  }, {});
+}

@@ -16,14 +16,14 @@ import {
 } from "../../redux/transientSlice";
 import { setCascadePhase } from "../../redux/globalSlice";
 import TodoAdder from "./TodoAdder";
-import { moveTodo } from "../../utilities/reduxUtils";
+import { moveTodo, propertyById } from "../../utilities/reduxUtils";
 import useTransientTrimmer from "../../utilities/useTransientTrimmer";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const dispatch = useDispatch();
 
-  const listPulled = useSelector(
-    (state) => state.transientSlice[parent.id].listPulled
+  const { listPulled, newChildSort } = useSelector(
+    (state) => state.transientSlice[parent.id]
   );
 
   if (!listPulled) {
@@ -47,6 +47,9 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   );
 
   const todos = useSelector((state) => selectTodosMemoized(state, parent));
+  const isTodoHiddenTable = useSelector((state) =>
+    propertyById(state, todos, "hide")
+  );
 
   const sort = useSelector((state) => state.globalSlice.sort);
 
@@ -57,6 +60,17 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const moveTodoHandler = (e) => {
     dispatch(moveTodo(e, parent, todos));
+  };
+
+  const todoAnimationExitHandler = (todoId) => {
+    if (newChildSort.id === todoId) {
+      dispatch(
+        editTransientTodo({
+          id: parent.id,
+          edit: { newChildSort: { ...newChildSort, stage: "adding" } },
+        })
+      );
+    }
   };
 
   useTransientTrimmer(animationTime);
@@ -73,7 +87,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   //console.log(spectrumLog(spectrum, props.spectrumRange, 0, props.lightRange))
 
-
   const todoTransitionClass = {
     enter: cascade.on ? "" : todoStyles.enter,
     enterActive: cascade.on ? "" : todoStyles.enterActive,
@@ -83,12 +96,16 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   //try to eventually use the posotion property to determine the order of the todos
   //you may run into trouble with the screen flash
-  const orderedTodos =
+  const unhiddenOrderedTodos =
     cascade.phase === "cascade"
       ? cascade.sortedList.slice(0, cascade.index + 1)
       : cascade.phase === "initialize" || cascade.sort !== "manual"
       ? cascade.sortedList
       : todos;
+
+  const orderedTodos = unhiddenOrderedTodos.filter(
+    (todo) => !isTodoHiddenTable[todo.id]
+  );
 
   const cascadeOutTodos = cascade.on
     ? cascade.unsortedList
@@ -115,12 +132,15 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
           key={todo.id}
           timeout={cascade.on ? 0 : animationTime}
           classNames={{ ...todoTransitionClass }}
+          onExited={() => {
+            todoAnimationExitHandler(todo.id);
+          }}
         >
           <Draggable key={todo.id} draggableId={todo.id} index={index}>
             {(provided) => (
               <div ref={provided.innerRef}>
                 <Todo
-                  family={{ todo: todo, parent: parent, siblings: todos }}           
+                  family={{ todo: todo, parent: parent, siblings: todos }}
                   provided={provided}
                   color={spectrum[index + 1]}
                   spectrumRange={(props.spectrumRange * 2) / todos.length}

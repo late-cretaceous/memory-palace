@@ -18,7 +18,7 @@ const useTodoListState = (
     outroStep: false,
     switchColor: false,
   });
-
+  
   useSortAnimation(cascade, setCascade, todos, sort, introStepOn, outroStepOn);
   useListDisplayUpdate(cascade, setCascade, todos);
 
