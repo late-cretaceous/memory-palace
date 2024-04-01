@@ -77,7 +77,7 @@ const incompleteDate = (date) => {
 export const sortTodosByDate = (todos) => {
   const newTodos = [...todos];
   newTodos.sort((a, b) => {
-    if (incompleteDate(a.date)) return -1;
+    if (incompleteDate(a.date) && !incompleteDate(b.date)) return -1;
     if (incompleteDate(b.date)) return 1;
 
     const aDate = new Date(a.date.year, a.date.month - 1, a.date.day);

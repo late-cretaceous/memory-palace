@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { editTransientTodo } from "../redux/transientSlice";
 import { propertyById } from "./reduxUtils";
+import { sortTodosByDate } from "./todoUtils";
 
 const useListDisplayUpdate = (cascade, setCascade, todos) => {
   const positions = useSelector((state) =>
@@ -32,6 +33,9 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
 
   if (newChildSort.stage === "adding") {
     console.log("adding");
+    const todo = todos.find((todo) => todo.id === newChildSort.id);
+
+    console.log(differentPlaceAfterSort(todo, cascade.sortedList, positions));
 
     dispatch(editTransientTodo({ id: newChildSort.id, edit: { hide: false } }));
 
@@ -45,5 +49,17 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
 };
 
 const todoQuantitiesDiffer = (lista, listb) => lista.length !== listb.length;
+
+const differentPlaceAfterSort = (todo, todos, unsortedPositions) => {
+  const sortedTodos = sortTodosByDate(todos);
+  console.table(sortedTodos);
+  console.table(unsortedPositions);
+
+  console.log(todo.id);
+  console.log(sortedTodos.indexOf(todo));
+  console.log(unsortedPositions[todo.id]);
+
+  return sortedTodos.indexOf(todo) !== unsortedPositions[todo.id];
+}
 
 export default useListDisplayUpdate;
