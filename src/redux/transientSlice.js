@@ -15,7 +15,7 @@ const createTransientTodo = (initialValues) => {
     colorNegative: false,
     previousColorString: "hsl(0, 0%, 0%)",
     sortedAs: "manual",
-    isNew: false,
+    hasSortableChange: false,
     singleSort: { id: null, stage: null },
     hide: false,
   };
@@ -71,7 +71,7 @@ const transientSlice = createSlice({
               id: info.id,
               position: info.position,
               colorNegative: info.sorted,
-              isNew: true,
+              hasSortableChange: true,
             });
           } else {
             if (state[todo.id].position >= info.position) {

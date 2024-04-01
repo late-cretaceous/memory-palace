@@ -12,9 +12,8 @@ import { addTodo } from "../../utilities/reduxUtils";
 const Todo = ({ family, ...props }) => {
   const { todo, parent, siblings } = family;
 
-  const { listOpen, hadStarter, edgeActivated, position, isNew } = useSelector(
-    (state) => state.transientSlice[todo.id]
-  );
+  const { listOpen, hadStarter, edgeActivated, position, hasSortableChange } =
+    useSelector((state) => state.transientSlice[todo.id]);
 
   const sorted = useSelector((state) => state.globalSlice.sorted);
 
@@ -51,9 +50,11 @@ const Todo = ({ family, ...props }) => {
       clearTimeout(timeoutId.current);
     }
 
-    if (isNew) {
+    if (hasSortableChange) {
       timeoutId.current = setTimeout(() => {
-        dispatch(editTransientTodo({ id: todo.id, edit: { isNew: false } }));
+        dispatch(
+          editTransientTodo({ id: todo.id, edit: { hasSortableChange: false } })
+        );
 
         if (sorted) {
           dispatch(
@@ -63,7 +64,7 @@ const Todo = ({ family, ...props }) => {
             })
           );
         }
-      }, 2000);
+      }, 1000);
     }
   };
 

@@ -44,7 +44,9 @@ const DateInput = ({ todo, name, ...props }) => {
         })
       );
 
-      dispatch(editTransientTodo({ id: todo.id, edit: { isNew: true } }));
+      dispatch(
+        editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
+      );
     }
   };
 
@@ -86,7 +88,11 @@ const DateInput = ({ todo, name, ...props }) => {
 
   const invisible =
     isOldAndCascadingIntoDate(inCascade, props.old, sort) ||
-    isNewAndNotHoveredInManual(props.old, parentHover, parentSortedAs);
+    recentSortableChangeAndNotHoveredInManual(
+      props.old,
+      parentHover,
+      parentSortedAs
+    );
 
   const wrapperClasses = `${styles.wrapper} ${invisible ? styles.hidden : ""}`;
 
@@ -116,7 +122,7 @@ const isOldAndCascadingIntoDate = (inCascade, old, sort) => {
   return inCascade && old && sort === "date";
 };
 
-const isNewAndNotHoveredInManual = (hover, old, sortedAs) => {
+const recentSortableChangeAndNotHoveredInManual = (hover, old, sortedAs) => {
   return !old && !hover && sortedAs === "manual";
 };
 
