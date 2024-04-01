@@ -4,6 +4,7 @@ import { editTransientTodo } from "../redux/transientSlice";
 import { toggleColorNegative } from "../redux/globalSlice";
 import { toggleTransientColorNegative } from "../redux/transientSlice";
 import { sortTodosByDate } from "./todoUtils";
+import { matchPositionsToIndices } from "./reduxUtils";
 
 const useSortAnimation = (
   cascade,
@@ -42,6 +43,7 @@ const useSortAnimation = (
 
   if (cascade.phase === "frameskip") {
     const sortedList = sort === "date" ? sortTodosByDate(todos) : todos;
+    matchPositionsToIndices(dispatch, sortedList);
 
     setCascade((prev) => {
       return {
@@ -49,15 +51,6 @@ const useSortAnimation = (
         phase: "cascade",
         sortedList: sortedList,
       };
-    });
-
-    sortedList.forEach((todo) => {
-      dispatch(
-        editTransientTodo({
-          id: todo.id,
-          edit: { inCascade: true, position: sortedList.indexOf(todo) },
-        })
-      );
     });
   }
 

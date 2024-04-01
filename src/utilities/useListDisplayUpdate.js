@@ -35,7 +35,9 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
     console.log("adding");
     const todo = todos.find((todo) => todo.id === newChildSort.id);
 
-    console.log(differentPlaceAfterSort(todo, cascade.sortedList, positions));
+    if (differentPlaceAfterSort(todo, cascade.sortedList, positions)) {
+      
+    };
 
     dispatch(editTransientTodo({ id: newChildSort.id, edit: { hide: false } }));
 
