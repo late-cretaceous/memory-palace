@@ -46,7 +46,7 @@ const Todo = ({ family, ...props }) => {
     dispatch(addTodo(parent, siblingList, newIndex, newPosition, sorted));
   };
 
-  const markAsNotNewHandler = (isNew) => {
+  const markAsNotNewHandler = () => {
     if (timeoutId.current) {
       clearTimeout(timeoutId.current);
     }
@@ -54,12 +54,15 @@ const Todo = ({ family, ...props }) => {
     if (isNew) {
       timeoutId.current = setTimeout(() => {
         dispatch(editTransientTodo({ id: todo.id, edit: { isNew: false } }));
-        dispatch(
-          editTransientTodo({
-            id: parent.id,
-            edit: { newChildSort: { id: todo.id, stage: "new" } },
-          })
-        );
+
+        if (sorted) {
+          dispatch(
+            editTransientTodo({
+              id: parent.id,
+              edit: { newChildSort: { id: todo.id, stage: "new" } },
+            })
+          );
+        }
       }, 2000);
     }
   };
@@ -186,7 +189,7 @@ const Todo = ({ family, ...props }) => {
   return (
     <div
       className={todoStyles}
-      onMouseLeave={() => markAsNotNewHandler(isNew)}
+      onMouseLeave={() => markAsNotNewHandler()}
       onMouseEnter={cancelNotNewHandler}
       {...draggableProps}
     >
