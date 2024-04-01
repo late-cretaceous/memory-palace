@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
+import { editTransientTodo } from "../../redux/transientSlice";
 import { useState } from "react";
 import styles from "./DateInput.module.css";
 
@@ -42,6 +43,8 @@ const DateInput = ({ todo, name, ...props }) => {
           edit: { date: { ...date, [name]: twoDigitValue } },
         })
       );
+
+      dispatch(editTransientTodo({ id: todo.id, edit: { isNew: true } }));
     }
   };
 
@@ -69,7 +72,8 @@ const DateInput = ({ todo, name, ...props }) => {
 
   const isDateEmpty = isEmpty(date[name]);
   const shouldFadeLight = isDateEmpty && !selfHover;
-  const shouldFadeMedium = (isDateEmpty && selfHover) || (parentHover && !selfHover);
+  const shouldFadeMedium =
+    (isDateEmpty && selfHover) || (parentHover && !selfHover);
   const shouldFadeHeavy = !isDateEmpty && selfHover;
 
   const backgroundColor = shouldFadeLight
