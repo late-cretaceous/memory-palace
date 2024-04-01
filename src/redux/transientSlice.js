@@ -16,7 +16,7 @@ const createTransientTodo = (initialValues) => {
     previousColorString: "hsl(0, 0%, 0%)",
     sortedAs: "manual",
     isNew: false,
-    newChildSort: { id: null, stage: null },
+    singleSort: { id: null, stage: null },
     hide: false,
   };
 

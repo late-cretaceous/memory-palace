@@ -9,7 +9,7 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
     propertyById(state, todos, "position")
   );
   const parentId = todos[0].parent;
-  const { newChildSort } = useSelector(
+  const { singleSort } = useSelector(
     (state) => state.transientSlice[parentId]
   );
   const dispatch = useDispatch();
@@ -21,20 +21,20 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
     setCascade({ ...cascade, sortedList: newList });
   }
 
-  if (newChildSort.stage === "new") {
-    dispatch(editTransientTodo({ id: newChildSort.id, edit: { hide: true } }));
+  if (singleSort.stage === "new") {
+    dispatch(editTransientTodo({ id: singleSort.id, edit: { hide: true } }));
 
     dispatch(
       editTransientTodo({
         id: parentId,
-        edit: { newChildSort: { ...newChildSort, stage: "switching" } },
+        edit: { singleSort: { ...singleSort, stage: "switching" } },
       })
     );
   }
 
-  if (newChildSort.stage === "adding") {
+  if (singleSort.stage === "adding") {
     console.log("adding");
-    const todo = todos.find((todo) => todo.id === newChildSort.id);
+    const todo = todos.find((todo) => todo.id === singleSort.id);
 
     if (differentPlaceAfterSort(todo, cascade.sortedList, positions)) {
       const sortedTodos = sortTodosByDate(todos);
@@ -45,12 +45,12 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
       });
     }
 
-    dispatch(editTransientTodo({ id: newChildSort.id, edit: { hide: false } }));
+    dispatch(editTransientTodo({ id: singleSort.id, edit: { hide: false } }));
 
     dispatch(
       editTransientTodo({
         id: parentId,
-        edit: { newChildSort: { id: null, stage: null } },
+        edit: { singleSort: { id: null, stage: null } },
       })
     );
   }

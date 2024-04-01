@@ -22,7 +22,7 @@ import useTransientTrimmer from "../../utilities/useTransientTrimmer";
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const dispatch = useDispatch();
 
-  const { listPulled, newChildSort } = useSelector(
+  const { listPulled, singleSort } = useSelector(
     (state) => state.transientSlice[parent.id]
   );
 
@@ -63,11 +63,11 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   };
 
   const todoAnimationExitHandler = (todoId) => {
-    if (newChildSort.id === todoId) {
+    if (singleSort.id === todoId) {
       dispatch(
         editTransientTodo({
           id: parent.id,
-          edit: { newChildSort: { ...newChildSort, stage: "adding" } },
+          edit: { singleSort: { ...singleSort, stage: "adding" } },
         })
       );
     }

@@ -59,7 +59,7 @@ const Todo = ({ family, ...props }) => {
           dispatch(
             editTransientTodo({
               id: parent.id,
-              edit: { newChildSort: { id: todo.id, stage: "new" } },
+              edit: { singleSort: { id: todo.id, stage: "new" } },
             })
           );
         }
