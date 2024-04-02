@@ -1,5 +1,8 @@
 import { removePersistentTodo } from "../redux/persistentSlice";
-import { addOrRemoveTransientAndReorder, editTransientTodo } from "../redux/transientSlice";
+import {
+  addOrRemoveTransientAndReorder,
+  editTransientTodo,
+} from "../redux/transientSlice";
 import { moveItem, reIndex, generateChild } from "./todoUtils";
 import { listHierarchy } from "./databaseUtils";
 import { updateStateAndStore } from "../redux/persistentSlice";
@@ -22,10 +25,21 @@ export const loadTodoKeys = () => {
   return Object.keys(localStorage);
 };
 
-const stateUpdatesDispatch = (reorderedTodos, newTodoInfo) => {
+const stateUpdatesDispatch = (newParent, reorderedTodos, newTodoInfo) => {
   return (dispatch) => {
-    dispatch(updateStateAndStore(reorderedTodos));
-    dispatch(addOrRemoveTransientAndReorder({todos: reorderedTodos, info: newTodoInfo}));
+    dispatch(
+      updateStateAndStore({
+        ...reorderedTodos,
+        [newParent.id]: newParent,
+      })
+    );
+    dispatch(
+      addOrRemoveTransientAndReorder({
+        parent: newParent,
+        todos: reorderedTodos,
+        info: newTodoInfo,
+      })
+    );
   };
 };
 
@@ -49,7 +63,8 @@ export const removeTodo = (family, position) => {
   return (dispatch) => {
     dispatch(
       stateUpdatesDispatch(
-        { ...reorderedTodos, [parent.id]: newParent },
+        newParent,
+        reorderedTodos,
         removedTransientInfo
       )
     );
@@ -78,13 +93,7 @@ export const addTodo = (parent, siblings, index, position, sorted) => {
     sorted: sorted,
   };
 
-  return stateUpdatesDispatch(
-    {
-      ...reorderedTodos,
-      [parent.id]: newParent,
-    },
-    addedTransientInfo
-  );
+  return stateUpdatesDispatch(newParent, reorderedTodos, addedTransientInfo);
 };
 
 export const propertyById = (state, todos, property) => {
@@ -92,7 +101,7 @@ export const propertyById = (state, todos, property) => {
     acc[todo.id] = state.transientSlice[todo.id][property];
     return acc;
   }, {});
-}
+};
 
 export const matchPositionsToIndices = (dispatch, todoList) => {
   todoList.forEach((todo) => {
@@ -103,4 +112,4 @@ export const matchPositionsToIndices = (dispatch, todoList) => {
       })
     );
   });
-}
+};

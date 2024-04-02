@@ -63,7 +63,10 @@ const transientSlice = createSlice({
 
       transientSliceKeysToRemove.forEach((key) => delete state[key]);
     },
-    addOrRemoveTransientAndReorder: (state, { payload: { todos, info } }) => {
+    addOrRemoveTransientAndReorder: (
+      state,
+      { payload: { parent, todos, info } }
+    ) => {
       if (info.type === "add") {
         Object.values(todos).forEach((todo) => {
           if (todo.id === info.id) {
@@ -80,7 +83,8 @@ const transientSlice = createSlice({
           }
         });
       } else if (info.type === "remove") {
-        Object.values(todos).forEach((todo) => {
+        const family = { ...todos, [parent.id]: parent };
+        Object.values(family).forEach((todo) => {
           if (state[todo.id].position > info.position) {
             state[todo.id].position = state[todo.id].position - 1;
           }
