@@ -96,13 +96,6 @@ export const addTodo = (parent, siblings, index, position, sorted) => {
   return stateUpdatesDispatch(newParent, reorderedTodos, addedTransientInfo);
 };
 
-export const propertyById = (state, todos, property) => {
-  return todos.reduce((acc, todo) => {
-    acc[todo.id] = state.transientSlice[todo.id][property];
-    return acc;
-  }, {});
-};
-
 export const matchPositionsToIndices = (dispatch, todoList) => {
   todoList.forEach((todo) => {
     dispatch(

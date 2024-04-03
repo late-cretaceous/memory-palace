@@ -16,7 +16,7 @@ import {
 } from "../../redux/transientSlice";
 import { setCascadePhase } from "../../redux/globalSlice";
 import TodoAdder from "./TodoAdder";
-import { moveTodo, propertyById } from "../../utilities/reduxUtils";
+import { moveTodo } from "../../utilities/reduxUtils";
 import useTransientTrimmer from "../../utilities/useTransientTrimmer";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
@@ -47,9 +47,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   );
 
   const todos = useSelector((state) => selectTodosMemoized(state, parent));
-  const isTodoHiddenTable = useSelector((state) =>
-    propertyById(state, todos, "hide")
-  );
+  const transients = useSelector((state) => state.transientSlice);
 
   const sort = useSelector((state) => state.globalSlice.sort);
 
@@ -102,7 +100,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       : todos;
 
   const orderedTodos = unhiddenOrderedTodos.filter(
-    (todo) => !isTodoHiddenTable[todo.id]
+    (todo) => !transients[todo.id].hide
   );
 
   const cascadeOutTodos = cascade.on
