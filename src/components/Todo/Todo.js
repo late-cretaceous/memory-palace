@@ -22,7 +22,7 @@ const Todo = ({ family, ...props }) => {
   const timeoutId = useRef(null);
 
   const addChildHandler = (parent, isStarter = false) => {
-    if (!isStarter) {
+    if (!isStarter && Boolean(siblings.length)) {
       dispatch(
         editTransientTodo({
           id: siblings[0].id,
