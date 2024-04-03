@@ -53,7 +53,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const sort = useSelector((state) => state.globalSlice.sort);
 
-  const cascade = useTodoListState(todos, sort);
+  const cascade = useTodoListState(todos, parent, sort);
   dispatch(setCascadePhase(cascade.phase));
 
   const animationTime = 1000;
@@ -94,8 +94,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     exitActive: todoStyles.exitActive,
   };
 
-  //try to eventually use the posotion property to determine the order of the todos
-  //you may run into trouble with the screen flash
   const unhiddenOrderedTodos =
     cascade.phase === "cascade"
       ? cascade.sortedList.slice(0, cascade.index + 1)
@@ -174,7 +172,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   return (
     <div className={styles.flexcol} style={props.style} ref={ref}>
-      {Boolean(orderedTodos.length) && (
+      {!isEmptyAndCascading(orderedTodos, cascade.phase) && (
         <DragDropContext onDragEnd={moveTodoHandler}>
           <Drop id="todoDropArea">
             <ul
@@ -206,5 +204,8 @@ const spectrumLog = (spectrum, hueStep, satStep, lightStep) => {
 
   return shades.join("\n") + "\n" + increments;
 };
+
+const isEmptyAndCascading = (list, cascade) =>
+  !Boolean(list.length) && cascade.phase === "cascade";
 
 export default TodoList;

@@ -4,13 +4,13 @@ import { propertyById } from "./reduxUtils";
 import { sortTodosByDate } from "./todoUtils";
 import { matchPositionsToIndices } from "./reduxUtils";
 
-const useListDisplayUpdate = (cascade, setCascade, todos) => {
+const useListDisplayUpdate = (cascade, setCascade, todos, parent) => {
   const positions = useSelector((state) =>
     propertyById(state, todos, "position")
   );
-  const parentId = todos[0].parent;
+
   const { singleSort } = useSelector(
-    (state) => state.transientSlice[parentId]
+    (state) => state.transientSlice[parent.id]
   );
   const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
 
     dispatch(
       editTransientTodo({
-        id: parentId,
+        id: parent.id,
         edit: { singleSort: { ...singleSort, stage: "switching" } },
       })
     );
@@ -49,7 +49,7 @@ const useListDisplayUpdate = (cascade, setCascade, todos) => {
 
     dispatch(
       editTransientTodo({
-        id: parentId,
+        id: parent.id,
         edit: { singleSort: { id: null, stage: null } },
       })
     );

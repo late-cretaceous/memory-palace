@@ -4,6 +4,7 @@ import useListDisplayUpdate from "./useListDisplayUpdate";
 
 const useTodoListState = (
   todos,
+  parent,
   sort,
   introStepOn = true,
   outroStepOn = true
@@ -20,7 +21,7 @@ const useTodoListState = (
   });
   
   useSortAnimation(cascade, setCascade, todos, sort, introStepOn, outroStepOn);
-  useListDisplayUpdate(cascade, setCascade, todos);
+  useListDisplayUpdate(cascade, setCascade, todos, parent);
 
   return cascade;
 };
