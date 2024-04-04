@@ -21,7 +21,7 @@ const Todo = ({ family, ...props }) => {
   const listRef = useRef(null);
   const timeoutId = useRef(null);
 
-  const addChildHandler = (parent, isStarter = false) => {
+  const addChildHandler = (parent, siblings, isStarter = false) => {
     if (!isStarter && Boolean(siblings.length)) {
       dispatch(
         editTransientTodo({
@@ -81,7 +81,7 @@ const Todo = ({ family, ...props }) => {
   }, []);
 
   if (listOpen && !todo.list.length && !hadStarter) {
-    addChildHandler(todo, true);
+    addChildHandler(todo, siblings, true);
     dispatch(editTransientTodo({ id: todo.id, edit: { hadStarter: true } }));
   }
 
@@ -134,6 +134,7 @@ const Todo = ({ family, ...props }) => {
       {(state) => (
         <TodoList
           parent={todo}
+          siblings={siblings}
           color={listColor}
           spectrumRange={props.spectrumRange}
           lightRange={props.lightRange}
@@ -160,6 +161,7 @@ const Todo = ({ family, ...props }) => {
       {...adderProps}
       parent={parent}
       todoID={todo.id}
+      siblings={siblings}
       className={adderTransitionClass[transitionState]}
       mouseName={"add"}
     >

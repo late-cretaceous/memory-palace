@@ -159,6 +159,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       <TodoAdder
         {...props.emptyListAdderProps}
         parent={parent}
+        siblings={[]}
         todoID={parent.id}
         color={props.color}
         className={"phantom"}

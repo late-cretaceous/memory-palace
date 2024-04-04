@@ -31,7 +31,6 @@ const useListDisplayUpdate = (cascade, setCascade, todos, parent) => {
   }
 
   if (singleSort.stage === "adding") {
-    console.log("adding");
     const todo = todos.find((todo) => todo.id === singleSort.id);
 
     if (differentPlaceAfterSort(todo, cascade.sortedList, transients)) {
