@@ -1,6 +1,6 @@
-import { useState } from "react";
 import useSortAnimation from "./useSortAnimation";
 import useListDisplayUpdate from "./useListDisplayUpdate";
+import { useSelector } from "react-redux";
 
 const useTodoListState = (
   todos,
@@ -9,19 +9,12 @@ const useTodoListState = (
   introStepOn = true,
   outroStepOn = true
 ) => {
-  const [cascade, setCascade] = useState({
-    index: introStepOn ? -1 : 0,
-    phase: "off",
-    on: false,
-    sort: sort,
-    unsortedList: todos,
-    sortedList: todos,
-    outroStep: false,
-    switchColor: false,
-  });
-  
-  useSortAnimation(cascade, setCascade, todos, sort, introStepOn, outroStepOn);
-  useListDisplayUpdate(cascade, setCascade, todos, parent);
+  const cascade = useSelector(
+    (state) => state.transientSlice[parent.id].cascade
+  );
+
+  useSortAnimation(todos, parent, sort, introStepOn, outroStepOn);
+  useListDisplayUpdate(parent, todos);
 
   return cascade;
 };

@@ -1,34 +1,41 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { editTransientTodo } from "../redux/transientSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { editTransientTodo, setCascade } from "../redux/transientSlice";
 import { toggleColorNegative } from "../redux/globalSlice";
 import { toggleTransientColorNegative } from "../redux/transientSlice";
 import { sortTodosByDate } from "./todoUtils";
 import { matchPositionsToIndices } from "./reduxUtils";
 
+
 const useSortAnimation = (
-  cascade,
-  setCascade,
   todos,
+  parent,
   sort,
   introStepOn = true,
   outroStepOn = true
 ) => {
   const dispatch = useDispatch();
+  const cascade = useSelector(
+    (state) => state.transientSlice[parent.id].cascade
+  );
 
   if (cascade.sort !== sort) {
     const initialList = cascade.sort === "manual" ? todos : cascade.sortedList;
 
-    setCascade((prev) => {
-      return {
-        ...prev,
-        sort: sort,
-        phase: "initialize",
-        on: true,
-        unsortedList: initialList,
-        sortedList: initialList,
-      };
-    });
+    dispatch(
+      setCascade({
+        id: parent.id,
+        cascade: {
+          ...cascade,
+          introStep: introStepOn ? -1 : 0,
+          sort: sort,
+          phase: "initialize",
+          on: true,
+          unsortedList: initialList,
+          sortedList: initialList,
+        },
+      })
+    );
   }
 
   useEffect(() => {
@@ -36,22 +43,25 @@ const useSortAnimation = (
 
     dispatch(toggleColorNegative({ area: "headerColorNegative" }));
 
-    setCascade((prev) => {
-      return { ...prev, phase: "frameskip" };
-    });
+    dispatch(
+      setCascade({
+        id: parent.id,
+        cascade: { ...cascade, phase: "frameskip" },
+      })
+    );
+
   }, [cascade.phase, dispatch]);
 
   if (cascade.phase === "frameskip") {
     const sortedList = sort === "date" ? sortTodosByDate(todos) : todos;
     matchPositionsToIndices(dispatch, sortedList);
 
-    setCascade((prev) => {
-      return {
-        ...prev,
-        phase: "cascade",
-        sortedList: sortedList,
-      };
-    });
+    dispatch(
+      setCascade({
+        id: parent.id,
+        cascade: { ...cascade, phase: "cascade", sortedList: sortedList },
+      })
+    );
   }
 
   useEffect(() => {
@@ -64,6 +74,7 @@ const useSortAnimation = (
         })
       );
 
+      //may not need anymore now that you have the cascade in the redux store
       dispatch(
         editTransientTodo({
           id: cascade.sortedList[cascade.index].id,
@@ -72,37 +83,47 @@ const useSortAnimation = (
       );
     }
 
-    if (cascade.index >= todos.length) {
+    if (cascade.outroStep) {
+      console.log(`outroStep: ${cascade.outroStep}`);
+      console.log("toggleColorNegative");
       dispatch(toggleColorNegative({ area: "backgroundColorNegative" }));
     }
 
     const timeoutId = setTimeout(() => {
       const increment = isOutroStep(outroStepOn, cascade, todos.length) ? 0 : 1;
 
-      setCascade((prev) => {
-        return {
-          ...prev,
-          index: cascade.index + increment,
-          outroStep: isOutroStep(cascade, todos.length),
-          switchColor: false,
-        };
-      });
+      dispatch(
+        setCascade({
+          id: parent.id,
+          cascade: {
+            ...cascade,
+            index: cascade.index + increment,
+            outroStep: isOutroStep(outroStepOn, cascade, todos.length),
+            switchColor: false,
+          },
+        })
+      );
     }, 75);
 
     return () => clearTimeout(timeoutId);
   }, [cascade, todos.length, outroStepOn, dispatch]);
 
   if (cascade.index > todos.length) {
-    setCascade((prev) => {
-      return {
-        ...prev,
-        phase: "off",
-        on: false,
-        index: introStepOn ? -1 : 0,
-        outroStep: false,
-      };
-    });
 
+    dispatch(
+      setCascade({
+        id: parent.id,
+        cascade: {
+          ...cascade,
+          phase: "off",
+          on: false,
+          index: introStepOn ? -1 : 0,
+          outroStep: false,
+        },
+      })
+    );
+
+    //maybe store this in the redux store with the cascade object?
     todos.forEach((todo) => {
       dispatch(
         editTransientTodo({

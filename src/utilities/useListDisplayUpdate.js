@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
-import { editTransientTodo } from "../redux/transientSlice";
+import { editTransientTodo, setCascade } from "../redux/transientSlice";
 import { sortTodosByDate } from "./todoUtils";
 import { matchPositionsToIndices } from "./reduxUtils";
 
-const useListDisplayUpdate = (cascade, setCascade, todos, parent) => {
+const useListDisplayUpdate = (parent, todos) => {
+  const cascade = useSelector((state) => state.transientSlice[parent.id].cascade);
   
   const transients = useSelector((state) => state.transientSlice);
 
@@ -16,7 +17,12 @@ const useListDisplayUpdate = (cascade, setCascade, todos, parent) => {
     const newList = [...todos];
     newList.sort((a, b) => transients[a.id].position - transients[b.id].position);
 
-    setCascade({ ...cascade, sortedList: newList });
+    dispatch(
+      setCascade({
+        id: parent.id,
+        cascade: { ...cascade, sortedList: newList },
+      })
+    );
   }
 
   if (singleSort.stage === "new") {
@@ -37,9 +43,12 @@ const useListDisplayUpdate = (cascade, setCascade, todos, parent) => {
       const sortedTodos = sortTodosByDate(todos);
       matchPositionsToIndices(dispatch, sortedTodos);
 
-      setCascade((prev) => {
-        return { ...prev, sortedList: sortedTodos };
-      });
+      dispatch(
+        setCascade({
+          id: parent.id,
+          cascade: { ...cascade, sortedList: sortedTodos },
+        })
+      );
     }
 
     dispatch(editTransientTodo({ id: singleSort.id, edit: { hide: false } }));

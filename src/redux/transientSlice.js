@@ -18,6 +18,16 @@ const createTransientTodo = (initialValues) => {
     hasSortableChange: false,
     singleSort: { id: null, stage: null },
     hide: false,
+    cascade: {
+      index: -1,
+      phase: "off",
+      on: false,
+      sort: "manual",
+      unsortedList: [],
+      sortedList: [],
+      outroStep: false,
+      switchColor: false,
+    },
   };
 
   return Object.assign(defaultValues, initialValues);
@@ -91,6 +101,9 @@ const transientSlice = createSlice({
         });
       }
     },
+    setCascade: (state, { payload: { id, cascade } }) => {
+      state[id].cascade = cascade;
+    },
   },
 });
 
@@ -103,5 +116,6 @@ export const {
   trimTransientSlice,
   toggleTransientColorNegative,
   addOrRemoveTransientAndReorder,
+  setCascade,
 } = transientSlice.actions;
 export default transientSlice.reducer;
