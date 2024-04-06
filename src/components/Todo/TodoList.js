@@ -3,7 +3,8 @@ import todoStyles from "./Todo.module.css";
 import Todo from "./Todo";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { forwardRef } from "react";
-import useTodoListState from "../../utilities/useTodoListState";
+import useSortAnimation from "../../utilities/useSortAnimation";
+import useListDisplayUpdate from "../../utilities/useListDisplayUpdate";
 import Drop from "../../utilities/Drop";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +22,9 @@ import useTransientTrimmer from "../../utilities/useTransientTrimmer";
 
 const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const dispatch = useDispatch();
+  const cascade = useSelector(
+    (state) => state.transientSlice[parent.id].cascade
+  );
 
   const { listPulled, singleSort } = useSelector(
     (state) => state.transientSlice[parent.id]
@@ -51,7 +55,8 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   const sort = useSelector((state) => state.globalSlice.sort);
 
-  const cascade = useTodoListState(todos, parent, sort);
+  useSortAnimation(todos, parent, sort);
+  useListDisplayUpdate(parent, todos);
   dispatch(setCascadePhase(cascade.phase));
 
   const animationTime = 1000;
