@@ -177,7 +177,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   return (
     <div className={styles.flexcol} style={props.style} ref={ref}>
-      {!isEmptyAndCascading(orderedTodos, cascade.phase) && (
+      {!isEmptyAndCascading(orderedTodos, cascade) && (
         <DragDropContext onDragEnd={moveTodoHandler}>
           <Drop id="todoDropArea">
             <ul
@@ -211,6 +211,6 @@ const spectrumLog = (spectrum, hueStep, satStep, lightStep) => {
 };
 
 const isEmptyAndCascading = (list, cascade) =>
-  !Boolean(list.length) && cascade.phase === "cascade";
+  !Boolean(list.length) && cascade.on;
 
 export default TodoList;
