@@ -100,7 +100,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   const unhiddenOrderedTodos =
     cascade.phase === "cascade"
       ? cascade.sortedList.slice(0, cascade.index + 1)
-      : cascade.phase === "initialize" || cascade.sort !== "manual"
+      : cascade.phase === "initializing" || cascade.sort !== "manual"
       ? cascade.sortedList
       : todos;
 
@@ -182,7 +182,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
           <Drop id="todoDropArea">
             <ul
               className={`${styles.flexcol} ${styles.list} ${
-                cascade.phase === "initialize" ? styles.front : ""
+                cascade.phase === "initializing" ? styles.front : ""
               }`}
             >
               <TransitionGroup component={null}>
@@ -194,7 +194,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       )}
       <ul
         className={`${styles.flexcol} ${styles.list} ${
-          cascade.phase === "initialize" ? styles.back : ""
+          cascade.phase === "initializing" ? styles.back : ""
         }`}
       >
         {cascadeOutTodos}

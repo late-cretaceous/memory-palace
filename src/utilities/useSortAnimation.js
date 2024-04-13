@@ -6,7 +6,6 @@ import { toggleTransientColorNegative } from "../redux/transientSlice";
 import { sortTodosByDate } from "./todoUtils";
 import { matchPositionsToIndices } from "./reduxUtils";
 
-
 const useSortAnimation = (
   todos,
   parent,
@@ -19,6 +18,19 @@ const useSortAnimation = (
     (state) => state.transientSlice[parent.id].cascade
   );
 
+  console.log(cascade.phase);
+
+  const listOpenTable = useSelector((state) => {
+    const { bigTodo, ...transientsSansBigTodo } = state.transientSlice;
+
+    return Object.keys(transientsSansBigTodo).reduce((acc, key) => {
+      acc[key] = state.transientSlice[key].listOpen;
+      return acc;
+    }, {});
+  });
+
+  const isAnyListOpen = Object.values(listOpenTable).some((isOpen) => isOpen);
+
   if (cascade.sort !== sort) {
     const initialList = cascade.sort === "manual" ? todos : cascade.sortedList;
 
@@ -29,7 +41,7 @@ const useSortAnimation = (
           ...cascade,
           introStep: introStepOn ? -1 : 0,
           sort: sort,
-          phase: "initialize",
+          phase: isAnyListOpen ? "initializing" : "initialized",
           on: true,
           unsortedList: initialList,
           sortedList: initialList,
@@ -38,8 +50,20 @@ const useSortAnimation = (
     );
   }
 
+  if (cascade.phase === "initializing") {
+    console.log("closing all lists");
+    closeAllLists(listOpenTable, dispatch);
+
+    dispatch(
+      setCascade({
+        id: parent.id,
+        cascade: { ...cascade, phase: "awaitingListClose" },
+      })
+    );
+  }
+
   useEffect(() => {
-    if (cascade.phase !== "initialize") return;
+    if (cascade.phase !== "initialized") return;
 
     dispatch(toggleColorNegative({ area: "headerColorNegative" }));
 
@@ -49,7 +73,6 @@ const useSortAnimation = (
         cascade: { ...cascade, phase: "frameskip" },
       })
     );
-
   }, [cascade.phase, dispatch]);
 
   if (cascade.phase === "frameskip") {
@@ -84,8 +107,6 @@ const useSortAnimation = (
     }
 
     if (cascade.outroStep) {
-      console.log(`outroStep: ${cascade.outroStep}`);
-      console.log("toggleColorNegative");
       dispatch(toggleColorNegative({ area: "backgroundColorNegative" }));
     }
 
@@ -109,7 +130,6 @@ const useSortAnimation = (
   }, [cascade, todos.length, outroStepOn, dispatch]);
 
   if (cascade.index > todos.length) {
-
     dispatch(
       setCascade({
         id: parent.id,
@@ -143,6 +163,17 @@ const isOutroStep = (outroStepOn, cascade, length) => {
 
 const isInBounds = (index, length) => {
   return index >= 0 && index < length;
+};
+
+const closeAllLists = (listOpenTable, dispatch) => {
+  Object.keys(listOpenTable).forEach((key) => {
+    dispatch(
+      editTransientTodo({
+        id: key,
+        edit: { listOpen: false },
+      })
+    );
+  });
 };
 
 export default useSortAnimation;

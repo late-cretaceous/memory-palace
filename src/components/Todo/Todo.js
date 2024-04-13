@@ -6,7 +6,7 @@ import styles from "./Todo.module.css";
 import { Transition } from "react-transition-group";
 import constants from "../constants.js";
 import { useSelector, useDispatch } from "react-redux";
-import { editTransientTodo } from "../../redux/transientSlice";
+import { editTransientTodo, setCascade } from "../../redux/transientSlice";
 import { addTodo } from "../../utilities/reduxUtils";
 
 const Todo = ({ family, ...props }) => {
@@ -14,6 +14,10 @@ const Todo = ({ family, ...props }) => {
 
   const { listOpen, hadStarter, edgeActivated, position, hasSortableChange } =
     useSelector((state) => state.transientSlice[todo.id]);
+
+  const animationCascade = useSelector(
+    (state) => state.transientSlice[todo.id].cascade
+  );
 
   const sorted = useSelector((state) => state.globalSlice.sorted);
 
@@ -80,6 +84,17 @@ const Todo = ({ family, ...props }) => {
     };
   }, []);
 
+  const listAnimationExitedHandler = () => {
+    if (animationCascade.phase === "awaitingListClose") {
+      dispatch(
+        setCascade({
+          id: parent.id,
+          cascade: { ...animationCascade, phase: "initialized" },
+        })
+      );
+    }
+  };
+
   if (listOpen && !todo.list.length && !hadStarter) {
     addChildHandler(todo, siblings, true);
     dispatch(editTransientTodo({ id: todo.id, edit: { hadStarter: true } }));
@@ -130,7 +145,12 @@ const Todo = ({ family, ...props }) => {
   };
 
   const todoList = (
-    <Transition in={listOpen} timeout={500} unmountOnExit>
+    <Transition
+      in={listOpen}
+      timeout={500}
+      unmountOnExit
+      onExited={listAnimationExitedHandler}
+    >
       {(state) => (
         <TodoList
           parent={todo}
