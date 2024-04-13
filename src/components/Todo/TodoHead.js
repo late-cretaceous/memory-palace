@@ -17,7 +17,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
   parent = useSelector((state) => state.persistentSlice[parent.id]);
 
   const transientTodos = useSelector((state) => state.transientSlice) ?? {};
-  const cascadePhase = useSelector((state) => state.globalSlice.cascadePhase);
+  const cascadePhase = useSelector((state) => state.transientSlice[parent.id].cascade.phase);
   const edgeBoxTimeoutId = useSelector((state) => state.globalSlice.edgeBoxTimeout);
 
   const {

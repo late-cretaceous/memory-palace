@@ -15,7 +15,6 @@ import {
   addTransientTodo,
   editTransientTodo,
 } from "../../redux/transientSlice";
-import { setCascadePhase } from "../../redux/globalSlice";
 import TodoAdder from "./TodoAdder";
 import { moveTodo } from "../../utilities/reduxUtils";
 import useTransientTrimmer from "../../utilities/useTransientTrimmer";
@@ -57,7 +56,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
 
   useSortAnimation(todos, parent, sort);
   useListDisplayUpdate(parent, todos);
-  dispatch(setCascadePhase(cascade.phase));
 
   const animationTime = 1000;
 

@@ -5,7 +5,6 @@ const globalSlice = createSlice({
   initialState: {
     sort: "manual",
     sorted: false,
-    cascadePhase: "off",
     headerColorNegative: false,
     backgroundColorNegative: false,
     edgeBoxTimeout: null,
@@ -22,9 +21,6 @@ const globalSlice = createSlice({
     },
     toggleColorNegative: (state, { payload: { area } }) => {
       state[area] = !state[area];
-    },
-    setCascadePhase: (state, action) => {
-      state.cascadePhase = action.payload;
     },
     setEdgeBoxTimeoutId: (state, { payload }) => {
       state.edgeBoxTimeout = payload;
