@@ -31,7 +31,7 @@ const useSortAnimation = (
 
   const isAnyListOpen = Object.values(listOpenTable).some((isOpen) => isOpen);
 
-  if (cascade.sort !== sort) {
+  if (cascade.sort !== sort && parent.id === "bigTodo") {
     const initialList = cascade.sort === "manual" ? todos : cascade.sortedList;
 
     dispatch(

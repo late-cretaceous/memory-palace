@@ -16,7 +16,7 @@ const Todo = ({ family, ...props }) => {
     useSelector((state) => state.transientSlice[todo.id]);
 
   const animationCascade = useSelector(
-    (state) => state.transientSlice[todo.id].cascade
+    (state) => state.transientSlice["bigTodo"].cascade
   );
 
   const sorted = useSelector((state) => state.globalSlice.sorted);
@@ -88,7 +88,7 @@ const Todo = ({ family, ...props }) => {
     if (animationCascade.phase === "awaitingListClose") {
       dispatch(
         setCascade({
-          id: parent.id,
+          id: "bigTodo",
           cascade: { ...animationCascade, phase: "initialized" },
         })
       );

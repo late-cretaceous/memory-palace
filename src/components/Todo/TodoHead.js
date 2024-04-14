@@ -124,6 +124,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
             autofocus={!inCascade}
           />
         </CSSTransition>
+        {props.old && <span>Old</span>}
         <TodoBottom
           hover={hover}
           listOpen={listOpen}
