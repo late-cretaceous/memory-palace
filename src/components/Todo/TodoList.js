@@ -95,10 +95,12 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     exitActive: todoStyles.exitActive,
   };
 
+  console.log(`Is Initial Phase: ${isInitialPhase(cascade.phase)})`);
+
   const unhiddenOrderedTodos =
     cascade.phase === "cascade"
       ? cascade.sortedList.slice(0, cascade.index + 1)
-      : cascade.phase === "initializing" || cascade.sort !== "manual"
+      : isInitialPhase(cascade.phase) || cascade.sort !== "manual"
       ? cascade.sortedList
       : todos;
 
@@ -180,7 +182,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
           <Drop id="todoDropArea">
             <ul
               className={`${styles.flexcol} ${styles.list} ${
-                cascade.phase === "initializing" ? styles.front : ""
+                isInitialPhase(cascade.phase) ? styles.front : ""
               }`}
             >
               <TransitionGroup component={null}>
@@ -192,7 +194,7 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
       )}
       <ul
         className={`${styles.flexcol} ${styles.list} ${
-          cascade.phase === "initializing" ? styles.back : ""
+          isInitialPhase(cascade.phase) ? styles.back : ""
         }`}
       >
         {cascadeOutTodos}
@@ -210,5 +212,8 @@ const spectrumLog = (spectrum, hueStep, satStep, lightStep) => {
 
 const isEmptyAndCascading = (list, cascade) =>
   !Boolean(list.length) && cascade.on;
+
+const isInitialPhase = (phase) =>
+ new Set(["initializing", "awaitingListClose", "initialized"]).has(phase);
 
 export default TodoList;

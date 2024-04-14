@@ -51,15 +51,14 @@ const useSortAnimation = (
   }
 
   if (cascade.phase === "initializing") {
-    console.log("closing all lists");
-    closeAllLists(listOpenTable, dispatch);
+      closeAllLists(listOpenTable, dispatch);
 
-    dispatch(
-      setCascade({
-        id: parent.id,
-        cascade: { ...cascade, phase: "awaitingListClose" },
-      })
-    );
+      dispatch(
+        setCascade({
+          id: parent.id,
+          cascade: { ...cascade, phase: "awaitingListClose" },
+        })
+      );
   }
 
   useEffect(() => {
