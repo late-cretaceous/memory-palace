@@ -95,8 +95,6 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
     exitActive: todoStyles.exitActive,
   };
 
-  console.log(`Is Initial Phase: ${isInitialPhase(cascade.phase)})`);
-
   const unhiddenOrderedTodos =
     cascade.phase === "cascade"
       ? cascade.sortedList.slice(0, cascade.index + 1)

@@ -92,12 +92,17 @@ const transientSlice = createSlice({
             }
           }
         });
-      } else if (info.type === "remove") {
+      }
+      if (info.type === "remove") {
         const family = { ...todos, [parent.id]: parent };
         Object.values(family).forEach((todo) => {
           if (state[todo.id].position > info.position) {
             state[todo.id].position = state[todo.id].position - 1;
           }
+        });
+      } else if (info.type === "move") {
+        Object.values(todos).forEach((todo) => {
+          state[todo.id].position = todo.index;
         });
       }
     },

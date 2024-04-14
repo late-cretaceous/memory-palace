@@ -62,11 +62,7 @@ export const removeTodo = (family, position) => {
 
   return (dispatch) => {
     dispatch(
-      stateUpdatesDispatch(
-        newParent,
-        reorderedTodos,
-        removedTransientInfo
-      )
+      stateUpdatesDispatch(newParent, reorderedTodos, removedTransientInfo)
     );
     dispatch(removePersistentTodo(action));
   };
@@ -77,7 +73,7 @@ export const moveTodo = (e, parent, todos) => {
   const reorderedTodos = reIndex(movedTodos);
   const newParent = { ...parent, list: Object.keys(reorderedTodos) };
 
-  return stateUpdatesDispatch({ ...reorderedTodos, [parent.id]: newParent });
+  return stateUpdatesDispatch(newParent, reorderedTodos, { type: "move" });
 };
 
 export const addTodo = (parent, siblings, index, position, sorted) => {
