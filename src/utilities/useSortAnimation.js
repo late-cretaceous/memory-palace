@@ -51,27 +51,29 @@ const useSortAnimation = (
   }
 
   if (cascade.phase === "initializing") {
-      closeAllLists(listOpenTable, dispatch);
-
-      dispatch(
-        setCascade({
-          id: parent.id,
-          cascade: { ...cascade, phase: "awaitingListClose" },
-        })
-      );
-  }
-
-  useEffect(() => {
-    if (cascade.phase !== "initialized") return;
-
-    dispatch(toggleColorNegative({ area: "headerColorNegative" }));
+    closeAllLists(listOpenTable, dispatch);
 
     dispatch(
       setCascade({
         id: parent.id,
-        cascade: { ...cascade, phase: "frameskip" },
+        cascade: { ...cascade, phase: "awaitingListClose" },
       })
     );
+  }
+
+  useEffect(() => {
+    if (cascade.phase !== "initialized") return;
+    //slight timeout prevents flicker for some reason
+    setTimeout(() => {
+      dispatch(toggleColorNegative({ area: "headerColorNegative" }));
+
+      dispatch(
+        setCascade({
+          id: parent.id,
+          cascade: { ...cascade, phase: "frameskip" },
+        })
+      );
+    }, 34);
   }, [cascade.phase, dispatch]);
 
   if (cascade.phase === "frameskip") {
