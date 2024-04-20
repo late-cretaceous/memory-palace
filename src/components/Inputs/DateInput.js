@@ -68,16 +68,20 @@ const DateInput = ({ todo, timeUnit, ...props }) => {
       dispatch(
         editTodo({
           id: todo.id,
-          edit: { date: { ...date, [timeUnit]: dayLimits[timeUnit].toString() } },
+          edit: {
+            date: { ...date, [timeUnit]: dayLimits[timeUnit].toString() },
+          },
         })
       );
     }
   };
 
   const isDateEmpty = isEmpty(date[timeUnit]);
-  const shouldFadeLight = isDateEmpty && !selfHover;
+  const shouldFadeLight = isDateEmpty && !selfHover && !props.focused;
   const shouldFadeMedium =
-    (isDateEmpty && selfHover) || (parentHover && !selfHover);
+    (props.focused && !selfHover) ||
+    (isDateEmpty && selfHover) ||
+    (parentHover && !selfHover);
   const shouldFadeHeavy = !isDateEmpty && selfHover;
 
   const backgroundColor = shouldFadeLight
@@ -89,12 +93,13 @@ const DateInput = ({ todo, timeUnit, ...props }) => {
     : props.color.faded(1);
 
   const invisible =
-    isOldAndCascadingIntoDate(inCascade, props.old, sort) ||
-    recentSortableChangeAndNotHoveredInManual(
-      props.old,
-      parentHover,
-      parentSortedAs
-    );
+    !props.focused &&
+    (isOldAndCascadingIntoDate(inCascade, props.old, sort) ||
+      recentSortableChangeAndNotHoveredInManual(
+        props.old,
+        parentHover,
+        parentSortedAs
+      ));
 
   const wrapperClasses = `${styles.wrapper} ${invisible ? styles.hidden : ""}`;
 
@@ -126,7 +131,6 @@ const isOldAndCascadingIntoDate = (inCascade, old, sort) => {
 };
 
 const recentSortableChangeAndNotHoveredInManual = (hover, old, sortedAs) => {
-  //I think you can add not focused down here
   return !old && !hover && sortedAs === "manual";
 };
 

@@ -18,8 +18,6 @@ const useSortAnimation = (
     (state) => state.transientSlice[parent.id].cascade
   );
 
-  console.log(cascade.phase);
-
   const listOpenTable = useSelector((state) => {
     const { bigTodo, ...transientsSansBigTodo } = state.transientSlice;
 

@@ -4,7 +4,6 @@ import { useState } from "react";
 
 const DateForm = ({ todo, ...props }) => {
   const [focused, setFocused] = useState(false);
-  console.log(focused);
 
   const handleFocus = () => setFocused(true);
   const handleBlur = () => setFocused(false);
@@ -16,6 +15,7 @@ const DateForm = ({ todo, ...props }) => {
     color: props.color,
     negativeColor: props.negativeColor,
     old: props.old,
+    focused,
   };
 
   return (
