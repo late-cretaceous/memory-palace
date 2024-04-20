@@ -51,6 +51,8 @@ const DateInput = ({ todo, timeUnit, ...props }) => {
   };
 
   const handleBlur = () => {
+    props.onBlur();
+
     const dayLimits = {
       month: 12,
       day: 31,
@@ -110,6 +112,7 @@ const DateInput = ({ todo, timeUnit, ...props }) => {
         timeUnit={timeUnit}
         value={date[timeUnit]}
         onChange={handleInputChange}
+        onFocus={props.onFocus}
         onBlur={handleBlur}
       />
     </div>
