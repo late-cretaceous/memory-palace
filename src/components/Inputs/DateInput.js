@@ -4,7 +4,7 @@ import { editTransientTodo } from "../../redux/transientSlice";
 import { useState } from "react";
 import styles from "./DateInput.module.css";
 
-const DateInput = ({ todo, timeUnit, ...props }) => {
+const DateInput = ({ todo, name, ...props }) => {
   const [selfHover, setSelfHover] = useState(false);
   const dispatch = useDispatch();
   const date = useSelector(
@@ -40,7 +40,7 @@ const DateInput = ({ todo, timeUnit, ...props }) => {
       dispatch(
         editTodo({
           id: todo.id,
-          edit: { date: { ...date, [timeUnit]: twoDigitValue } },
+          edit: { date: { ...date, [name]: twoDigitValue } },
         })
       );
 
@@ -60,23 +60,23 @@ const DateInput = ({ todo, timeUnit, ...props }) => {
     };
 
     const exceeds =
-      (timeUnit === "month" && date[timeUnit] > dayLimits[timeUnit]) ||
-      (timeUnit === "day" && date[timeUnit] > dayLimits[timeUnit]) ||
-      (timeUnit === "year" && date[timeUnit] > dayLimits[timeUnit]);
+      (name === "month" && date[name] > dayLimits[name]) ||
+      (name === "day" && date[name] > dayLimits[name]) ||
+      (name === "year" && date[name] > dayLimits[name]);
 
     if (exceeds) {
       dispatch(
         editTodo({
           id: todo.id,
           edit: {
-            date: { ...date, [timeUnit]: dayLimits[timeUnit].toString() },
+            date: { ...date, [name]: dayLimits[name].toString() },
           },
         })
       );
     }
   };
 
-  const isDateEmpty = isEmpty(date[timeUnit]);
+  const isDateEmpty = isEmpty(date[name]);
   const shouldFadeLight = isDateEmpty && !selfHover && !props.focused;
   const shouldFadeMedium =
     (props.focused && !selfHover) ||
@@ -114,8 +114,8 @@ const DateInput = ({ todo, timeUnit, ...props }) => {
         style={{ color: props.color }}
         className={styles["input-el"]}
         type="text"
-        timeUnit={timeUnit}
-        value={date[timeUnit]}
+        name={name}
+        value={date[name]}
         onChange={handleInputChange}
         onFocus={props.onFocus}
         onBlur={handleBlur}

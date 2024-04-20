@@ -4,18 +4,24 @@ import { sortTodosByDate } from "./todoUtils";
 import { matchPositionsToIndices } from "./reduxUtils";
 
 const useListDisplayUpdate = (parent, todos) => {
-  const cascade = useSelector((state) => state.transientSlice[parent.id].cascade);
-  
+  const cascade = useSelector(
+    (state) => state.transientSlice[parent.id].cascade
+  );
+
   const transients = useSelector((state) => state.transientSlice);
 
   const { singleSort } = useSelector(
     (state) => state.transientSlice[parent.id]
   );
+
+  const todo = todos.find((todo) => todo.id === singleSort.id);
   const dispatch = useDispatch();
 
   if (todoQuantitiesDiffer(cascade.sortedList, todos)) {
     const newList = [...todos];
-    newList.sort((a, b) => transients[a.id].position - transients[b.id].position);
+    newList.sort(
+      (a, b) => transients[a.id].position - transients[b.id].position
+    );
 
     dispatch(
       setCascade({
@@ -26,18 +32,23 @@ const useListDisplayUpdate = (parent, todos) => {
   }
 
   if (singleSort.stage === "new") {
-    dispatch(editTransientTodo({ id: singleSort.id, edit: { hide: true } }));
+    let nextStage = null;
+
+    if (differentPlaceAfterSort(todo, cascade.sortedList, transients)) {
+      dispatch(editTransientTodo({ id: singleSort.id, edit: { hide: true } }));
+      nextStage = "switching";
+    }
 
     dispatch(
       editTransientTodo({
         id: parent.id,
-        edit: { singleSort: { ...singleSort, stage: "switching" } },
+        edit: { singleSort: { ...singleSort, stage: nextStage } },
       })
     );
   }
 
   if (singleSort.stage === "adding") {
-    const todo = todos.find((todo) => todo.id === singleSort.id);
+    console.log(differentPlaceAfterSort(todo, cascade.sortedList, transients));
 
     if (differentPlaceAfterSort(todo, cascade.sortedList, transients)) {
       const sortedTodos = sortTodosByDate(todos);

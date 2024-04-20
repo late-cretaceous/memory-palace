@@ -20,9 +20,9 @@ const DateForm = ({ todo, ...props }) => {
 
   return (
     <div className={styles["date-form"]}>
-      <DateInput timeUnit="month" {...inputProps} />
-      <DateInput timeUnit="day" {...inputProps} />
-      <DateInput timeUnit="year" {...inputProps} />
+      <DateInput name="month" {...inputProps} />
+      <DateInput name="day" {...inputProps} />
+      <DateInput name="year" {...inputProps} />
     </div>
   );
 };
