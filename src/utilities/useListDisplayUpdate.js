@@ -32,24 +32,24 @@ const useListDisplayUpdate = (parent, todos) => {
   }
 
   if (singleSort.stage === "new") {
-    let nextStage = null;
+    let nextSingleSortInfo = {id: null, stage: null}; 
+
+    console.log(differentPlaceAfterSort(todo, cascade.sortedList, transients));
 
     if (differentPlaceAfterSort(todo, cascade.sortedList, transients)) {
       dispatch(editTransientTodo({ id: singleSort.id, edit: { hide: true } }));
-      nextStage = "switching";
+      nextSingleSortInfo = { ...singleSort, stage: "switching" };
     }
 
     dispatch(
       editTransientTodo({
         id: parent.id,
-        edit: { singleSort: { ...singleSort, stage: nextStage } },
+        edit: { singleSort: { ...nextSingleSortInfo } },
       })
     );
   }
 
   if (singleSort.stage === "adding") {
-    console.log(differentPlaceAfterSort(todo, cascade.sortedList, transients));
-
     if (differentPlaceAfterSort(todo, cascade.sortedList, transients)) {
       const sortedTodos = sortTodosByDate(todos);
       matchPositionsToIndices(dispatch, sortedTodos);
