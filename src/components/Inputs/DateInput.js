@@ -4,7 +4,7 @@ import { editTransientTodo } from "../../redux/transientSlice";
 import { useState } from "react";
 import styles from "./DateInput.module.css";
 
-const DateInput = ({ todo, name, ...props }) => {
+const DateInput = ({ todo, timeUnit, ...props }) => {
   const [selfHover, setSelfHover] = useState(false);
   const dispatch = useDispatch();
   const date = useSelector(
@@ -40,7 +40,7 @@ const DateInput = ({ todo, name, ...props }) => {
       dispatch(
         editTodo({
           id: todo.id,
-          edit: { date: { ...date, [name]: twoDigitValue } },
+          edit: { date: { ...date, [timeUnit]: twoDigitValue } },
         })
       );
 
@@ -58,21 +58,21 @@ const DateInput = ({ todo, name, ...props }) => {
     };
 
     const exceeds =
-      (name === "month" && date[name] > dayLimits[name]) ||
-      (name === "day" && date[name] > dayLimits[name]) ||
-      (name === "year" && date[name] > dayLimits[name]);
+      (timeUnit === "month" && date[timeUnit] > dayLimits[timeUnit]) ||
+      (timeUnit === "day" && date[timeUnit] > dayLimits[timeUnit]) ||
+      (timeUnit === "year" && date[timeUnit] > dayLimits[timeUnit]);
 
     if (exceeds) {
       dispatch(
         editTodo({
           id: todo.id,
-          edit: { date: { ...date, [name]: dayLimits[name].toString() } },
+          edit: { date: { ...date, [timeUnit]: dayLimits[timeUnit].toString() } },
         })
       );
     }
   };
 
-  const isDateEmpty = isEmpty(date[name]);
+  const isDateEmpty = isEmpty(date[timeUnit]);
   const shouldFadeLight = isDateEmpty && !selfHover;
   const shouldFadeMedium =
     (isDateEmpty && selfHover) || (parentHover && !selfHover);
@@ -107,8 +107,8 @@ const DateInput = ({ todo, name, ...props }) => {
         style={{ color: props.color }}
         className={styles["input-el"]}
         type="text"
-        name={name}
-        value={date[name]}
+        timeUnit={timeUnit}
+        value={date[timeUnit]}
         onChange={handleInputChange}
         onBlur={handleBlur}
       />
@@ -123,6 +123,7 @@ const isOldAndCascadingIntoDate = (inCascade, old, sort) => {
 };
 
 const recentSortableChangeAndNotHoveredInManual = (hover, old, sortedAs) => {
+  //I think you can add not focused down here
   return !old && !hover && sortedAs === "manual";
 };
 
