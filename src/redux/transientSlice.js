@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadTodoKeys } from "../utilities/reduxUtils";
+import { sort } from "./globalSlice";
 
 const createTransientTodo = (initialValues) => {
   const defaultValues = {
@@ -78,13 +79,15 @@ const transientSlice = createSlice({
       { payload: { parent, todos, info } }
     ) => {
       if (info.type === "add") {
+        console.log(info.sorted);
         Object.values(todos).forEach((todo) => {
           if (todo.id === info.id) {
             state[todo.id] = createTransientTodo({
               id: info.id,
               position: info.position,
-              colorNegative: info.sorted,
+              colorNegative: info.sortedAs !== "manual",
               hasSortableChange: true,
+              sortedAs: info.sortedAs,
             });
           } else {
             if (state[todo.id].position >= info.position) {

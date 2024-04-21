@@ -12,14 +12,20 @@ import { addTodo } from "../../utilities/reduxUtils";
 const Todo = ({ family, ...props }) => {
   const { todo, parent, siblings } = family;
 
-  const { listOpen, hadStarter, edgeActivated, position, hasSortableChange } =
-    useSelector((state) => state.transientSlice[todo.id]);
+  const {
+    listOpen,
+    hadStarter,
+    edgeActivated,
+    position,
+    hasSortableChange,
+    sortedAs,
+  } = useSelector((state) => state.transientSlice[todo.id]);
+
+  const sorted = sortedAs !== "manual";
 
   const animationCascade = useSelector(
     (state) => state.transientSlice["bigTodo"].cascade
   );
-
-  const sorted = useSelector((state) => state.globalSlice.sorted);
 
   const dispatch = useDispatch();
   const listRef = useRef(null);
@@ -46,7 +52,7 @@ const Todo = ({ family, ...props }) => {
 
     const siblingList = isStarter ? [] : siblings;
 
-    dispatch(addTodo(parent, siblingList, newIndex, newPosition, sorted));
+    dispatch(addTodo(parent, siblingList, newIndex, newPosition, sortedAs));
   };
 
   const markAsNotNewHandler = () => {

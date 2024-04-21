@@ -34,7 +34,6 @@ const useListDisplayUpdate = (parent, todos) => {
     const todo = todos.find((todo) => todo.id === singleSort.id);
     let nextSingleSortInfo = { id: null, stage: null };
 
-
     if (differentPlaceAfterSort(todo, cascade.sortedList, transients)) {
       dispatch(editTransientTodo({ id: singleSort.id, edit: { hide: true } }));
       nextSingleSortInfo = { ...singleSort, stage: "switching" };

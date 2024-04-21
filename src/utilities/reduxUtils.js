@@ -76,7 +76,7 @@ export const moveTodo = (e, parent, todos) => {
   return stateUpdatesDispatch(newParent, reorderedTodos, { type: "move" });
 };
 
-export const addTodo = (parent, siblings, index, position, sorted) => {
+export const addTodo = (parent, siblings, index, position, sortedAs) => {
   const newSibling = generateChild(parent, siblings, index);
   siblings.splice(index, 0, newSibling);
 
@@ -86,7 +86,7 @@ export const addTodo = (parent, siblings, index, position, sorted) => {
     id: newSibling.id,
     position: position,
     type: "add",
-    sorted: sorted,
+    sortedAs: sortedAs,
   };
 
   return stateUpdatesDispatch(newParent, reorderedTodos, addedTransientInfo);
