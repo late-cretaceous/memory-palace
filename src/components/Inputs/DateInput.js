@@ -7,6 +7,8 @@ import styles from "./DateInput.module.css";
 const DateInput = ({ todo, name, ...props }) => {
   const [selfHover, setSelfHover] = useState(false);
   const [selfFocus, setSelfFocus] = useState(false);
+  const [tabPressed, setTabPressed] = useState(false);
+
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const date = useSelector(
@@ -37,6 +39,11 @@ const DateInput = ({ todo, name, ...props }) => {
       inputRef.current.select();
     }
   };
+  const handleKeyDown = (e) => {
+    if (e.key === "Tab") {
+      setTabPressed(true);
+    }
+  };
 
   const handleInputChange = (e) => {
     const paddedValue = String(e.target.value).padStart(2, "0");
@@ -57,8 +64,16 @@ const DateInput = ({ todo, name, ...props }) => {
   };
 
   const handleBlur = () => {
-    props.onBlur();
     setSelfFocus(false);
+
+    if (!tabPressed) {
+      props.onBlur();
+    } else {
+      if (name === "year") {
+        props.onBlur();
+      }
+      setTabPressed(false);
+    }
 
     const dayLimits = {
       month: 12,
@@ -128,6 +143,7 @@ const DateInput = ({ todo, name, ...props }) => {
         onChange={handleInputChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
         ref={inputRef}
       />
     </div>
