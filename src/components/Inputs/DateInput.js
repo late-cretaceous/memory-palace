@@ -6,6 +6,7 @@ import styles from "./DateInput.module.css";
 
 const DateInput = ({ todo, name, ...props }) => {
   const [selfHover, setSelfHover] = useState(false);
+  const [selfFocus, setSelfFocus] = useState(false);
   const dispatch = useDispatch();
   const date = useSelector(
     (state) =>
@@ -25,12 +26,11 @@ const DateInput = ({ todo, name, ...props }) => {
     (state) => state.transientSlice[todo.id].hover
   );
 
-  const handleMouseEnter = () => {
-    setSelfHover(true);
-  };
-
-  const handleMouseLeave = () => {
-    setSelfHover(false);
+  const handleMouseEnter = () => setSelfHover(true);
+  const handleMouseLeave = () => setSelfHover(false);
+  const handleFocus = () => {
+    setSelfFocus(true);
+    props.onFocus();
   };
 
   const handleInputChange = (e) => {
@@ -52,6 +52,7 @@ const DateInput = ({ todo, name, ...props }) => {
 
   const handleBlur = () => {
     props.onBlur();
+    setSelfFocus(false);
 
     const dayLimits = {
       month: 12,
@@ -77,12 +78,14 @@ const DateInput = ({ todo, name, ...props }) => {
   };
 
   const isDateEmpty = isEmpty(date[name]);
-  const shouldFadeLight = isDateEmpty && !selfHover && !props.focused;
+  const shouldFadeLight =
+    isDateEmpty && !selfHover && !props.focused && !selfFocus;
   const shouldFadeMedium =
-    (props.focused && !selfHover) ||
-    (isDateEmpty && selfHover) ||
-    (parentHover && !selfHover);
-  const shouldFadeHeavy = !isDateEmpty && selfHover;
+    !selfFocus &&
+    ((props.focused && !selfHover) ||
+      (isDateEmpty && selfHover) ||
+      (parentHover && !selfHover));
+  const shouldFadeHeavy = selfFocus || (!isDateEmpty && selfHover);
 
   const backgroundColor = shouldFadeLight
     ? props.color.faded(0.25)
@@ -117,7 +120,7 @@ const DateInput = ({ todo, name, ...props }) => {
         name={name}
         value={date[name]}
         onChange={handleInputChange}
-        onFocus={props.onFocus}
+        onFocus={handleFocus}
         onBlur={handleBlur}
       />
     </div>
