@@ -39,7 +39,8 @@ const DateInput = ({ todo, name, ...props }) => {
   };
 
   const handleInputChange = (e) => {
-    const twoDigitValue = e.target.value.slice(0, 2);
+    const paddedValue = String(e.target.value).padStart(2, "0");
+    const twoDigitValue = paddedValue.slice(-2);
 
     if (!isNaN(twoDigitValue)) {
       dispatch(
