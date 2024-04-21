@@ -9,6 +9,10 @@
   outline: none;
 }
 
+.input-el::selection {
+  background: none;
+}
+
 .wrapper {
   display: flex;
   align-items: center;
