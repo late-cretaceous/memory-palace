@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styles from "./DateInput.module.css";
 
 const DateInput = ({ todo, name, ...props }) => {
   const [selfHover, setSelfHover] = useState(false);
   const [selfFocus, setSelfFocus] = useState(false);
   const dispatch = useDispatch();
+  const inputRef = useRef(null);
   const date = useSelector(
     (state) =>
       state.persistentSlice[todo.id]?.date ?? {
@@ -31,6 +32,10 @@ const DateInput = ({ todo, name, ...props }) => {
   const handleFocus = () => {
     setSelfFocus(true);
     props.onFocus();
+
+    if (inputRef.current) {
+      inputRef.current.select();
+    }
   };
 
   const handleInputChange = (e) => {
@@ -122,6 +127,7 @@ const DateInput = ({ todo, name, ...props }) => {
         onChange={handleInputChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        ref={inputRef}
       />
     </div>
   );
