@@ -17,9 +17,17 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
   parent = useSelector((state) => state.persistentSlice[parent.id]);
 
   const transientTodos = useSelector((state) => state.transientSlice) ?? {};
-  const cascadePhase = useSelector((state) => state.transientSlice[parent.id].cascade.phase);
-  const edgeBoxTimeoutId = useSelector((state) => state.globalSlice.edgeBoxTimeout);
+  const cascadePhase = useSelector(
+    (state) => state.transientSlice[parent.id].cascade.phase
+  );
+  const edgeBoxTimeoutId = useSelector(
+    (state) => state.globalSlice.edgeBoxTimeout
+  );
 
+  //create a variable that includes all of the transient todos that are siblings of the current todo
+  //this will be used to determine the position of the adder
+
+  console.log(siblings);
   const {
     listOpen,
     hover,
@@ -46,7 +54,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
       clearTimeout(edgeBoxTimeoutId);
       dispatch(setEdgeBoxTimeoutId(null));
     }
-  }
+  };
 
   const todoHeadStyles = `${styles.todohead} ${
     listOpen ? styles.preview : styles.full
@@ -74,12 +82,12 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     );
   }
 
-
   const adderPosition = position > 0 ? position - 1 : 0;
-  const previousTodo = Object.values(transientTodos).find(
+  const transientSiblings = siblings.map(sibling => transientTodos[sibling.id]);
+  const previousTodo = Object.values(transientSiblings).find(
     (transientTodo) => transientTodo.position === adderPosition
   )?.id;
-  
+
   return (
     <div
       className={todoHeadStyles}
