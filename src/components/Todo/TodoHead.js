@@ -24,10 +24,6 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     (state) => state.globalSlice.edgeBoxTimeout
   );
 
-  //create a variable that includes all of the transient todos that are siblings of the current todo
-  //this will be used to determine the position of the adder
-
-  console.log(siblings);
   const {
     listOpen,
     hover,
@@ -83,7 +79,9 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
   }
 
   const adderPosition = position > 0 ? position - 1 : 0;
-  const transientSiblings = siblings.map(sibling => transientTodos[sibling.id]);
+  const transientSiblings = siblings.map(
+    (sibling) => transientTodos[sibling.id]
+  );
   const previousTodo = Object.values(transientSiblings).find(
     (transientTodo) => transientTodo.position === adderPosition
   )?.id;
