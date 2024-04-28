@@ -9,9 +9,11 @@ const TodoBottom = (props) => {
   const dispatch = useDispatch();
   const arrowClickHandler = () => {
     dispatch(toggleListOpen(props.todo.id));
-    dispatch(
-      editTransientTodo({ id: props.todo.id, edit: { hadStarter: false } })
-    );
+    if(!props.todo.list.length) {
+      dispatch(
+        editTransientTodo({ id: props.todo.id, edit: { hadStarter: false } })
+      );
+    }
   };
 
   const { listOpen, isStarter } = useSelector(
