@@ -32,6 +32,11 @@ const Todo = ({ family, ...props }) => {
   const timeoutId = useRef(null);
 
   const addChildHandler = (parent, siblings, isStarter = false) => {
+    console.log('parent');
+    console.dir(parent);
+    console.log('siblings');
+    console.dir(siblings);
+    console.log(`isStarter: ${isStarter}`);
     if (!isStarter && Boolean(siblings.length)) {
       dispatch(
         editTransientTodo({
@@ -102,7 +107,7 @@ const Todo = ({ family, ...props }) => {
   };
 
   if (listOpen && !todo.list.length && !hadStarter) {
-    addChildHandler(todo, siblings, true);
+    addChildHandler(todo, [], true);
     dispatch(editTransientTodo({ id: todo.id, edit: { hadStarter: true } }));
   }
 
