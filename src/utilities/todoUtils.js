@@ -1,13 +1,10 @@
 export const generateChild = (parent, siblings, index = 0) => {
-  return {
+  return createTodo({
     id: Date.now().toString(),
     lineage: parent.lineage.concat(newNumber(siblings)),
     index: index,
     parent: parent.id,
-    message: "",
-    list: [],
-    date: { month: "", day: "", year: "" },
-  };
+  });
 };
 
 export const createTodo = (props) => {
@@ -19,8 +16,8 @@ export const createTodo = (props) => {
     message: props.message ?? "",
     list: props.list ?? [],
     date: props.date ?? { month: "", day: "", year: "" },
-  }
-}
+  };
+};
 
 export const includeChild = (parent, id, storage) => {
   const newList = [...parent.list];
