@@ -10,6 +10,18 @@ export const generateChild = (parent, siblings, index = 0) => {
   };
 };
 
+export const createTodo = (props) => {
+  return {
+    id: props.id ?? Date.now().toString(),
+    lineage: props.lineage ?? [],
+    index: props.index ?? 0,
+    parent: props.parent ?? "",
+    message: props.message ?? "",
+    list: props.list ?? [],
+    date: props.date ?? { month: "", day: "", year: "" },
+  }
+}
+
 export const includeChild = (parent, id, storage) => {
   const newList = [...parent.list];
   newList.splice(storage[id].index, 0, id);

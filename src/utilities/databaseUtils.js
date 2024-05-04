@@ -1,3 +1,5 @@
+import { createTodo } from "./todoUtils";
+
 export const addToStorage = (todo) => {
   localStorage.setItem(todo.id, JSON.stringify(todo));
 };
@@ -14,7 +16,9 @@ export const removeFromStorage = (id) => {
 };
 
 export const fetchTodo = (id) => {
-  return JSON.parse(localStorage.getItem(id));
+  const parsedTodo = JSON.parse(localStorage.getItem(id));
+
+  return createTodo(parsedTodo);
 };
 
 export const listHierarchy = (id) => {
