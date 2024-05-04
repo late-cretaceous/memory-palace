@@ -23,7 +23,6 @@ function App() {
   );
   const [firstRender, setFirstRender] = useState(true);
 
-
   const dispatch = useDispatch();
 
   if (firstRender) {
@@ -60,7 +59,7 @@ function App() {
     <div style={{ backgroundColor: bColor }} className={"background"}>
       <Header color={color} />
       <Todo
-        family={{ todo: bigTodo, parent: null, siblings: [] }}
+        familyIds={{ todo: "bigTodo", parent: null, siblings: [] }}
         color={color}
         spectrumRange={spectrumRange}
         lightRange={lightRange}

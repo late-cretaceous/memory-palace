@@ -9,8 +9,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { editTransientTodo, setCascade } from "../../redux/transientSlice";
 import { addTodo } from "../../utilities/reduxUtils";
 
-const Todo = ({ family, ...props }) => {
-  const { todo, parent, siblings } = family;
+const Todo = ({ familyIds, ...props }) => {
+  const todo = useSelector(
+    (state) => state.persistentSlice[familyIds.todo] ?? props.todoObj
+  );
+
+  const parent = useSelector(
+    (state) => state.persistentSlice[familyIds.parent]
+  );
+
+  const siblings = useSelector((state) =>
+    familyIds.siblings.map((id) => state.persistentSlice[id] ?? {})
+  );
 
   const {
     listOpen,
@@ -19,7 +29,7 @@ const Todo = ({ family, ...props }) => {
     position,
     hasSortableChange,
     sortedAs,
-  } = useSelector((state) => state.transientSlice[todo.id]);
+  } = useSelector((state) => state.transientSlice[familyIds.todo]);
 
   const sorted = sortedAs !== "manual";
 
@@ -32,9 +42,9 @@ const Todo = ({ family, ...props }) => {
   const timeoutId = useRef(null);
 
   const addChildHandler = (parent, siblings, isStarter = false) => {
-    console.log('parent');
+    console.log("parent");
     console.dir(parent);
-    console.log('siblings');
+    console.log("siblings");
     console.dir(siblings);
     console.log(`isStarter: ${isStarter}`);
     if (!isStarter && Boolean(siblings.length)) {

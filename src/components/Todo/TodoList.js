@@ -112,7 +112,12 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
         .map((todo, index) => {
           return (
             <Todo
-              family={{ todo: todo, parent: parent, siblings: todos }}
+              familyIds={{
+                todo: todo.id,
+                parent: parent.id,
+                siblings: todos.map((todo) => todo.id),
+              }}
+              todoObj={todo}
               key={todo.id}
               color={spectrum[index + 1]}
               spectrumRange={(props.spectrumRange * 2) / todos.length}
@@ -139,7 +144,12 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
             {(provided) => (
               <div ref={provided.innerRef}>
                 <Todo
-                  family={{ todo: todo, parent: parent, siblings: todos }}
+                  familyIds={{
+                    todo: todo.id,
+                    parent: parent.id,
+                    siblings: todos.map((todo) => todo.id),
+                  }}
+                  todoObj={todo}
                   provided={provided}
                   color={spectrum[index + 1]}
                   spectrumRange={(props.spectrumRange * 2) / todos.length}
@@ -212,6 +222,6 @@ const isEmptyAndCascading = (list, cascade) =>
   !Boolean(list.length) && cascade.on;
 
 const isInitialPhase = (phase) =>
- new Set(["initializing", "awaitingListClose", "initialized"]).has(phase);
+  new Set(["initializing", "awaitingListClose", "initialized"]).has(phase);
 
 export default TodoList;
