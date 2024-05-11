@@ -5,6 +5,7 @@ import { useState } from "react";
 const DateForm = ({ todo, ...props }) => {
   const [focused, setFocused] = useState(false);
   const [inputWidths, setInputWidths] = useState({day: 0, month: 0, year: 0});
+  const [hovered, setHovered] = useState(false);
 
   const handleFocus = () => setFocused(true);
   const handleBlur = () => setFocused(false);
@@ -29,11 +30,14 @@ const DateForm = ({ todo, ...props }) => {
     focused,
     sendInputWidth,
     inputWidths,
+    formHover: hovered,
   };
 
   return (
     <div
       className={styles["date-form"]}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
         width: `${formWidth}px`,
       }}

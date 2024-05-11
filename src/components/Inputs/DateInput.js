@@ -1,4 +1,4 @@
-import { useDispatch, useSelector, } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
 import { useState, useRef, useEffect } from "react";
@@ -137,7 +137,9 @@ const DateInput = ({ todo, name, inputWidths, sendInputWidth, ...props }) => {
         parentSortedAs
       ));
 
-  const wrapperClasses = `${styles.wrapper} ${invisible ? styles.hidden : ""}`;
+  const wrapperClasses = `${styles.wrapper} ${styles[name]} ${
+    invisible ? styles.hidden : ""
+  } ${props.formHover ? styles["form-hover"] : ""}`;
 
   return (
     <div
