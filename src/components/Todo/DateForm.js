@@ -4,9 +4,20 @@ import { useState } from "react";
 
 const DateForm = ({ todo, ...props }) => {
   const [focused, setFocused] = useState(false);
+  const [inputWidths, setInputWidths] = useState({day: 0, month: 0, year: 0});
 
   const handleFocus = () => setFocused(true);
   const handleBlur = () => setFocused(false);
+
+  const formWidth = Object.values(inputWidths).reduce(
+    (acc, curr) => acc + curr,
+    0
+  );
+  console.log(`formWidth: ${formWidth}`);
+
+  const sendInputWidth = (name, width) => {
+    setInputWidths((prev) => ({ ...prev, [name]: width }));
+  };
 
   const inputProps = {
     todo,
@@ -16,10 +27,17 @@ const DateForm = ({ todo, ...props }) => {
     negativeColor: props.negativeColor,
     old: props.old,
     focused,
+    sendInputWidth,
+    inputWidths,
   };
 
   return (
-    <div className={styles["date-form"]}>
+    <div
+      className={styles["date-form"]}
+      style={{
+        width: `${formWidth}px`,
+      }}
+    >
       <DateInput name="month" {...inputProps} />
       <DateInput name="day" {...inputProps} />
       <DateInput name="year" {...inputProps} />

@@ -1,16 +1,28 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./DateInput.module.css";
 
-const DateInput = ({ todo, name, ...props }) => {
+const DateInput = ({ todo, name, inputWidths, sendInputWidth, ...props }) => {
   const [selfHover, setSelfHover] = useState(false);
   const [selfFocus, setSelfFocus] = useState(false);
   const [tabPressed, setTabPressed] = useState(false);
 
   const dispatch = useDispatch();
   const inputRef = useRef(null);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    if (wrapperRef.current) {
+      const newWidth = calculateWidthWithMargins(wrapperRef.current);
+
+      if (inputWidths[name] !== newWidth) {
+        sendInputWidth(name, newWidth);
+      }
+    }
+  }, [inputWidths, name, sendInputWidth]);
+
   const date = useSelector(
     (state) =>
       state.persistentSlice[todo.id]?.date ?? {
@@ -133,6 +145,7 @@ const DateInput = ({ todo, name, ...props }) => {
       style={{ backgroundColor: backgroundColor }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      ref={wrapperRef}
     >
       <input
         style={{ color: props.color }}
@@ -158,6 +171,16 @@ const isOldAndCascadingIntoDate = (inCascade, old, sort) => {
 
 const recentSortableChangeAndNotHoveredInManual = (hover, old, sortedAs) => {
   return !old && !hover && sortedAs === "manual";
+};
+
+const calculateWidthWithMargins = (element) => {
+  const style = window.getComputedStyle(element);
+  const margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+
+  console.log(
+    `wrapper width: ${element.getBoundingClientRect().width + margin}`
+  );
+  return element.getBoundingClientRect().width + margin;
 };
 
 export default DateInput;

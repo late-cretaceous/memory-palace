@@ -14,7 +14,7 @@
 }
 
 .wrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 2.5ch;
@@ -22,6 +22,29 @@
   border-radius: 25%;
   margin: 0 0.5ch 0 0.5ch;
   transition: background-color 0.3s;
+  position: relative;
+}
+
+.wrapper.month {
+  z-index: 1;
+  left: 33%;
+}
+
+.wrapper.day {
+  z-index: 2;
+}
+
+.wrapper.year {
+  z-index: 1;
+  right: 33%;
+}
+
+.wrapper.month.formHover {
+  left: 0;
+}
+
+.wrapper.year.formHover {
+  right: 0;
 }
 
 .hidden {
