@@ -3,5 +3,8 @@
     align-items: center;
     position: relative;
     border: solid;
+}
+
+.date-form.transition {
     transition: width 0.3s;
 }

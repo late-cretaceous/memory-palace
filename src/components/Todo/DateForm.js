@@ -1,11 +1,12 @@
 import DateInput from "../Inputs/DateInput";
 import styles from "./DateForm.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DateForm = ({ todo, ...props }) => {
   const [focused, setFocused] = useState(false);
   const [inputWidths, setInputWidths] = useState({ day: 0, month: 0, year: 0 });
   const [hovered, setHovered] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   const handleFocus = () => setFocused(true);
   const handleBlur = () => setFocused(false);
@@ -18,6 +19,12 @@ const DateForm = ({ todo, ...props }) => {
   const sendInputWidth = (name, width) => {
     setInputWidths((prev) => ({ ...prev, [name]: width }));
   };
+
+  useEffect(() => {
+    if (Boolean(formWidth) && !initialized) {
+      setInitialized(true);
+    }
+  }, [formWidth, initialized]);
 
   const inputProps = {
     todo,
@@ -32,9 +39,13 @@ const DateForm = ({ todo, ...props }) => {
     formHover: hovered,
   };
 
+  const dateFormClasses = `${styles["date-form"]} ${
+    initialized && styles.transition
+  }`;
+
   return (
     <div
-      className={styles["date-form"]}
+      className={dateFormClasses}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
