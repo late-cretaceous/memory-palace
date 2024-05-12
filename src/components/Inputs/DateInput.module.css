@@ -22,29 +22,27 @@
   border-radius: 25%;
   margin: 0 0.5ch 0 0.5ch;
   transition: background-color, left, right, 0.3s;
-  position: relative;
+  position: absolute;
 }
 
 .wrapper.month {
   z-index: 1;
-  left: 33%;
+  left: 0;
 }
 
 .wrapper.day {
   z-index: 2;
+  left: 0;
 }
 
 .wrapper.year {
   z-index: 1;
-  right: 33%;
-}
-
-.wrapper.month.form-hover {
-  left: 0;
-}
-
-.wrapper.year.form-hover {
   right: 0;
+}
+
+
+.wrapper.day.form-hover {
+  left: 33%;
 }
 
 .hidden {
