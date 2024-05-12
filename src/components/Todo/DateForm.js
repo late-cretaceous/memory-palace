@@ -1,4 +1,5 @@
 import DateInput from "../Inputs/DateInput";
+import DayOfWeekInput from "../Inputs/DayOfWeekInput";
 import styles from "./DateForm.module.css";
 import { useState, useEffect } from "react";
 
@@ -39,22 +40,26 @@ const DateForm = ({ todo, ...props }) => {
     formHover: hovered,
   };
 
-  const dateFormClasses = `${styles["date-form"]} ${
+  const numberInputsClasses = `${styles["number-inputs"]} ${
     initialized && styles.transition
   }`;
 
   return (
     <div
-      className={dateFormClasses}
+      className={styles["date-form"]}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
-        width: `${formWidth}px`,
-      }}
     >
-      <DateInput name="month" {...inputProps} />
-      <DateInput name="day" {...inputProps} />
-      <DateInput name="year" {...inputProps} />
+      <div
+        className={numberInputsClasses}
+        style={{
+          width: `${formWidth}px`,
+        }}
+      >
+        <DateInput name="month" {...inputProps} />
+        <DateInput name="day" {...inputProps} />
+        <DateInput name="year" {...inputProps} />
+      </div>
     </div>
   );
 };

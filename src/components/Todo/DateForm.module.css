@@ -1,10 +1,13 @@
 .date-form {
-    justify-content: space-between;
-    align-items: center;
+
+}
+
+.number-inputs {
     position: relative;
+    display: inline-block;
     border: solid;
 }
 
-.date-form.transition {
+.number-inputs.transition {
     transition: width 0.3s;
 }
