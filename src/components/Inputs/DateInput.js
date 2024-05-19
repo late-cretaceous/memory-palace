@@ -4,7 +4,7 @@ import { editTransientTodo } from "../../redux/transientSlice";
 import { useState, useRef, useEffect } from "react";
 import styles from "./DateInput.module.css";
 
-const DateInput = ({ todo, name, inputWidths, sendInputWidth, ...props }) => {
+const DateInput = ({ todo, name, ...props }) => {
   const [selfHover, setSelfHover] = useState(false);
   const [selfFocus, setSelfFocus] = useState(false);
   const [tabPressed, setTabPressed] = useState(false);
@@ -12,16 +12,22 @@ const DateInput = ({ todo, name, inputWidths, sendInputWidth, ...props }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);
+  const { inputWidths, sendInputWidth, setInputHeight, inputHeight } = props;
 
   useEffect(() => {
     if (wrapperRef.current) {
-      const newWidth = calculateWidthWithMargins(wrapperRef.current);
+      const newWidth = lengthWithMargins(wrapperRef.current, "width");
+      const newHeight = lengthWithMargins(wrapperRef.current, "height");
 
       if (inputWidths[name] !== newWidth) {
         sendInputWidth(name, newWidth);
       }
+
+      if (newHeight !== inputHeight) {
+        setInputHeight(newHeight);
+      }
     }
-  }, [inputWidths, name, sendInputWidth]);
+  }, [inputWidths, name, sendInputWidth, setInputHeight, inputHeight]);
 
   const date = useSelector(
     (state) =>
@@ -175,14 +181,16 @@ const recentSortableChangeAndNotHoveredInManual = (hover, old, sortedAs) => {
   return !old && !hover && sortedAs === "manual";
 };
 
-const calculateWidthWithMargins = (element) => {
+const lengthWithMargins = (element, dimension) => {
   const style = window.getComputedStyle(element);
-  const margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+  const [marginStart, marginEnd] =
+    dimension === "width"
+      ? ["marginLeft", "marginRight"]
+      : ["marginTop", "marginBottom"];
 
-  console.log(
-    `wrapper width: ${element.getBoundingClientRect().width + margin}`
-  );
-  return element.getBoundingClientRect().width + margin;
+  const margin = parseFloat(style[marginStart]) + parseFloat(style[marginEnd]);
+
+  return element.getBoundingClientRect()[dimension] + margin;
 };
 
 export default DateInput;
