@@ -15,7 +15,7 @@ export const createTodo = (props) => {
     parent: props.parent ?? "",
     message: props.message ?? "",
     list: props.list ?? [],
-    date: props.date ?? { month: "", day: "", year: "" },
+    date: props.date ?? { month: "", day: "", year: "", dow: "" },
   };
 };
 

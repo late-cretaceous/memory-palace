@@ -10,7 +10,7 @@ const DateForm = ({ todo, ...props }) => {
   const [hovered, setHovered] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  const formWidth = hovered
+  const formWidth = hovered || focused
     ? Object.values(inputWidths).reduce((acc, curr) => acc + curr, 0)
     : Object.values(inputWidths)[0];
 
