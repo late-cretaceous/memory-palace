@@ -10,9 +10,6 @@ const DateForm = ({ todo, ...props }) => {
   const [hovered, setHovered] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  const handleFocus = () => setFocused(true);
-  const handleBlur = () => setFocused(false);
-
   const formWidth = hovered
     ? Object.values(inputWidths).reduce((acc, curr) => acc + curr, 0)
     : Object.values(inputWidths)[0];
@@ -29,8 +26,8 @@ const DateForm = ({ todo, ...props }) => {
 
   const inputProps = {
     todo,
-    onFocus: handleFocus,
-    onBlur: handleBlur,
+    onFocus: () => setFocused(true),
+    onBlur: () => setFocused(false),
     color: props.color,
     negativeColor: props.negativeColor,
     old: props.old,
