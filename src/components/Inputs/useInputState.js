@@ -61,8 +61,8 @@ const useInputState = (todo, props, inputRef, inputName) => {
     !props.focused &&
     (isOldAndCascadingIntoDate(inCascade, props.old, sort) ||
       recentSortableChangeAndNotHoveredInManual(
-        props.old,
         parentHover,
+        props.old,
         parentSortedAs
       ));
 
@@ -86,7 +86,7 @@ const isOldAndCascadingIntoDate = (inCascade, old, sort) => {
   };
   
   const recentSortableChangeAndNotHoveredInManual = (hover, old, sortedAs) => {
-    return !old && !hover && sortedAs === "manual";
+    return !hover && !old && sortedAs === "manual";
   };
   
 

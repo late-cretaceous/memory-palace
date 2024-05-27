@@ -17,11 +17,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.5ch;
-  height: 2.5ch;
   border-radius: 25%;
   margin: 0 0.5ch 0 0.5ch;
   transition: background-color, left, right, 0.3s;
+}
+
+.wrapper.dateinput {
+  width: 2.5ch;
+  height: 2.5ch;
   position: absolute;
 }
 

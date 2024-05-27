@@ -1,0 +1,25 @@
+.input-container {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+  }
+  
+  .typed-text {
+    color: #000; /* Color for the typed text */
+  }
+  
+  .suggested-text {
+    color: #999; /* Color for the suggested text */
+  }
+  
+  .hidden-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    color: transparent;
+  }

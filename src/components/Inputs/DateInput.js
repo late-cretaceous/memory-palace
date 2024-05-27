@@ -92,8 +92,10 @@ const DateInput = ({ todo, name, ...props }) => {
   };
 
   const wrapperClasses = `${styles.wrapper} ${styles[name]} ${
-    invisible ? styles.hidden : ""
-  } ${props.formHover || props.focused ? styles["form-selected"] : ""}`;
+    styles.dateinput
+  } ${invisible ? styles.hidden : ""} ${
+    props.formHover || props.focused ? styles["form-selected"] : ""
+  }`;
 
   return (
     <div
