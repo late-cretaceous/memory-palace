@@ -62,7 +62,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     >
       <input
         style={{ color: props.color }}
-        className={styles["input-el"]}
+        className={`${styles["input-el"]} ${styles.dow}`}
         type="text"
         name={"dow"}
         value={date.dow}
