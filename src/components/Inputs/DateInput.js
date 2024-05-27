@@ -107,7 +107,7 @@ const DateInput = ({ todo, name, ...props }) => {
     >
       <input
         style={{ color: props.color }}
-        className={styles["input-el"]}
+        className={`${styles["input-el"]} ${styles.dateinput}`}
         type="text"
         name={name}
         value={date[name]}

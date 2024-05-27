@@ -2,11 +2,14 @@
   font: inherit;
   background: none;
   border-style: none;
-  width: 2ch;
   padding: 0;
   font-weight: bold;
   text-align: center;
   outline: none;
+}
+
+.input-el.dateinput {
+  width: 2ch;
 }
 
 .input-el::selection {
@@ -17,7 +20,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 25%;
+  border-radius: 5px;
   margin: 0 0.5ch 0 0.5ch;
   transition: background-color, left, right, 0.3s;
 }
@@ -50,4 +53,8 @@
 
 .hidden {
   visibility: hidden;
+}
+
+.dow {
+  width: 5ch;
 }

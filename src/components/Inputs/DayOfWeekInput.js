@@ -23,7 +23,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   } = useInputState(todo, props, inputRef, name);
 
   const handleInputChange = (e) => {
-    if (isNaN(e.target.value)) {
+    if (isNaN(e.target.value) || !Boolean(e.target.value)) {
       dispatch(
         editTodo({
           id: todo.id,
