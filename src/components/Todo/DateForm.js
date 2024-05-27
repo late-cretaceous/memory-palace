@@ -10,10 +10,13 @@ const DateForm = ({ todo, ...props }) => {
   const [hovered, setHovered] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  const formWidth =
-    hovered || focused
-      ? Object.values(inputWidths).reduce((acc, curr) => acc + curr, 0)
-      : Object.values(inputWidths)[0];
+  const singleInputWidth = Object.values(inputWidths)[0];
+  const expandedFormWidth = Object.values(inputWidths).reduce(
+    (acc, curr) => acc + curr,
+    0
+  );
+
+  const formWidth = hovered || focused ? expandedFormWidth : singleInputWidth;
 
   const sendInputWidth = (name, width) => {
     setInputWidths((prev) => ({ ...prev, [name]: width }));
@@ -51,17 +54,23 @@ const DateForm = ({ todo, ...props }) => {
       onMouseLeave={() => setHovered(false)}
     >
       <DayOfWeekInput name="dow" {...inputProps} />
-
       <div
-        className={numberInputsClasses}
         style={{
-          width: `${formWidth}px`,
+          width: `${expandedFormWidth}px`,
           height: `${inputHeight}px`,
         }}
       >
-        <DateInput name="month" {...inputProps} />
-        <DateInput name="day" {...inputProps} />
-        <DateInput name="year" {...inputProps} />
+        <div
+          className={numberInputsClasses}
+          style={{
+            width: `${formWidth}px`,
+            height: `${inputHeight}px`,
+          }}
+        >
+          <DateInput name="month" {...inputProps} />
+          <DateInput name="day" {...inputProps} />
+          <DateInput name="year" {...inputProps} />
+        </div>
       </div>
     </div>
   );
