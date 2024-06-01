@@ -23,7 +23,10 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   } = useInputState(todo, props, inputRef, name);
 
   const handleInputChange = (e) => {
-    if (isNaN(e.target.value) || !Boolean(e.target.value)) {
+    if (
+      (isNaN(e.target.value) || !Boolean(e.target.value)) &&
+      e.target.value.length < 4
+    ) {
       dispatch(
         editTodo({
           id: todo.id,
@@ -71,6 +74,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         ref={inputRef}
+        autoComplete="off"
       />
     </div>
   );

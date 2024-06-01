@@ -41,12 +41,16 @@ const DateInput = ({ todo, name, ...props }) => {
   const handleInputChange = (e) => {
     const paddedValue = String(e.target.value).padStart(2, "0");
     const twoDigitValue = paddedValue.slice(-2);
+    const newDate = { ...date, [name]: twoDigitValue };
+
+    const newDoW = dayOfWeek(newDate.month, newDate.day, newDate.year);
+    const finalDoW = newDoW !== "Invalid Date" ? newDoW : date.dow;
 
     if (!isNaN(twoDigitValue)) {
       dispatch(
         editTodo({
           id: todo.id,
-          edit: { date: { ...date, [name]: twoDigitValue } },
+          edit: { date: {...newDate, dow: finalDoW} },
         })
       );
 
@@ -116,6 +120,7 @@ const DateInput = ({ todo, name, ...props }) => {
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         ref={inputRef}
+        autoComplete="off"
       />
     </div>
   );
@@ -132,5 +137,10 @@ const lengthWithMargins = (element, dimension) => {
 
   return element.getBoundingClientRect()[dimension] + margin;
 };
+
+const dayOfWeek = (month, day, year) => {
+  const date = new Date(`${month}/${day}/${year}`);
+  return date.toLocaleDateString("en-US", { weekday: "short" });
+}
 
 export default DateInput;
