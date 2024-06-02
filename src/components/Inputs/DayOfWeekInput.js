@@ -23,6 +23,11 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   } = useInputState(todo, props, inputRef, name);
 
   const handleInputChange = (e) => {
+    const { dow, ...previousDate } = date;
+    const dowDate = validateDayOfWeek(e.target.value)
+      ? getNextDate(e.target.value, date)
+      : previousDate;
+
     if (
       (isNaN(e.target.value) || !Boolean(e.target.value)) &&
       e.target.value.length < 4
@@ -30,7 +35,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
       dispatch(
         editTodo({
           id: todo.id,
-          edit: { date: { ...date, dow: e.target.value } },
+          edit: { date: { ...dowDate, dow: e.target.value } },
         })
       );
 
@@ -78,6 +83,30 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
       />
     </div>
   );
+};
+
+const days = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
+const validateDayOfWeek = (dayOfWeek) => {
+  return days.hasOwnProperty(dayOfWeek);
+};
+
+const getNextDate = (dayOfWeek) => {
+  let date = new Date();
+
+  while (date.getDay() !== days[dayOfWeek]) {
+    date.setDate(date.getDate() + 1);
+  }
+
+  return {
+    year: finalDigits(date.getFullYear()),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+  };
+};
+
+const finalDigits = (num, digits = 2) => {
+  return parseInt(num.toString().slice(-digits));
 };
 
 export default DayOfWeekInput;
