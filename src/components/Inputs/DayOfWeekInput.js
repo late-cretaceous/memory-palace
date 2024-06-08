@@ -9,7 +9,8 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);
-  const [suggestion, setSuggestion] = useState('');
+  const [typed, setTyped] = useState(false);
+  const [suggestion, setSuggestion] = useState("");
 
   const {
     setSelfHover,
@@ -71,8 +72,11 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
       onMouseLeave={() => setSelfHover(false)}
       ref={wrapperRef}
     >
+      <span className={`${styles["text-span"]}`} style={{ color: props.color }}>
+        {date.dow}
+      </span>
+      <span className={`${styles["suggestion-span"]}`}>{}</span>
       <input
-        style={{ color: props.color }}
         className={`${styles["input-el"]} ${styles.dow}`}
         type="text"
         name={"dow"}
@@ -115,7 +119,7 @@ const finalDigits = (num, digits = 2) => {
 const matchingDay = (startString) => {
   return Object.keys(days).find((day) =>
     day.toLowerCase().startsWith(startString.toLowerCase())
-  ); 
-}
+  );
+};
 
 export default DayOfWeekInput;

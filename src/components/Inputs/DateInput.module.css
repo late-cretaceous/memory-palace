@@ -1,11 +1,10 @@
 .input-el {
-  font: inherit;
   background: none;
   border-style: none;
   padding: 0;
-  font-weight: bold;
-  text-align: center;
   outline: none;
+  position: absolute;
+  opacity: 0;
 }
 
 .input-el.dateinput {
@@ -14,6 +13,10 @@
 
 .input-el::selection {
   background: none;
+}
+
+.text-span {
+  font-weight: bold;
 }
 
 .wrapper {
@@ -58,5 +61,7 @@
 .dow {
   width: 5ch;
 }
+
+
 
 
