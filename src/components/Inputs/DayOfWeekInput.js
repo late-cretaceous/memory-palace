@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useInputState from "./useInputState";
 import styles from "./DateInput.module.css";
 
@@ -9,6 +9,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);
+  const [suggestion, setSuggestion] = useState('');
 
   const {
     setSelfHover,
@@ -27,6 +28,8 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     const dowDate = validateDayOfWeek(e.target.value)
       ? getNextDate(e.target.value, date)
       : previousDate;
+    const newDoW = matchingDay(e.target.value) || dow;
+    console.log(newDoW);
 
     if (
       (isNaN(e.target.value) || !Boolean(e.target.value)) &&
@@ -108,5 +111,11 @@ const getNextDate = (dayOfWeek) => {
 const finalDigits = (num, digits = 2) => {
   return parseInt(num.toString().slice(-digits));
 };
+
+const matchingDay = (startString) => {
+  return Object.keys(days).find((day) =>
+    day.toLowerCase().startsWith(startString.toLowerCase())
+  ); 
+}
 
 export default DayOfWeekInput;
