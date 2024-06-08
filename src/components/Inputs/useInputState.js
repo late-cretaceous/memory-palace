@@ -24,9 +24,11 @@ const useInputState = (todo, props, inputRef, inputName) => {
     (state) => state.transientSlice[todo.id].hover
   );
 
-  const handleFocus = () => {
+  const handleFocus = (e) => {
     setSelfFocus(true);
     props.onFocus();
+
+    e.target.select();
 
     if (inputRef.current) {
       inputRef.current.select();
