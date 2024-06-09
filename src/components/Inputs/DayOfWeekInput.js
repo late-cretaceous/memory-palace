@@ -39,22 +39,20 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     const suggestionRemainder = differenceOfStrings(dayCompleted, newlyTyped);
     setSuggestion(suggestionRemainder);
 
-    //next step is to use the typed value below and in the text display
+    if (isValidDoW(newlyTyped)) {
+      console.log("valid");
 
-    const dowDate = validateDayOfWeek(value)
-      ? getNextDate(e.target.value, date)
-      : previousDate;
-
-    dispatch(
-      editTodo({
-        id: todo.id,
-        edit: { date: { ...dowDate, dow: e.target.value } },
-      })
-    );
-
-    dispatch(
-      editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
-    );
+      const dowDate = getNextDate(newlyTyped);
+      dispatch(
+        editTodo({
+          id: todo.id,
+          edit: { date: { ...dowDate, dow: newlyTyped } },
+        })
+      );
+      dispatch(
+        editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
+      );
+    }
   };
 
   const handleBlur = () => {
@@ -84,7 +82,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
         className={`${styles["text-display"]}`}
         style={{ color: props.color }}
       >
-        {date.dow}
+        {typed}
       </span>
       <span
         className={`${styles["text-display"]} ${styles.suggestion}`}
@@ -96,7 +94,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
         className={`${styles["input-el"]} ${styles.dow}`}
         type="text"
         name={"dow"}
-        value={date.dow}
+        value={typed}
         onChange={handleInputChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
@@ -110,7 +108,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
 
 const days = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
 
-const validateDayOfWeek = (dayOfWeek) => {
+const isValidDoW = (dayOfWeek) => {
   return days.hasOwnProperty(dayOfWeek);
 };
 
