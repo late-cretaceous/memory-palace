@@ -25,28 +25,36 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   } = useInputState(todo, props, inputRef, name);
 
   const handleInputChange = (e) => {
+    if (!isStringOrBlank(e.target.value)) return;
+
     const { dow, ...previousDate } = date;
-    const dowDate = validateDayOfWeek(e.target.value)
+
+    const value = stringOverflowRestart(e.target.value, typed);
+    console.log(value);
+
+    const dayCompleted = matchingDay(value);
+    const newlyTyped = dayCompleted ? value : typed;
+    setTyped(newlyTyped);
+
+    const suggestionRemainder = differenceOfStrings(dayCompleted, newlyTyped);
+    setSuggestion(suggestionRemainder);
+
+    //next step is to use the typed value below and in the text display
+
+    const dowDate = validateDayOfWeek(value)
       ? getNextDate(e.target.value, date)
       : previousDate;
-    const newDoW = matchingDay(e.target.value) || dow;
-    console.log(newDoW);
 
-    if (
-      (isNaN(e.target.value) || !Boolean(e.target.value)) &&
-      e.target.value.length < 4
-    ) {
-      dispatch(
-        editTodo({
-          id: todo.id,
-          edit: { date: { ...dowDate, dow: e.target.value } },
-        })
-      );
+    dispatch(
+      editTodo({
+        id: todo.id,
+        edit: { date: { ...dowDate, dow: e.target.value } },
+      })
+    );
 
-      dispatch(
-        editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
-      );
-    }
+    dispatch(
+      editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
+    );
   };
 
   const handleBlur = () => {
@@ -72,10 +80,18 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
       onMouseLeave={() => setSelfHover(false)}
       ref={wrapperRef}
     >
-      <span className={`${styles["text-span"]}`} style={{ color: props.color }}>
+      <span
+        className={`${styles["text-display"]}`}
+        style={{ color: props.color }}
+      >
         {date.dow}
       </span>
-      <span className={`${styles["suggestion-span"]}`}>{}</span>
+      <span
+        className={`${styles["text-display"]} ${styles.suggestion}`}
+        style={{ color: props.color }}
+      >
+        {suggestion}
+      </span>
       <input
         className={`${styles["input-el"]} ${styles.dow}`}
         type="text"
@@ -122,4 +138,49 @@ const matchingDay = (startString) => {
   );
 };
 
+const stringOverflowRestart = (newString, oldString, max = 3) => {
+  return newString.length > max
+    ? findDiffChar(newString, oldString)
+    : newString;
+};
+
+function differenceOfStrings(string, substring) {
+  const substringSet = new Set(substring);
+  let difference = "";
+
+  for (const char of string) {
+    if (!substringSet.has(char)) {
+      difference += char;
+    }
+  }
+
+  return difference;
+}
+
+function findDiffChar(str1, str2) {
+  const lowerStr1 = str1.toLowerCase();
+  const lowerStr2 = str2.toLowerCase();
+
+  const charSet1 = new Set(lowerStr1.split(""));
+
+  for (const char of lowerStr2) {
+    if (!charSet1.has(char)) {
+      return char;
+    }
+  }
+
+  const charSet2 = new Set(lowerStr2.split(""));
+
+  for (const char of lowerStr1) {
+    if (!charSet2.has(char)) {
+      return char;
+    }
+  }
+
+  return undefined;
+}
+
+const isStringOrBlank = (str) => {
+  return typeof str === "string" || str === "";
+};
 export default DayOfWeekInput;

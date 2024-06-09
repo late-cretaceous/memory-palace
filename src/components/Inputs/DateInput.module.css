@@ -15,8 +15,12 @@
   background: none;
 }
 
-.text-span {
+.text-display {
   font-weight: bold;
+}
+
+.text-display.suggestion {
+  opacity: 0.75;
 }
 
 .wrapper {

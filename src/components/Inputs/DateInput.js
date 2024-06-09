@@ -50,7 +50,7 @@ const DateInput = ({ todo, name, ...props }) => {
       dispatch(
         editTodo({
           id: todo.id,
-          edit: { date: {...newDate, dow: finalDoW} },
+          edit: { date: { ...newDate, dow: finalDoW } },
         })
       );
 
@@ -109,12 +109,14 @@ const DateInput = ({ todo, name, ...props }) => {
       onMouseLeave={() => setSelfHover(false)}
       ref={wrapperRef}
     >
+      <span className={styles["text-display"]} style={{ color: props.color }}>
+        {date[name]}
+      </span>
       <input
         style={{ color: props.color }}
         className={`${styles["input-el"]} ${styles.dateinput}`}
         type="text"
         name={name}
-        value={date[name]}
         onChange={handleInputChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
@@ -141,6 +143,6 @@ const lengthWithMargins = (element, dimension) => {
 const dayOfWeek = (month, day, year) => {
   const date = new Date(`${month}/${day}/${year}`);
   return date.toLocaleDateString("en-US", { weekday: "short" });
-}
+};
 
 export default DateInput;
