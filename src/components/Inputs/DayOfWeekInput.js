@@ -24,19 +24,38 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     invisible,
   } = useInputState(todo, props, inputRef, name);
 
+  //address over-typing error
+  //add default
+  //note you have something in the stash (to update tabbpressed to include enter)
   const handleInputChange = (e) => {
     if (!isStringOrBlank(e.target.value)) return;
 
+    console.log(`typed: ${typed}`);
     const { dow, ...previousDate } = date;
+    const blankInput = e.target.value === "";
+    console.log(
+      `target value: ${e.target.value}\ntype: ${typeof e.target.value}`
+    );
 
     const value = stringOverflowRestart(e.target.value, typed);
-    console.log(value);
+    console.log(`value: ${value}`);
 
     const dayCompleted = matchingDay(value);
-    const newlyTyped = dayCompleted ? value : typed;
+    const fullDisplayDay =
+      dayCompleted || (blankInput ? "" : matchingDay(typed));
+    console.log(`dayCompleted: ${dayCompleted}`);
+    console.log(`fullDisplayDay: ${fullDisplayDay}`);
+
+    const newlyTyped = dayCompleted
+      ? capitalizeFirstLetter(value)
+      : blankInput
+      ? ""
+      : typed;
+    console.log(`newlyTyped: ${newlyTyped}`);
     setTyped(newlyTyped);
 
-    const suggestionRemainder = differenceOfStrings(dayCompleted, newlyTyped);
+    const suggestionRemainder = differenceOfStrings(fullDisplayDay, newlyTyped);
+    console.log(`suggestionRemainder: ${suggestionRemainder}`);
     setSuggestion(suggestionRemainder);
 
     if (isValidDoW(newlyTyped)) {
@@ -131,6 +150,8 @@ const finalDigits = (num, digits = 2) => {
 };
 
 const matchingDay = (startString) => {
+  if (startString === "") return undefined;
+
   return Object.keys(days).find((day) =>
     day.toLowerCase().startsWith(startString.toLowerCase())
   );
@@ -142,20 +163,20 @@ const stringOverflowRestart = (newString, oldString, max = 3) => {
     : newString;
 };
 
-function differenceOfStrings(string, substring) {
-  const substringSet = new Set(substring);
+const differenceOfStrings = (string, substring) => {
+  const substringSet = new Set(substring.toLowerCase().split(""));
   let difference = "";
 
-  for (const char of string) {
+  for (const char of string.toLowerCase()) {
     if (!substringSet.has(char)) {
       difference += char;
     }
   }
 
   return difference;
-}
+};
 
-function findDiffChar(str1, str2) {
+const findDiffChar = (str1, str2) => {
   const lowerStr1 = str1.toLowerCase();
   const lowerStr2 = str2.toLowerCase();
 
@@ -176,9 +197,13 @@ function findDiffChar(str1, str2) {
   }
 
   return undefined;
-}
+};
 
 const isStringOrBlank = (str) => {
   return typeof str === "string" || str === "";
 };
 export default DayOfWeekInput;
+
+const capitalizeFirstLetter = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
