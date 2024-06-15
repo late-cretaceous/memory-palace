@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 const useInputState = (todo, props, inputRef, inputName) => {
   const [selfHover, setSelfHover] = useState(false);
   const [selfFocus, setSelfFocus] = useState(false);
-  const [tabPressed, setTabPressed] = useState(false);
+  const [confirmKeyPressed, setConfirmKeyPressed] = useState(false);
 
   const date = useSelector(
     (state) =>
@@ -36,8 +36,9 @@ const useInputState = (todo, props, inputRef, inputName) => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Tab") {
-      setTabPressed(true);
+    if (e.key === "Tab" || e.key === "Enter") {
+      e.target.blur();
+      setConfirmKeyPressed(true);
     }
   };
 
@@ -71,8 +72,8 @@ const useInputState = (todo, props, inputRef, inputName) => {
   return {
     setSelfHover,
     setSelfFocus,
-    tabPressed,
-    setTabPressed,
+    confirmKeyPressed,
+    setConfirmKeyPressed,
     date,
     handleFocus,
     handleKeyDown,

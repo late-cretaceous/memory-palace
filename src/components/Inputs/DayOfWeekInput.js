@@ -15,8 +15,8 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   const {
     setSelfHover,
     setSelfFocus,
-    tabPressed,
-    setTabPressed,
+    confirmKeyPressed,
+    setConfirmKeyPressed,
     date,
     handleFocus,
     handleKeyDown,
@@ -25,6 +25,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   } = useInputState(todo, props, inputRef, name);
 
   //add default
+  //style so the field is brightest when focused
   //note you have something in the stash (to update tabbpressed to include enter)
   const handleInputChange = (e) => {
     if (!isStringOrBlank(e.target.value)) return;
@@ -76,13 +77,13 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   const handleBlur = () => {
     setSelfFocus(false);
 
-    if (!tabPressed) {
+    if (!confirmKeyPressed) {
       props.onBlur();
     } else {
       if (name === "year") {
         props.onBlur();
       }
-      setTabPressed(false);
+      setConfirmKeyPressed(false);
     }
   };
 

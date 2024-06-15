@@ -14,8 +14,8 @@ const DateInput = ({ todo, name, ...props }) => {
   const {
     setSelfHover,
     setSelfFocus,
-    tabPressed,
-    setTabPressed,
+    confirmKeyPressed,
+    setConfirmKeyPressed,
     date,
     handleFocus,
     handleKeyDown,
@@ -63,13 +63,13 @@ const DateInput = ({ todo, name, ...props }) => {
   const handleBlur = () => {
     setSelfFocus(false);
 
-    if (!tabPressed) {
+    if (!confirmKeyPressed) {
       props.onBlur();
     } else {
       if (name === "year") {
         props.onBlur();
       }
-      setTabPressed(false);
+      setConfirmKeyPressed(false);
     }
 
     const dayLimits = {
