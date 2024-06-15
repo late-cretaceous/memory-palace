@@ -24,7 +24,6 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     invisible,
   } = useInputState(todo, props, inputRef, name);
 
-  //address over-typing error
   //add default
   //note you have something in the stash (to update tabbpressed to include enter)
   const handleInputChange = (e) => {
@@ -158,6 +157,8 @@ const matchingDay = (startString) => {
 };
 
 const stringOverflowRestart = (newString, oldString, max = 3) => {
+  console.log(`newString: ${newString}`);
+  console.log(`oldString: ${oldString}`);
   return newString.length > max
     ? findDiffChar(newString, oldString)
     : newString;
@@ -180,18 +181,24 @@ const findDiffChar = (str1, str2) => {
   const lowerStr1 = str1.toLowerCase();
   const lowerStr2 = str2.toLowerCase();
 
-  const charSet1 = new Set(lowerStr1.split(""));
+  const charCount1 = {};
+  for (const char of lowerStr1) {
+    charCount1[char] = (charCount1[char] || 0) + 1;
+  }
 
+  const charCount2 = {};
   for (const char of lowerStr2) {
-    if (!charSet1.has(char)) {
+    charCount2[char] = (charCount2[char] || 0) + 1;
+  }
+
+  for (const char in charCount1) {
+    if (!charCount2[char] || charCount1[char] !== charCount2[char]) {
       return char;
     }
   }
 
-  const charSet2 = new Set(lowerStr2.split(""));
-
-  for (const char of lowerStr1) {
-    if (!charSet2.has(char)) {
+  for (const char in charCount2) {
+    if (!charCount1[char] || charCount1[char] !== charCount2[char]) {
       return char;
     }
   }
