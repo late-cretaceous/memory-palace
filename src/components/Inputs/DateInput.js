@@ -23,6 +23,17 @@ const DateInput = ({ todo, name, ...props }) => {
     invisible,
   } = useInputState(todo, props, inputRef, name);
 
+  if (props.advanceField === "dow" && name === "month") {
+    inputRef.current.focus();
+    props.setAdvanceField(null);
+  } else if (props.advanceField === "month" && name === "day") {
+    inputRef.current.focus();
+    props.setAdvanceField(null);
+  } else if (props.advanceField === "day" && name === "year") {
+    inputRef.current.focus();
+    props.setAdvanceField(null);
+  }
+
   useEffect(() => {
     if (wrapperRef.current) {
       const newWidth = lengthWithMargins(wrapperRef.current, "width");

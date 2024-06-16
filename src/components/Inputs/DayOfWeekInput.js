@@ -9,7 +9,6 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);
-  const [typed, setTyped] = useState(false);
   const [suggestion, setSuggestion] = useState("");
 
   const {
@@ -23,6 +22,8 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     backgroundColor,
     invisible,
   } = useInputState(todo, props, inputRef, name);
+
+  const [typed, setTyped] = useState(date.dow);
 
   //add default
   //style so the field is brightest when focused

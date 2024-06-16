@@ -37,7 +37,9 @@ const useInputState = (todo, props, inputRef, inputName) => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Tab" || e.key === "Enter") {
+      e.preventDefault();
       e.target.blur();
+      props.setAdvanceField(inputName);
       setConfirmKeyPressed(true);
     }
   };

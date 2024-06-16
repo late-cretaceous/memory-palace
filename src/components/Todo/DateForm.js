@@ -9,6 +9,9 @@ const DateForm = ({ todo, ...props }) => {
   const [inputHeight, setInputHeight] = useState(0);
   const [hovered, setHovered] = useState(false);
   const [initialized, setInitialized] = useState(false);
+  const [advanceField, setAdvanceField] = useState(null);
+
+  console.log(advanceField);
 
   const singleInputWidth = Object.values(inputWidths)[0];
   const expandedFormWidth = Object.values(inputWidths).reduce(
@@ -41,6 +44,8 @@ const DateForm = ({ todo, ...props }) => {
     setInputHeight,
     inputHeight,
     formHover: hovered,
+    advanceField,
+    setAdvanceField,
   };
 
   const numberInputsClasses = `${styles["number-inputs"]} ${
