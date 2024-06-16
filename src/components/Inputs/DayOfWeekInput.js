@@ -26,7 +26,6 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   const [typed, setTyped] = useState(date.dow);
 
   //add default
-  //style so the field is brightest when focused
   //note you have something in the stash (to update tabbpressed to include enter)
   const handleInputChange = (e) => {
     if (!isStringOrBlank(e.target.value)) return;

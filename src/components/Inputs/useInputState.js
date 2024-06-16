@@ -45,21 +45,23 @@ const useInputState = (todo, props, inputRef, inputName) => {
   };
 
   const isDateEmpty = isEmpty(date[inputName]);
-  const shouldFadeLight =
-    isDateEmpty && !selfHover && !props.focused && !selfFocus;
-  const shouldFadeMedium =
+  const dimmest = isDateEmpty && !selfHover && !props.focused && !selfFocus;
+  const dim =
     !selfFocus &&
     ((props.focused && !selfHover) ||
       (isDateEmpty && selfHover) ||
       (parentHover && !selfHover));
-  const shouldFadeHeavy = selfFocus || (!isDateEmpty && selfHover);
+  const bright = !selfFocus && !isDateEmpty && selfHover;
+  const brighest = selfFocus;
 
-  const backgroundColor = shouldFadeLight
+  const backgroundColor = dimmest
     ? props.color.faded(0.25)
-    : shouldFadeMedium
-    ? props.color.faded(2.5)
-    : shouldFadeHeavy
-    ? props.color.faded(5)
+    : dim
+    ? props.color.faded(2)
+    : bright
+    ? props.color.faded(4)
+    : brighest
+    ? props.color.faded(6)
     : props.color.faded(1);
 
   const invisible =
@@ -87,12 +89,11 @@ const useInputState = (todo, props, inputRef, inputName) => {
 const isEmpty = (field) => !Boolean(field);
 
 const isOldAndCascadingIntoDate = (inCascade, old, sort) => {
-    return inCascade && old && sort === "date";
-  };
-  
-  const recentSortableChangeAndNotHoveredInManual = (hover, old, sortedAs) => {
-    return !hover && !old && sortedAs === "manual";
-  };
-  
+  return inCascade && old && sort === "date";
+};
+
+const recentSortableChangeAndNotHoveredInManual = (hover, old, sortedAs) => {
+  return !hover && !old && sortedAs === "manual";
+};
 
 export default useInputState;

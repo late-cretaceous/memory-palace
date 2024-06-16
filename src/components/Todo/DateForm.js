@@ -11,8 +11,6 @@ const DateForm = ({ todo, ...props }) => {
   const [initialized, setInitialized] = useState(false);
   const [advanceField, setAdvanceField] = useState(null);
 
-  console.log(advanceField);
-
   const singleInputWidth = Object.values(inputWidths)[0];
   const expandedFormWidth = Object.values(inputWidths).reduce(
     (acc, curr) => acc + curr,
