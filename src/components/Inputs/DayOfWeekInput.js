@@ -60,29 +60,21 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
 
     if (isValidDoW(newlyTyped)) {
       console.log("valid");
-
-      const dowDate = getNextDate(newlyTyped);
-      dispatch(
-        editTodo({
-          id: todo.id,
-          edit: { date: { ...dowDate, dow: newlyTyped } },
-        })
-      );
-      dispatch(
-        editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
-      );
+      dispatchDateChange(dispatch, todo, newlyTyped);
     }
   };
 
   const handleBlur = () => {
     setSelfFocus(false);
+    const completedDay = typed + suggestion;
+
+    setTyped(completedDay);
+    setSuggestion("");
+    dispatchDateChange(dispatch, todo, completedDay);
 
     if (!confirmKeyPressed) {
       props.onBlur();
     } else {
-      if (name === "year") {
-        props.onBlur();
-      }
       setConfirmKeyPressed(false);
     }
   };
@@ -214,4 +206,17 @@ export default DayOfWeekInput;
 
 const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+const dispatchDateChange = (dispatch, todo, newlyTyped) => {
+  const dowDate = getNextDate(newlyTyped);
+  dispatch(
+    editTodo({
+      id: todo.id,
+      edit: { date: { ...dowDate, dow: newlyTyped } },
+    })
+  );
+  dispatch(
+    editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
+  );
 };
