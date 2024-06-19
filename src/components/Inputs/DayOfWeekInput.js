@@ -129,6 +129,10 @@ const isValidDoW = (dayOfWeek) => {
 };
 
 const getNextDate = (dayOfWeek) => {
+  if (isDayInvalidOrBlank(dayOfWeek)) {
+    return { year: "", month: "", day: "" };
+  }
+
   let date = new Date();
 
   while (date.getDay() !== days[dayOfWeek]) {
@@ -207,15 +211,12 @@ const findDiffChar = (str1, str2) => {
 const isStringOrBlank = (str) => {
   return typeof str === "string" || str === "";
 };
-export default DayOfWeekInput;
 
 const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 const dispatchDateChange = (dispatch, todo, newlyTyped) => {
-  if (!isValidDoW(newlyTyped)) return;
-
   const dowDate = getNextDate(newlyTyped);
   dispatch(
     editTodo({
@@ -227,3 +228,9 @@ const dispatchDateChange = (dispatch, todo, newlyTyped) => {
     editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
   );
 };
+
+const isDayInvalidOrBlank = (day) => {
+  return (day && !day.length) || !isValidDoW(day);
+}
+
+export default DayOfWeekInput;
