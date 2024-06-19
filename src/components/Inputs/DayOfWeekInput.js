@@ -58,10 +58,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     console.log(`suggestionRemainder: ${suggestionRemainder}`);
     setSuggestion(suggestionRemainder);
 
-    if (isValidDoW(newlyTyped)) {
-      console.log("valid");
-      dispatchDateChange(dispatch, todo, newlyTyped);
-    }
+    dispatchDateChange(dispatch, todo, newlyTyped);
   };
 
   const handleBlur = () => {
@@ -209,6 +206,8 @@ const capitalizeFirstLetter = (str) => {
 };
 
 const dispatchDateChange = (dispatch, todo, newlyTyped) => {
+  if (!isValidDoW(newlyTyped)) return;
+
   const dowDate = getNextDate(newlyTyped);
   dispatch(
     editTodo({
