@@ -26,6 +26,10 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
 
   const [typed, setTyped] = useState(date.dow);
 
+  if (typed !== date.dow) {
+    setTyped(date.dow);
+  }
+
   if (initialRender) {
     setInitialRender(false);
     if (!typed) {
@@ -231,6 +235,6 @@ const dispatchDateChange = (dispatch, todo, newlyTyped) => {
 
 const isDayInvalidOrBlank = (day) => {
   return (day && !day.length) || !isValidDoW(day);
-}
+};
 
 export default DayOfWeekInput;
