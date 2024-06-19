@@ -9,6 +9,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);
+  const [initialRender, setInitialRender] = useState(true);
   const [suggestion, setSuggestion] = useState("");
 
   const {
@@ -25,8 +26,15 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
 
   const [typed, setTyped] = useState(date.dow);
 
-  //add default
-  //note you have something in the stash (to update tabbpressed to include enter)
+  if (initialRender) {
+    setInitialRender(false);
+    if (!typed) {
+      setTyped("Sun");
+      dispatchDateChange(dispatch, todo, "Sun");
+    }
+  }
+
+  //Update functions so empty values clear the date
   const handleInputChange = (e) => {
     if (!isStringOrBlank(e.target.value)) return;
 
