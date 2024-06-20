@@ -83,8 +83,8 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
     (sibling) => transientTodos[sibling.id]
   );
   const previousTodo = Object.values(transientSiblings).find(
-    (transientTodo) => transientTodo.position === adderPosition
-  )?.id;
+    (transientTodo) => transientTodo?.position === adderPosition
+  ).id;
 
   return (
     <div

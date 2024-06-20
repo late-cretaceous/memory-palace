@@ -38,7 +38,6 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     }
   }
 
-  //Update functions so empty values clear the date
   const handleInputChange = (e) => {
     if (!isStringOrBlank(e.target.value)) return;
 
