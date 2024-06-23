@@ -3,7 +3,7 @@ import DayOfWeekInput from "../Inputs/DayOfWeekInput";
 import styles from "./DateForm.module.css";
 import { useState, useEffect } from "react";
 
-const DateForm = ({ todo, ...props }) => {
+const DateForm = ({ family: {todo, parent, siblings}, ...props }) => {
   const [focused, setFocused] = useState(false);
   const [inputWidths, setInputWidths] = useState({ day: 0, month: 0, year: 0 });
   const [inputHeight, setInputHeight] = useState(0);
@@ -30,7 +30,6 @@ const DateForm = ({ todo, ...props }) => {
   }, [formWidth, initialized]);
 
   const inputProps = {
-    todo,
     onFocus: () => setFocused(true),
     onBlur: () => setFocused(false),
     color: props.color,
@@ -44,6 +43,7 @@ const DateForm = ({ todo, ...props }) => {
     formHover: hovered,
     advanceField,
     setAdvanceField,
+    family: { todo, parent, siblings },
   };
 
   const numberInputsClasses = `${styles["number-inputs"]} ${

@@ -5,7 +5,7 @@ import { useRef, useEffect } from "react";
 import useInputState from "./useInputState";
 import styles from "./DateInput.module.css";
 
-const DateInput = ({ todo, name, ...props }) => {
+const DateInput = ({ family: {todo, siblings, parent}, name, ...props }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);

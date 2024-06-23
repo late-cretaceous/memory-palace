@@ -74,7 +74,17 @@ const todoQuantitiesDiffer = (lista, listb) => lista.length !== listb.length;
 const differentPlaceAfterSort = (todo, todos, unsorted) => {
   const sortedTodos = sortTodosByDate(todos);
 
-  return sortedTodos.indexOf(todo) !== unsorted[todo.id].position;
+  console.log(`sortedTodos: ${sortedTodos}`);
+  console.log(`unsorted: ${unsorted}`);
+  console.log(findIndexById(sortedTodos, todo.id));
+  console.log(unsorted[todo.id].position);
+  console.log(todo);
+
+  return findIndexById(sortedTodos, todo.id) !== unsorted[todo.id].position;
+};
+
+const findIndexById = (array, id) => {
+  return array.findIndex((item) => item.id === id);
 };
 
 export default useListDisplayUpdate;

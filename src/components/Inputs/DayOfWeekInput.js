@@ -1,11 +1,17 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
 import { useRef, useState } from "react";
 import useInputState from "./useInputState";
 import styles from "./DateInput.module.css";
+import { matchPositionsToIndices } from "../../utilities/reduxUtils";
+import { sortTodosByDate } from "../../utilities/todoUtils";
 
-const DayOfWeekInput = ({ todo, name, ...props }) => {
+const DayOfWeekInput = ({
+  family: { todo, parent, siblings },
+  name,
+  ...props
+}) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -25,6 +31,9 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
   } = useInputState(todo, props, inputRef, name);
 
   const [typed, setTyped] = useState(date.dow);
+  const sortedAs = useSelector(
+    (state) => state.transientSlice[todo.id]?.sortedAs
+  );
 
   if (typed !== date.dow) {
     setTyped(date.dow);
@@ -34,7 +43,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     setInitialRender(false);
     if (!typed) {
       setTyped("Sun");
-      dispatchDateChange(dispatch, todo, "Sun");
+      dispatchDateChange(dispatch, todo, siblings, "Sun", sortedAs);
     }
   }
 
@@ -69,7 +78,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
     console.log(`suggestionRemainder: ${suggestionRemainder}`);
     setSuggestion(suggestionRemainder);
 
-    dispatchDateChange(dispatch, todo, newlyTyped);
+    dispatchDateChange(dispatch, todo, siblings, newlyTyped, sortedAs);
   };
 
   const handleBlur = () => {
@@ -78,7 +87,7 @@ const DayOfWeekInput = ({ todo, name, ...props }) => {
 
     setTyped(completedDay);
     setSuggestion("");
-    dispatchDateChange(dispatch, todo, completedDay);
+    dispatchDateChange(dispatch, todo, siblings, completedDay, sortedAs);
 
     if (!confirmKeyPressed) {
       props.onBlur();
@@ -219,17 +228,28 @@ const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const dispatchDateChange = (dispatch, todo, newlyTyped) => {
-  const dowDate = getNextDate(newlyTyped);
+const dispatchDateChange = (dispatch, todo, siblings, newlyTyped, sortedAs) => {
+  const newDate = { ...getNextDate(newlyTyped), dow: newlyTyped };
+
   dispatch(
     editTodo({
       id: todo.id,
-      edit: { date: { ...dowDate, dow: newlyTyped } },
+      edit: { date: newDate },
     })
   );
   dispatch(
     editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
   );
+
+  if (sortedAs === "date") {
+    const siblingsWithNewDate = siblings.map((sibling) =>
+      sibling.id === todo.id ? { ...sibling, date: newDate } : sibling
+    );
+
+    const sortedSiblings = sortTodosByDate(siblingsWithNewDate);
+
+    matchPositionsToIndices(dispatch, sortedSiblings);
+  }
 };
 
 const isDayInvalidOrBlank = (day) => {

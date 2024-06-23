@@ -9,7 +9,7 @@ const TodoTop = ({ family, ...props }) => {
     >
       <h5 className={`${styles.label}`}>{props.labelDisplay}</h5>
       <DateForm
-        todo={family.todo}
+        family={family}
         color={props.color}
         negativeColor={props.negativeColor}
         old={props.old}
