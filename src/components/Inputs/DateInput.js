@@ -4,8 +4,9 @@ import { editTransientTodo } from "../../redux/transientSlice";
 import { useRef, useEffect } from "react";
 import useInputState from "./useInputState";
 import styles from "./DateInput.module.css";
+import { repositionFromNewDate } from "../../utilities/dateUtils";
 
-const DateInput = ({ family: {todo, siblings, parent}, name, ...props }) => {
+const DateInput = ({ family: { todo, siblings, parent }, name, ...props }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -21,6 +22,7 @@ const DateInput = ({ family: {todo, siblings, parent}, name, ...props }) => {
     handleKeyDown,
     backgroundColor,
     invisible,
+    sortedAs,
   } = useInputState(todo, props, inputRef, name);
 
   if (props.advanceField === "dow" && name === "month") {
@@ -68,6 +70,10 @@ const DateInput = ({ family: {todo, siblings, parent}, name, ...props }) => {
       dispatch(
         editTransientTodo({ id: todo.id, edit: { hasSortableChange: true } })
       );
+
+      if (sortedAs === "date") {
+        repositionFromNewDate(dispatch, todo, siblings, newDate);
+      }
     }
   };
 

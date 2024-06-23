@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { editTodo } from "../../redux/persistentSlice";
 import { editTransientTodo } from "../../redux/transientSlice";
 import { useRef, useState } from "react";
 import useInputState from "./useInputState";
 import styles from "./DateInput.module.css";
-import { matchPositionsToIndices } from "../../utilities/reduxUtils";
-import { sortTodosByDate } from "../../utilities/todoUtils";
+import { repositionFromNewDate } from "../../utilities/dateUtils";
 
 const DayOfWeekInput = ({
   family: { todo, parent, siblings },
@@ -28,12 +27,10 @@ const DayOfWeekInput = ({
     handleKeyDown,
     backgroundColor,
     invisible,
+    sortedAs
   } = useInputState(todo, props, inputRef, name);
 
   const [typed, setTyped] = useState(date.dow);
-  const sortedAs = useSelector(
-    (state) => state.transientSlice[todo.id]?.sortedAs
-  );
 
   if (typed !== date.dow) {
     setTyped(date.dow);
@@ -242,13 +239,7 @@ const dispatchDateChange = (dispatch, todo, siblings, newlyTyped, sortedAs) => {
   );
 
   if (sortedAs === "date") {
-    const siblingsWithNewDate = siblings.map((sibling) =>
-      sibling.id === todo.id ? { ...sibling, date: newDate } : sibling
-    );
-
-    const sortedSiblings = sortTodosByDate(siblingsWithNewDate);
-
-    matchPositionsToIndices(dispatch, sortedSiblings);
+    repositionFromNewDate(dispatch, todo, siblings, newDate);
   }
 };
 

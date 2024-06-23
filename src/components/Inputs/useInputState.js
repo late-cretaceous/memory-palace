@@ -20,9 +20,10 @@ const useInputState = (todo, props, inputRef, inputName) => {
   );
   const { sort } = useSelector((state) => state.globalSlice);
 
-  const parentHover = useSelector(
-    (state) => state.transientSlice[todo.id].hover
+  const {hover: parentHover, sortedAs} = useSelector(
+    (state) => state.transientSlice[todo.id]
   );
+
 
   const handleFocus = (e) => {
     setSelfFocus(true);
@@ -83,6 +84,7 @@ const useInputState = (todo, props, inputRef, inputName) => {
     handleKeyDown,
     backgroundColor,
     invisible,
+    sortedAs
   };
 };
 
