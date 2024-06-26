@@ -60,6 +60,7 @@
 
 .hidden {
   visibility: hidden;
+  transition: 0s;
 }
 
 .dow {
