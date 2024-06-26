@@ -225,18 +225,12 @@ const Todo = ({ familyIds, ...props }) => {
   let todoStyles = styles.todo;
   todoStyles += !todo.parent ? ` ${styles.bigTodo}` : "";
 
-
-  const noDragHandler = (e) => {
-    console.log(e);
-  }
-
   return (
     <div
       className={todoStyles}
       onMouseLeave={() => markAsNotNewHandler()}
       onMouseEnter={cancelNotNewHandler}
       {...draggableProps}
-      onDragStart={noDragHandler}
     >
       {firstTodoAdder}
       {todoHead}

@@ -98,7 +98,9 @@ const DayOfWeekInput = ({
     }
   };
 
-  const wrapperClasses = `${styles.wrapper} ${styles.dow}`;
+  const wrapperClasses = `${styles.wrapper} ${styles.dow} ${
+    invisible ? styles.hidden : ""
+  }`;
 
   return (
     <div

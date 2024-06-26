@@ -114,7 +114,7 @@ const DateInput = ({ family: { todo, siblings, parent }, name, ...props }) => {
 
   const wrapperClasses = `${styles.wrapper} ${styles[name]} ${
     styles.dateinput
-  } ${invisible ? styles.hidden : ""} ${
+  }  ${invisible ? styles.hidden : ""}${
     props.formHover || props.focused ? styles["form-selected"] : ""
   }`;
 

@@ -5,7 +5,6 @@
 .number-inputs {
   position: relative;
   display: inline-block;
-  border: solid;
 }
 
 .number-inputs.transition {
