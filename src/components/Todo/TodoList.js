@@ -140,7 +140,12 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
             todoAnimationExitHandler(todo.id);
           }}
         >
-          <Draggable key={todo.id} draggableId={todo.id} index={index}>
+          <Draggable
+            key={todo.id}
+            draggableId={todo.id}
+            index={index}
+            isDragDisabled={transients[todo.id].sortedAs !== "manual"}
+          >
             {(provided) => (
               <div ref={provided.innerRef}>
                 <Todo
