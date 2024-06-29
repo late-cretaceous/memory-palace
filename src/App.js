@@ -29,8 +29,11 @@ function App() {
   if (firstRender) {
     dispatch(addExistingTodo(bigTodo));
     dispatch(addTransientTodo({ id: bigTodo.id, listOpen: true }));
-    setFirstRender(false);
   }
+
+  const { on: cascadeOn } = useSelector(
+    (state) => state.transientSlice.bigTodo.cascade
+  );
 
   //scaffold show/hide labels using reducer
   useEffect(() => {
@@ -48,10 +51,13 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (backgroundRef.current) {
-      backgroundRef.current.scrollTop = 0;
+    if (cascadeOn || firstRender) {
+      if (backgroundRef.current) {
+        backgroundRef.current.scrollTop = 0;
+      }
+      setFirstRender(false);
     }
-  }, []);
+  }, [cascadeOn, firstRender]);
 
   const spectrumRange = 60;
   let bColor = color.adjustedHSLBounded(spectrumRange, 0, lightRange);
