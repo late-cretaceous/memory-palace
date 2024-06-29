@@ -4,7 +4,7 @@ import HSL from "./utilities/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { addExistingTodo } from "./redux/persistentSlice";
 import { addTransientTodo } from "./redux/transientSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchTodo } from "./utilities/databaseUtils";
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
   const [firstRender, setFirstRender] = useState(true);
 
   const dispatch = useDispatch();
+  const backgroundRef = useRef(null);
 
   if (firstRender) {
     dispatch(addExistingTodo(bigTodo));
@@ -46,6 +47,12 @@ function App() {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    if (backgroundRef.current) {
+      backgroundRef.current.scrollTop = 0;
+    }
+  }, []);
+
   const spectrumRange = 60;
   let bColor = color.adjustedHSLBounded(spectrumRange, 0, lightRange);
   const backgroundColorNegative = useSelector(
@@ -56,7 +63,11 @@ function App() {
   console.log(`Background color: ${bColor}`);
 
   return (
-    <div style={{ backgroundColor: bColor }} className={"background"}>
+    <div
+      style={{ backgroundColor: bColor }}
+      className={"background"}
+      ref={backgroundRef}
+    >
       <Header color={color} />
       <Todo
         familyIds={{ todo: "bigTodo", parent: null, siblings: [] }}
