@@ -74,12 +74,6 @@ const todoQuantitiesDiffer = (lista, listb) => lista.length !== listb.length;
 const differentPlaceAfterSort = (todo, todos, unsorted) => {
   const sortedTodos = sortTodosByDate(todos);
 
-  console.log(`sortedTodos: ${sortedTodos}`);
-  console.log(`unsorted: ${unsorted}`);
-  console.log(findIndexById(sortedTodos, todo.id));
-  console.log(unsorted[todo.id].position);
-  console.log(todo);
-
   return findIndexById(sortedTodos, todo.id) !== unsorted[todo.id].position;
 };
 

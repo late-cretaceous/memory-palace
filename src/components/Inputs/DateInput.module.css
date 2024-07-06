@@ -32,6 +32,10 @@
   transition: background-color, left, right, 0.3s;
 }
 
+.wrapper.dow {
+  position: relative;
+}
+
 .wrapper.dateinput {
   width: 2.75ch;
   height: 2.75ch;
@@ -53,7 +57,6 @@
   right: 0;
 }
 
-
 .wrapper.day.form-selected {
   left: 33%;
 }
@@ -67,7 +70,3 @@
   width: 5ch;
   height: 2.75ch;
 }
-
-
-
-
