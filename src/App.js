@@ -21,17 +21,20 @@ function App() {
       date: { month: "", day: "", year: "" },
     }
   );
-  const [firstRender, setFirstRender] = useState(true);
+  const [renderCycleNumber, setRenderCycleNumber] = useState(0);
 
   const dispatch = useDispatch();
   const backgroundRef = useRef(null);
+  const scrollPosition = useRef(0);
 
-  if (firstRender) {
+  if (!renderCycleNumber) {
     dispatch(addExistingTodo(bigTodo));
     dispatch(addTransientTodo({ id: bigTodo.id, listOpen: true }));
+
+    setRenderCycleNumber(1);
   }
 
-  const { on: cascadeOn } = useSelector(
+  const { phase: cascadePhase, index: cascadeIndex } = useSelector(
     (state) => state.transientSlice.bigTodo.cascade
   );
 
@@ -51,13 +54,17 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (cascadeOn || firstRender) {
+    if (scrollHoldConditions(cascadePhase, cascadeIndex, renderCycleNumber)) {
       if (backgroundRef.current) {
-        backgroundRef.current.scrollTop = 0;
+        backgroundRef.current.scrollTop = scrollPosition.current;
       }
-      setFirstRender(false);
+      setRenderCycleNumber(2);
     }
-  }, [cascadeOn, firstRender]);
+  }, [cascadePhase, cascadeIndex, renderCycleNumber]);
+
+  const handleScroll = () => {
+    scrollPosition.current = backgroundRef.current.scrollTop;
+  };
 
   const spectrumRange = 60;
   let bColor = color.adjustedHSLBounded(spectrumRange, 0, lightRange);
@@ -73,6 +80,7 @@ function App() {
       style={{ backgroundColor: bColor }}
       className={"background"}
       ref={backgroundRef}
+      onScroll={handleScroll}
     >
       <Header color={color} />
       <Todo
@@ -85,5 +93,13 @@ function App() {
     </div>
   );
 }
+
+const scrollHoldConditions = (
+  cascadePhase,
+  cascadeIndex,
+  renderCycleNumber
+) => {
+  return cascadePhase !== "off" || cascadeIndex >= 0 || renderCycleNumber === 1;
+};
 
 export default App;

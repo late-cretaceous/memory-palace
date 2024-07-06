@@ -20,6 +20,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: inherit;
+  overflow: hidden;
 }
 
 code {
@@ -31,6 +32,8 @@ code {
   height: inherit;
   display: flex;
   flex-direction: column;
+  /*not essential but doesn't break it*/
+  overflow: hidden;
 }
 
 .background {
