@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/memory-palace/static/css/main.440ee791.css",
-    "main.js": "/memory-palace/static/js/main.583f9f6e.js",
+    "main.js": "/memory-palace/static/js/main.1beb2f10.js",
     "index.html": "/memory-palace/index.html",
     "static/media/sort.svg": "/memory-palace/static/media/sort.86f24628a80ea8daaaa36dc1bbb38a2c.svg",
     "static/media/triangle.svg": "/memory-palace/static/media/triangle.220a8298456d0a829046b4cdcd84023d.svg",
     "main.440ee791.css.map": "/memory-palace/static/css/main.440ee791.css.map",
-    "main.583f9f6e.js.map": "/memory-palace/static/js/main.583f9f6e.js.map"
+    "main.1beb2f10.js.map": "/memory-palace/static/js/main.1beb2f10.js.map"
   },
   "entrypoints": [
     "static/css/main.440ee791.css",
-    "static/js/main.583f9f6e.js"
+    "static/js/main.1beb2f10.js"
   ]
 }
