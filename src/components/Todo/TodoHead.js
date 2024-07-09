@@ -14,7 +14,7 @@ const TodoHead = ({ family: { todo, parent, siblings }, ...props }) => {
   const labelsVisible = useSelector((state) => state.labelSlice.visible);
   const dispatch = useDispatch();
   todo = useSelector((state) => state.persistentSlice[todo.id]) ?? todo;
-  parent = useSelector((state) => state.persistentSlice[parent.id]);
+  parent = useSelector((state) => state.persistentSlice[parent?.id] ?? todo);
 
   const transientTodos = useSelector((state) => state.transientSlice) ?? {};
   const cascadePhase = useSelector(

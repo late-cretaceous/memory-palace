@@ -18,7 +18,7 @@ export const removeFromStorage = (id) => {
 export const fetchTodo = (id) => {
   const parsedTodo = JSON.parse(localStorage.getItem(id));
 
-  return createTodo(parsedTodo);
+  return parsedTodo ? createTodo(parsedTodo) : null;
 };
 
 export const listHierarchy = (id) => {
