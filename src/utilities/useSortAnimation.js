@@ -64,24 +64,24 @@ const useSortAnimation = (
     //slight timeout prevents flicker for some reason
     setTimeout(() => {
       dispatch(toggleColorNegative({ area: "headerColorNegative" }));
+      const sortedList = sort === "date" ? sortTodosByDate(todos) : todos;
+      matchPositionsToIndices(dispatch, sortedList);
 
       dispatch(
         setCascade({
           id: parent.id,
-          cascade: { ...cascade, phase: "frameskip" },
+          cascade: { ...cascade, phase: "frameskip", sortedList: sortedList },
         })
       );
-    }, 34);
+    }, 1000);
   }, [cascade.phase, dispatch]);
 
   if (cascade.phase === "frameskip") {
-    const sortedList = sort === "date" ? sortTodosByDate(todos) : todos;
-    matchPositionsToIndices(dispatch, sortedList);
 
     dispatch(
       setCascade({
         id: parent.id,
-        cascade: { ...cascade, phase: "cascade", sortedList: sortedList },
+        cascade: { ...cascade, phase: "cascade" },
       })
     );
   }
