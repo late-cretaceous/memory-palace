@@ -73,7 +73,7 @@ const useSortAnimation = (
           cascade: { ...cascade, phase: "frameskip", sortedList: sortedList },
         })
       );
-    }, 1000);
+    }, 34);
   }, [cascade.phase, dispatch]);
 
   if (cascade.phase === "frameskip") {

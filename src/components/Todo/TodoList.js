@@ -189,7 +189,11 @@ const TodoList = forwardRef(({ parent, ...props }, ref) => {
   );
 
   return (
-    <div className={styles.flexcol} style={props.style} ref={ref}>
+    <div
+      className={`${styles.flexcol} ${styles.container}`}
+      style={props.style}
+      ref={ref}
+    >
       {!isEmptyAndCascading(orderedTodos, cascade) && (
         <DragDropContext onDragEnd={moveTodoHandler}>
           <Drop id="todoDropArea">
