@@ -19,7 +19,6 @@ const DayOfWeekInput = ({
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);
-  const [initialRender, setInitialRender] = useState(true);
   const [suggestion, setSuggestion] = useState("");
 
   const {
@@ -39,14 +38,6 @@ const DayOfWeekInput = ({
 
   if (typed !== date.dow) {
     setTyped(date.dow);
-  }
-
-  if (initialRender) {
-    setInitialRender(false);
-    if (!typed) {
-      setTyped("Sun");
-      dispatchDateChange(dispatch, todo, siblings, "Sun", sortedAs);
-    }
   }
 
   const handleInputChange = (e) => {
