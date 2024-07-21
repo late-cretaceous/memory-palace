@@ -80,14 +80,17 @@ const reorderedState = (newListParent, storage) => {
 };
 
 const incompleteDate = (date) => {
+  console.log(`${date.month} ${date.day} ${date.year}`);
+  console.log(!Boolean(date.month && date.day && date.year));
+
   return !Boolean(date.month && date.day && date.year);
 };
 
 export const sortTodosByDate = (todos) => {
   const newTodos = [...todos];
   newTodos.sort((a, b) => {
-    if (incompleteDate(a.date) && !incompleteDate(b.date)) return -1;
-    if (incompleteDate(b.date)) return 1;
+    if (incompleteDate(a.date) && !incompleteDate(b.date)) return 1;
+    if (incompleteDate(b.date)) return -1;
 
     const aDate = new Date(a.date.year, a.date.month - 1, a.date.day);
     const bDate = new Date(b.date.year, b.date.month - 1, b.date.day);
